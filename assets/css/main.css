@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Calendar */
+.dp__outer_menu_wrap {
+  width: 100% !important;
+}
+
+.dp__menu.dp__relative.dp__theme_light {
+  border: 0 !important;
+}
+
+.dp__btn.dp__month_year_select {
+  color: #000 !important;
+  font-weight: 600 !important;
+}
+
+.dp__calendar_header_item {
+  color: #655d5d !important;
+  font-weight: 400 !important;
+}
+
+.dp__cell_inner.dp__pointer.dp__today {
+  border: 0 !important;
+}
+
+.dp__cell_inner.dp__pointer.dp__range_between,
+.dp__cell_inner.dp__pointer {
+  color: #000;
+  font-weight: 500 !important;
+}
+
+.dp__cell_inner.dp__pointer.dp__today.dp__range_start,
+.dp__cell_inner.dp__pointer.dp__range_start,
+.dp__cell_inner.dp__pointer.dp__range_end {
+  background: #000 !important;
+  color: #fff !important;
+  border-radius: 999px;
+  outline: 0 !important;
+  border: 0 !important;
+}
+
+.dp__input_wrap {
+  display: none;
+}

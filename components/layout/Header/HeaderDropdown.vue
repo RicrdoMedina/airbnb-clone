@@ -1,0 +1,63 @@
+<template>
+  <div
+    ref="$dropdown"
+    class="relative flex items-center justify-between w-24 py-2 px-4 rounded-full bg-white border border-gray-300 cursor-pointer"
+    @click="openMenu"
+  >
+    <img class="w-4" src="/images/Hamburger.svg" alt="Hamburger" />
+    <img class="w-8" src="/images/User.svg" alt="Hamburger" />
+    <div v-if="open" class="absolute right-4 w-56 top-12 p-2 bg-white shadow-xl">
+      <ul class="flex flex-col">
+        <li class="text-sm cursor-pointer text-bold font-medium">Registrate</li>
+        <li
+          class="text-sm mt-4 cursor-pointer text-light hover:text-bold ease-in-out transition-all duration-500"
+        >
+          Iniciar Sesion
+        </li>
+      </ul>
+      <ul class="flex flex-col mt-4 border-t border-gray-300">
+        <li
+          class="text-sm mt-4 cursor-pointer text-light hover:text-bold ease-in-out transition-all duration-500"
+        >
+          Pon tu espacio en AirBnb
+        </li>
+        <li
+          class="text-sm mt-4 cursor-pointer text-light hover:text-bold ease-in-out transition-all duration-500"
+        >
+          Centro de ayuda
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script setup>
+const $dropdown = ref(null);
+
+const open = ref(false);
+
+function openMenu() {
+  open.value = !open.value;
+}
+
+function hideMenu () {
+  open.value = false;
+}
+
+
+const handleClickOutside = (event) => {
+  if ($dropdown.value && !$dropdown.value.contains(event.target)) {
+    hideMenu()
+  }
+};
+
+
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+});
+
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
+</script>
