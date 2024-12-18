@@ -1,57 +1,68 @@
 <template>
   <div
     :class="containerDynamicClasses"
-    @click.stop.prevent="handleChangeFilterOption('Output')"
-    v-if="!showFilterWhen"
+    @click.stop.prevent="toggleSubFilter('output')"
+    v-if="!showWhenOptions"
   >
     <!-- SelectedDepartureDateHoverBackground -->
-    <template v-if="filterArrivalActive">
+    <template v-if="filterStates.arrival">
       <div
         class="w-56 h-full group-hover:bg-custom-gray-300 absolute rounded-full -left-20 ease-in-out transition-all duration-500 z-0"
       ></div>
     </template>
 
     <!-- SelectedDepartureDateHoverBackground -->
-    <template v-if="filterWhoIsActive">
+    <template v-if="filterStates.who">
       <div
         class="w-56 h-full group-hover:bg-custom-gray-300 absolute rounded-full -right-20 ease-in-out transition-all duration-500 z-0"
       ></div>
     </template>
 
-    <div class="w-full h-full z-50 flex flex-col items-center justify-center">
+    <div
+      class="w-full h-full z-50 flex flex-col items-center justify-center relative"
+    >
       <span class="w-full text-xs font-medium text-bold">Salida</span>
       <div :class="blockDynamicClasses">
         {{ formattedDepartureDate }}
-        <span v-if="approximateDays" class="text-xs ml-1 text-light font-normal"
-          >±{{ approximateDays }}</span
+        <span
+          v-if="values.approximateDays"
+          class="text-xs ml-1 text-light font-normal"
+          >±{{ values.approximateDays }}</span
         >
       </div>
+      <span
+        class="flex items-center justify-center w-6 h-6 absolute right-0 cursor-pointer rounded-full hover:bg-custom-gray-300 ease-in-out transition-all duration-500"
+        v-show="showCloseIcon"
+        @click.stop.prevent="handleResetDateRange"
+      >
+        <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
+      </span>
     </div>
   </div>
 </template>
 
 <script setup>
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 import { es } from "date-fns/locale";
 import { format } from "date-fns";
 
-const useSearch = useSearchStore();
+const useSearch = useFiltersStore();
 
-const { handleChangeFilterOption } = useSearch;
+const { toggleSubFilter, filterStates, values, handleResetDateRange } =
+  useSearch;
 
 const {
-  filterArrivalActive,
-  filterOutputActive,
-  filterActive,
-  departureDateValue,
-  approximateDays,
-  showFilterWhen,
-  filterWhoIsActive,
+  isFilterActive,
+  showWhenOptions,
+  tripStartDate,
+  tripEndDate,
+  dateRange,
 } = storeToRefs(useSearch);
 
 const defaultClasses = computed(() => ({
+  "filter": true,
   "w-36": true,
   "h-full": true,
   "rounded-full": true,
@@ -62,8 +73,15 @@ const defaultClasses = computed(() => ({
   "px-6": true,
   relative: true,
   group: true,
-  "z-0": filterArrivalActive.value,
-  "z-10": !filterArrivalActive.value,
+  "z-0": filterStates.arrival,
+  "z-10": !filterStates.arrival,
+   "before:hidden": isFilterActive.value,
+  "before:content-['']": true,
+  "before:bg-custom-gray-400": true,
+  "before:absolute": true,
+  "before:left-0": true,
+  "before:w-px": true,
+  "before:h-8": true,
 }));
 
 const blockDefaultClasses =
@@ -74,37 +92,41 @@ const blockActiveClasses = "text-bold font-medium";
 const activeClasses = "bg-white shadow-search-box-inactive";
 
 const inactiveClasses = computed(() => ({
-  "hover:bg-custom-gray-200": !filterActive.value,
+  "hover:bg-custom-gray-200": !isFilterActive.value,
   "hover:bg-custom-gray-300":
-    filterActive.value &&
-    !filterOutputActive.value &&
-    !filterArrivalActive.value &&
-    !filterWhoIsActive.value,
+    isFilterActive.value &&
+    !filterStates.output &&
+    !filterStates.arrival &&
+    !filterStates.who,
 }));
 
 const blockInactiveClasses = "text-light";
 
 const { dynamicClasses: containerDynamicClasses } = useDynamicClasses(
-  filterOutputActive,
+  () => filterStates.output,
   defaultClasses,
   activeClasses,
   inactiveClasses
 );
 
 const { dynamicClasses: blockDynamicClasses } = useDynamicClasses(
-  departureDateValue,
+  () => dateRange.value.length > 1,
   blockDefaultClasses,
   blockActiveClasses,
   blockInactiveClasses
 );
 
 const formattedDepartureDate = computed(() => {
-  if (!departureDateValue.value) return "Agregar fecha";
+  if (dateRange.value.length < 2) return "Agregar fecha";
 
-  const formattedDate = format(departureDateValue.value, "dd MMM", {
+  const formattedDate = format(dateRange.value[1], "dd MMM", {
     locale: es,
   });
 
   return formattedDate;
+});
+
+const showCloseIcon = computed(() => {
+  return dateRange.value.length > 1 && filterStates.output;
 });
 </script>

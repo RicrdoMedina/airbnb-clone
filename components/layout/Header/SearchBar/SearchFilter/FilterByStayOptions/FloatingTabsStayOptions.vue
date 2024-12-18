@@ -6,18 +6,19 @@
       <div class="w-full flex items-center justify-center">
         <SubFilterButtons
           :options="options"
-          :selectedOption="subFilterOption"
-          @change="handleChangeFilterOption"
+          :selectedOption="activeSubFilter"
+          @change="toggleSubFilter"
         />
       </div>
 
       <component
         :is="currentComponent"
-        :approximateDays="approximateDays"
-        :stayList="stayList"
-        :stayAtPlace="stayAtPlace"
-        :months="months"
-        @setApproximateDays="setApproximateDays"
+        :approximateDays="values.approximateDays"
+        :stayList="stayDurations"
+        :stayAtPlace="values.stayDuration"
+        :items="availableMonths"
+        :selectedItems="values.selectedMonths"
+        @setApproximateDays="handleApproximateDays"
         @handleStayAtPlace="handleStayAtPlace"
       />
     </section>
@@ -30,25 +31,32 @@ import DatesSection from "./DatesSection.vue";
 import MonthSection from "./MonthSection.vue";
 import FlexibleSection from "./FlexibleSection.vue";
 
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 
-const useSearch = useSearchStore();
+const useSearch = useFiltersStore();
 
-const { handleChangeFilterOption, setApproximateDays, handleStayAtPlace } =
-  useSearch;
-const { subFilterOption, approximateDays, stayAtPlace, stayList, months } =
+const { toggleSubFilter, updateValue, filterStates, values } = useSearch;
+const { activeSubFilter, stayDurations, availableMonths } =
   storeToRefs(useSearch);
 
 const options = [
-  { label: "Fechas", value: "Dates", filter: "Arrival" },
-  { label: "Meses", value: "Month", filter: "When" },
-  { label: "Flexible", value: "Flexible", filter: "When" },
+  { label: "Fechas", value: "Dates", filter: "arrival" },
+  { label: "Meses", value: "Month", filter: "when" },
+  { label: "Flexible", value: "Flexible", filter: "when" },
 ];
 
 const currentComponent = computed(() => {
-  if (subFilterOption.value === "Dates") return DatesSection;
-  if (subFilterOption.value === "Month") return MonthSection;
-  if (subFilterOption.value === "Flexible") return FlexibleSection;
+  if (activeSubFilter.value === "Dates") return DatesSection;
+  if (activeSubFilter.value === "Month") return MonthSection;
+  if (activeSubFilter.value === "Flexible") return FlexibleSection;
 });
+
+function handleApproximateDays(value) {
+  updateValue("approximateDays", value);
+}
+
+function handleStayAtPlace(value) {
+  updateValue("stayDuration", value);
+}
 </script>

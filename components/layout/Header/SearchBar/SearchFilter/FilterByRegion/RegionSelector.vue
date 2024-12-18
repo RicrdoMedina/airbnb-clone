@@ -12,7 +12,7 @@
             <button
               class="flex items-center justify-center flex-col"
               type="button"
-              @click.stop.prevent="handleClickWhereButton(option.id)"
+              @click.stop.prevent="$emit('handleClick', option.id)"
             >
               <img
                 class="rounded-md ease-in-out transition-all duration-500 border border-gray-200 hover:border-gray-900"
@@ -34,7 +34,7 @@
             <button
               class="flex items-center justify-center flex-col"
               type="button"
-              @click.stop.prevent="handleClickWhereButton(option.id)"
+              @click.stop.prevent="$emit('handleClick', option.id)"
             >
               <img
                 class="rounded-md ease-in-out transition-all duration-500 border border-gray-200 hover:border-gray-900"
@@ -53,7 +53,6 @@
 </template>
 
 <script setup>
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
 
 const props = defineProps({
   options: {
@@ -62,7 +61,6 @@ const props = defineProps({
   },
 });
 
-const useSearch = useSearchStore();
+const emit = defineEmits(["handleClick"]);
 
-const { handleClickWhereButton } = useSearch;
 </script>

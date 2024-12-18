@@ -6,14 +6,14 @@
       <CounterCard
         title="Adultos"
         subtitle="Edad: 13 años o más"
-        :counter="numberAdults"
+        :counter="values.adults"
         @updateCounter="setNumberAdults"
       />
       <div class="w-full mt-4 pt-4 border-t border-gray-200">
         <CounterCard
           title="Niños"
           subtitle="De 2 a 12 años"
-          :counter="numberChildren"
+          :counter="values.children"
           @updateCounter="setNumberChildren"
         />
       </div>
@@ -21,7 +21,7 @@
         <CounterCard
           title="Bebés"
           subtitle="Menos de 2 años"
-          :counter="numberBabies"
+          :counter="values.babies"
           @updateCounter="setNumberBabies"
         />
       </div>
@@ -31,12 +31,24 @@
 
 <script setup>
 import CounterCard from "~/components/common/CounterCard.vue";
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 
-const useSearch = useSearchStore();
+const useSearch = useFiltersStore();
 
-const { setNumberAdults, setNumberChildren, setNumberBabies } = useSearch;
+const { updateValue, values } = useSearch;
 
-const { numberAdults, numberChildren, numberBabies } = storeToRefs(useSearch);
+
+function setNumberAdults (value) {
+updateValue("adults",value)
+}
+
+function setNumberChildren (value) {
+updateValue("children",value)
+}
+
+
+function setNumberBabies (value) {
+updateValue("babies",value)
+}
 
 </script>

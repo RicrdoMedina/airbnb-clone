@@ -1,10 +1,9 @@
 <template>
   <div class="w-full mt-4">
     <MultiCalendar
-      :minDate="arrivalDateValue"
-      :maxDate="departureDateValue"
-      @onRangeStart="handleArrivalDate"
-      @onRangeEnd="handleDepartureDate"
+      :minDate="getMinDate"
+      :maxDate="getMaxDate"
+      @handleChange="handleDateRange"
     />
     <div class="w-full mt-4 flex items-center justify-start">
       <button
@@ -31,19 +30,25 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import MultiCalendar from "~/components/common/MultiCalendar.vue";
 import { storeToRefs } from "pinia";
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
+import { isEmpty } from "~/components/utils/helpers";
 
-const useSearch = useSearchStore();
+const useSearch = useFiltersStore();
 
-const { arrivalDateValue, departureDateValue } = storeToRefs(useSearch);
+const { dateRange } = storeToRefs(useSearch);
 
-const { handleArrivalDate, handleDepartureDate } = useSearch;
+const { handleDateRange } = useSearch;
 
 const props = defineProps({
-  approximateDays: Number,
+  approximateDays: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
 });
 
 const exactDateButtonDefaultClasses =
@@ -71,4 +76,12 @@ const dynamicClasses = (day) =>
 
 // const minDate = ref(new Date());
 // const maxDate = ref(new Date(new Date().setDate(new Date().getDate() + 7)));
+
+const getMinDate = computed(() => {
+  return isEmpty(dateRange.value) ? null : dateRange.value[0];
+});
+
+const getMaxDate = computed(() => {
+   return isEmpty(dateRange.value) ? null : dateRange.value[1];
+});
 </script>

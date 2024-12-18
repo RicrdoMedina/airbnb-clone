@@ -9,8 +9,8 @@
       <CircularMonthRangeSelectorCopy3
         :starDate="tripStartDate"
         :endDate="tripEndDate"
-        :value="whenValue"
-        @handleChange="handleWhenValue"
+        :value="values.when"
+        @handleChange="handleChange"
       />
       <div class="w-full flex items-center justify-center mt-4">
         <p class="text-light text-sm">
@@ -23,20 +23,25 @@
 
 <script setup>
 import CircularMonthRangeSelectorCopy3 from "~/components/common/CircularMonthRangeSelectorCopy3.vue";
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
 
-const useSearch = useSearchStore();
+const useSearch = useFiltersStore();
 
-const { handleWhenValue } = useSearch;
+const { updateValue,values } = useSearch;
 
-const { tripEndDate, tripStartDate, whenValue } = storeToRefs(useSearch);
+
+const { tripEndDate, tripStartDate } = storeToRefs(useSearch);
 
 const { filterValueWhenFormatted } = useFormattedWhenValue(
-  whenValue,
+  () => values.when,
   tripStartDate,
   tripEndDate,
   "d MMM. yyyy"
 );
+
+function handleChange (value) {
+  updateValue("when",value)
+}
 </script>

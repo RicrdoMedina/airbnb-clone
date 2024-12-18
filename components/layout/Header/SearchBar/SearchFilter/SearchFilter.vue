@@ -4,17 +4,20 @@
     <FilterByStayOptions />
     <FilterNumberOfGuests />
 
-    <template v-if="filterWhereActive">
-      <RegionSelector :options="searchListByRegion" />
+    <template v-if="filterStates.where">
+      <RegionSelector
+        :options="searchRegions"
+        @handleClick="handleRegionSelection"
+      />
     </template>
 
     <template
-      v-if="filterArrivalActive || filterOutputActive || filterWhenActive"
+      v-if="filterStates.arrival || filterStates.output || filterStates.when"
     >
       <FloatingTabsStayOptions />
     </template>
 
-    <template v-if="filterWhoIsActive">
+    <template v-if="filterStates.who">
       <GuestCountSelector />
     </template>
   </div>
@@ -26,7 +29,7 @@ import GuestCountSelector from "./FilterNumberOfGuests/GuestCountSelector.vue";
 import FloatingTabsStayOptions from "./FilterByStayOptions/FloatingTabsStayOptions.vue";
 import { useClickOutside } from "~/components/composables/useClickOutside";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 import FilterByRegion from "./FilterByRegion/FilterByRegion.vue";
 import FilterByStayOptions from "./FilterByStayOptions/FilterByStayOptions.vue";
@@ -34,28 +37,21 @@ import FilterNumberOfGuests from "./FilterNumberOfGuests/FilterNumberOfGuests.vu
 
 const $searchFilter = ref(null);
 
-const useSearch = useSearchStore();
+const useSearch = useFiltersStore();
 
-const {
-  filterActive,
-  filterWhereActive,
-  searchListByRegion,
-  filterArrivalActive,
-  filterOutputActive,
-  filterWhenActive,
-  filterWhoIsActive
-} = storeToRefs(useSearch);
+const { isFilterActive, filterStates, searchRegions } = storeToRefs(useSearch);
 
-const { setInactiveFilter } = useSearch;
+const { disableSearch, resetFilterStates, handleRegionSelection } = useSearch;
 
-const defaultClasses = "w-full rounded-full h-16 top-0 left-0 flex overflow-hidden border";
+const defaultClasses =
+  "w-full rounded-full h-16 top-0 left-0 flex overflow-hidden border";
 
 const activeClasses = "bg-custom-gray-200 border-gray-300";
 
 const inactiveClasses = "bg-white shadow-search-box-inactive";
 
 const { dynamicClasses } = useDynamicClasses(
-  filterActive,
+  isFilterActive,
   defaultClasses,
   activeClasses,
   inactiveClasses
@@ -63,7 +59,8 @@ const { dynamicClasses } = useDynamicClasses(
 
 const handleClickOutside = (event) => {
   if ($searchFilter.value && !$searchFilter.value.contains(event.target)) {
-    setInactiveFilter();
+    disableSearch();
+    resetFilterStates();
   }
 };
 

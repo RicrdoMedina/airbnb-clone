@@ -1,42 +1,47 @@
-// store/filters.ts
+import { watch } from "vue";
 import { defineStore } from "pinia";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
 import {
-  formatMonthDate,
+  compareDates,
   getDateFromMonth,
-  getFormattedFirstDayOfMonth,
-  getMonthWithOffset,
   getNext12Months,
   getNextYear,
 } from "~/components/utils/dateUtils";
+import { isArray, isEmpty } from "~/components/utils/helpers";
 
-export const useSearchStore = defineStore("searchStore", () => {
-  const filterActive = ref(false);
-  const subFilterActive = ref(false);
-  const filterOption = ref(null);
-  const subFilterOption = ref("Dates");
+export const useFiltersStore = defineStore("filtersStore", () => {
+  // State
+  const isFilterActive = ref(false);
+  const isSubFilterActive = ref(false);
+  const activeFilter = ref(null);
+  const activeSubFilter = ref("Dates");
 
-  // Active filter
-  const filterWhereActive = ref(false);
-  const filterWhenActive = ref(false);
-  const filterArrivalActive = ref(false);
-  const filterOutputActive = ref(false);
-  const filterWhoIsActive = ref(false);
-  const showFilterWhen = ref(false);
+  const filterStates = reactive({
+    where: ref(false),
+    when: ref(false),
+    arrival: ref(false),
+    output: ref(false),
+    who: ref(false),
+  });
 
-  // Values
-  const filterValueWhere = ref(null);
-  const arrivalDateValue = ref(null);
-  const departureDateValue = ref(null);
-  const whenValue = ref([]);
-  const approximateDays = ref(null);
-  const numberAdults = ref(0);
-  const numberChildren = ref(0);
-  const numberBabies = ref(0);
-  const stayAtPlace = ref(1);
-  const whenDoYouWantToGo = ref([]);
-  const searchListByRegion = ref([
+  const showWhenOptions = ref(false);
+
+  const values = reactive({
+    who: ref(null),
+    where: ref(null),
+    arrivalDate: ref(null),
+    departureDate: ref(null),
+    when: ref([]),
+    approximateDays: ref(0),
+    adults: ref(0),
+    children: ref(0),
+    babies: ref(0),
+    stayDuration: ref(1),
+    selectedMonths: ref([]),
+  });
+
+  const dateRange = ref([]);
+
+  const searchRegions = ref([
     { id: 1, name: "Búsqueda Flexible", img: "/images/FlexibleSearch.jpg" },
     { id: 2, name: "Europa", img: "/images/Europa.jpg" },
     { id: 3, name: "Brazil", img: "/images/Brazil.jpg" },
@@ -45,268 +50,202 @@ export const useSearchStore = defineStore("searchStore", () => {
     { id: 6, name: "Caribeña", img: "/images/Caribe.jpg" },
   ]);
 
-  const stayList = ref([
+  const stayDurations = ref([
     { id: 1, name: "Fin de semana" },
     { id: 2, name: "Semana" },
     { id: 3, name: "Mes" },
   ]);
 
-  const months = ref(getNext12Months());
+  const availableMonths = ref(getNext12Months());
 
-  const filterList = {
-    1: { name: "Where", state: filterWhereActive },
-    2: { name: "Arrival", state: filterArrivalActive },
-    3: { name: "When", state: filterWhenActive },
-    4: { name: "Output", state: filterOutputActive },
-    5: { name: "WhoIs", state: filterWhoIsActive },
-  };
+  // Computed
+  const tripStartDate = computed(() => getDateFromMonth(0, getNextYear()));
+  const tripEndDate = computed(() => getDateFromMonth(3, getNextYear()));
 
-  const subFilterList = {
-    1: { name: "Dates", state: filterWhereActive },
-    2: { name: "Month", state: filterArrivalActive },
-    3: { name: "Flexible", state: filterOutputActive },
-  };
+  // Methods
 
-  function getFilterValue(option) {
-    const result = Object.values(filterList).filter((filter) => {
-      return option === filter.name;
-    });
+  function disableSearch() {
+    activeFilter.value = null;
+    isFilterActive.value = false;
+  }
 
-    if (result.length > 0) return result[0].state.value;
+  function activateFilter(filterName) {
+    isFilterActive.value = true;
+    activeFilter.value = filterName;
+    resetFilterStates();
+    if (filterStates[filterName] !== undefined) filterStates[filterName] = true;
+  }
 
+  function resetFilterStates() {
+    Object.keys(filterStates).forEach((key) => (filterStates[key] = false));
+  }
+
+  function toggleSubFilter(filterName, subFilterName) {
+    if (!filterName) return false;
+
+    if (subFilterName) {
+      handleSubFilter(filterName, subFilterName);
+      return false;
+    }
+
+    if (isSameActiveOption(filterName)) {
+      disableSearch();
+      resetFilterStates();
+      return false;
+    }
+
+    activateFilter(filterName);
+  }
+
+  function handleSubFilter(filterName, subFilterName) {
+    if (subFilterName === "Month" || subFilterName === "Flexible") {
+      showWhenOptions.value = true;
+      filterStates.when = true;
+    } else {
+      showWhenOptions.value = false;
+    }
+    activeSubFilter.value = subFilterName;
+    isSubFilterActive.value = true;
+    activateFilter(filterName);
+  }
+
+  function getFilterValue(filterName) {
+    if (filterName in filterStates) {
+      const value = filterStates[filterName];
+      return value;
+    }
     return null;
   }
 
-  const tripStartDate = computed(() => {
-    const add = 0;
-    const nextYear = getNextYear();
-    const nextMonth = getDateFromMonth(add, nextYear);
-
-    return nextMonth;
-  });
-
-  const tripEndDate = computed(() => {
-    const add = 3;
-    const nextYear = getNextYear();
-    const nextMonth = getDateFromMonth(add, nextYear);
-
-    return nextMonth;
-  });
-
-  function resetOption() {
-    filterOption.value = null;
-    Object.values(filterList).map((filter) => {
-      filter.state.value = false;
-    });
-  }
-
-  function setInactiveFilter() {
-    filterActive.value = false;
-    filterOption.value = null;
-    Object.values(filterList).map((filter) => {
-      filter.state.value = false;
-    });
-  }
-
-  function handleChangeFilterOption(option, subOption) {
-    if (!option) return false;
-
-    // Maneja la lógica cuando se pasa un subOption
-    if (subOption) {
-      handleSubOption(option, subOption);
-      return false;
-    }
-
-    // Verifica si se está seleccionando la misma opción activa
-    if (isSameActiveOption(option)) {
-      handleSameActiveOption(option);
-      return false;
-    }
-
-    // Activa la nueva opción de filtro
-    activateNewOption(option);
-  }
-
-  function handleSubOption(option, subOption) {
-    const isMonthOrFlexible = subOption === "Month" || subOption === "Flexible";
-
-    showFilterWhen.value = isMonthOrFlexible;
-    filterWhenActive.value = isMonthOrFlexible;
-    subFilterOption.value = subOption;
-    subFilterActive.value = true;
-
-    // Activa la nueva opción de filtro
-    activateNewOption(option);
-  }
-
-  function isSameActiveOption(option) {
-    if (option === filterOption.value) {
-      if (getFilterValue(option) && option !== "Where") {
+  function isSameActiveOption(filterName) {
+    if (filterName === activeFilter.value) {
+      if (getFilterValue(filterName) && filterName !== "where") {
         return true;
       }
     }
     return false;
   }
 
-  function handleSameActiveOption(option) {
-    resetOption();
-    filterActive.value = false;
-    filterOption.value = null;
-  }
+  function handleRegionSelection(regionId) {
+    const region = searchRegions.value.find((r) => r.id === regionId);
+    if (region) {
+      values.where = region.name;
 
-  function activateNewOption(option) {
-    filterActive.value = true;
-    filterOption.value = option;
-
-    // Reinicia todos los estados de los filtros
-    resetAllFilters();
-
-    // Activa el estado del filtro correspondiente
-    activateFilterState(option);
-  }
-
-  function resetAllFilters() {
-    Object.values(filterList).forEach((filter) => {
-      filter.state.value = false;
-    });
-  }
-
-  function activateFilterState(option) {
-    const filter = Object.values(filterList).find((f) => f.name === option);
-    if (filter) {
-      filter.state.value = true;
-    }
-  }
-
-  function handleClickWhereButton(value) {
-    const regionsList = [
-      { id: 1, region: null, handle: handleFlexibleSearch },
-      { id: 2, region: "Europa", handle: handleSearchByRegion },
-      { id: 3, region: "Brazil", handle: handleSearchByRegion },
-      { id: 4, region: "Estados Unidos", handle: handleSearchByRegion },
-      { id: 5, region: "Argentina", handle: handleSearchByRegion },
-      { id: 6, region: "Caribeña", handle: handleSearchByRegion },
-    ];
-
-    regionsList.forEach((item) => {
-      if (value === item.id) {
-        item.handle(item.region);
+      if (showWhenOptions.value) {
+        activateFilter("when");
+      } else {
+        activateFilter("arrival");
       }
-    });
+    }
   }
 
-  function setFilterValueWhere(val) {
-    filterValueWhere.value = val;
+  function updateValue(key, newValue) {
+    if (values[key] !== undefined) {
+      values[key] = newValue;
+    }
   }
 
-  function handleFlexibleSearch() {
-    if (showFilterWhen.value) {
-      filterWhenActive.value = true;
-      filterWhereActive.value = false;
+  function toggleMonthSelection(month) {
+    const index = values.selectedMonths.indexOf(month);
+    if (index === -1) {
+      values.selectedMonths.push(month);
     } else {
-      handleChangeFilterOption("Arrival");
+      values.selectedMonths.splice(index, 1);
     }
-    setFilterValueWhere("");
   }
 
-  function handleSearchByRegion(region) {
-    if (showFilterWhen.value) {
-      filterWhenActive.value = true;
-      filterWhereActive.value = false;
+  function handleDateRange(date, range) {
+    const minDate = dateRange.value[0] || null;
+
+    if (isArray(date)) {
+      dateRange.value = [...date];
+      // activateFilter("output");
+      return;
+    }
+
+    if (range === "MIN") {
+      handleMinimumRange(minDate, date);
+    }
+
+    if (range === "MAX") {
+      handleMaximumRange(minDate, date);
+    }
+
+    activateFilter("output");
+  }
+
+  function handleMinimumRange(minDate, date) {
+    if (minDate) {
+      if (
+        compareDates(date, minDate, {
+          comparisonType: "after",
+          ignoreTime: true,
+        })
+      ) {
+        dateRange.value = [minDate, date];
+      } else if (
+        compareDates(date, minDate, {
+          comparisonType: "equal",
+          ignoreTime: true,
+        })
+      ) {
+        dateRange.value = [date, date];
+      } else {
+        dateRange.value = [date];
+      }
     } else {
-      handleChangeFilterOption("Arrival");
+      dateRange.value = [date];
     }
-
-    setFilterValueWhere(region);
   }
 
-  function handleWhenValue(val) {
-    whenValue.value = val;
-  }
-
-  function handleArrivalDate(arrivalDate) {
-    arrivalDateValue.value = arrivalDate;
-  }
-
-  function handleDepartureDate(departureDate) {
-    departureDateValue.value = departureDate;
-  }
-
-  function setApproximateDays(val) {
-    if (!val) {
-      approximateDays.value = 0;
-      return false;
-    }
-    approximateDays.value = val;
-  }
-
-  function setNumberAdults(val) {
-    numberAdults.value = val;
-  }
-
-  function setNumberChildren(val) {
-    numberChildren.value = val;
-  }
-
-  function setNumberBabies(val) {
-    numberBabies.value = val;
-  }
-
-  function handleStayAtPlace(stay) {
-    stayAtPlace.value = stay;
-  }
-
-  function handleWhenDoYouWantToGo(month) {
-    const months = whenDoYouWantToGo.value;
-
-    let indice = months.indexOf(month);
-
-    if (indice !== -1) {
-      months.splice(indice, 1);
-
-      whenDoYouWantToGo.value = months;
+  function handleMaximumRange(minDate, date) {
+    if (minDate) {
+      if (
+        compareDates(date, minDate, {
+          comparisonType: "before",
+          ignoreTime: true,
+        })
+      ) {
+        dateRange.value = [date, minDate];
+      } else {
+        dateRange.value = [minDate, date];
+      }
     } else {
-      whenDoYouWantToGo.value.push(month);
+      dateRange.value = [date];
     }
+  }
+
+  function handleResetDateRange() {
+    dateRange.value = [];
   }
 
   return {
-    handleChangeFilterOption,
-    handleClickWhereButton,
-    handleArrivalDate,
-    handleDepartureDate,
-    setApproximateDays,
-    setNumberAdults,
-    setNumberChildren,
-    setNumberBabies,
-    handleStayAtPlace,
-    handleWhenDoYouWantToGo,
-    handleWhenValue,
-    setInactiveFilter,
-    filterActive,
-    subFilterActive,
-    filterWhereActive,
-    filterWhenActive,
-    filterArrivalActive,
-    filterOutputActive,
-    filterWhoIsActive,
-    showFilterWhen,
-    filterOption,
-    subFilterOption,
-    searchListByRegion,
-    filterValueWhere,
-    arrivalDateValue,
-    whenValue,
-    departureDateValue,
-    approximateDays,
-    numberAdults,
-    numberChildren,
-    numberBabies,
-    stayList,
-    stayAtPlace,
-    whenDoYouWantToGo,
-    months,
+    // State
+    isFilterActive,
+    isSubFilterActive,
+    activeFilter,
+    activeSubFilter,
+    filterStates,
+    showWhenOptions,
+    values,
+    searchRegions,
+    stayDurations,
+    availableMonths,
+    dateRange,
+
+    // Computed
     tripStartDate,
     tripEndDate,
+
+    // Methods
+    disableSearch,
+    activateFilter,
+    resetFilterStates,
+    toggleSubFilter,
+    handleRegionSelection,
+    updateValue,
+    toggleMonthSelection,
+    handleDateRange,
+    handleResetDateRange,
   };
 });

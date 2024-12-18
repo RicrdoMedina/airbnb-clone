@@ -232,6 +232,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { getDateFromMonth, getNextYear } from "../utils/dateUtils";
+import { isEmpty } from "../utils/helpers";
 
 const props = defineProps({
   starDate: {
@@ -240,6 +241,10 @@ const props = defineProps({
   },
   endDate: {
     type: Date,
+    required: true,
+  },
+  value: {
+    type: Array,
     required: true,
   },
 });
@@ -321,7 +326,10 @@ function getPathTrackForeground(monthIndex) {
 }
 
 onMounted(() => {
-  if (props.endDate) {
+  if (!isEmpty(props.value)) {
+    const endDate = props.value[1].getMonth();
+    selectedMonth.value = endDate;
+  } else {
     const endDate = props.endDate.getMonth();
     selectedMonth.value = endDate;
   }

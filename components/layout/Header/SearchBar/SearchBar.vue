@@ -1,5 +1,5 @@
 <template>
-  <form class="w-108 mx-auto block relative" action="">
+  <form class="w-108 mx-auto block relative" action="" id="searchBar">
     <SearchOptions/>
     <SearchFilter/>
   </form>

@@ -5,6 +5,10 @@ import {
   getMonth,
   parse,
   compareAsc,
+  isAfter,
+  isBefore,
+  isEqual,
+  startOfDay,
 } from "date-fns";
 import { es } from "date-fns/locale";
 
@@ -87,4 +91,29 @@ export function sortDates(data) {
     const dateB = parse(b.date, dateFormat, new Date());
     return compareAsc(dateA, dateB);
   });
+}
+
+export function compareDates(
+  date1,
+  date2,
+  { ignoreTime = false, comparisonType = "equal" } = {}
+) {
+  if (ignoreTime) {
+    date1 = startOfDay(date1);
+    date2 = startOfDay(date2);
+  }
+
+  const operations = {
+    after: isAfter,
+    before: isBefore,
+    equal: isEqual,
+  };
+
+  const compareFn = operations[comparisonType];
+
+  if (!compareFn) {
+    throw new Error(`Tipo de comparación no soportado: ${comparisonType}`);
+  }
+
+  return compareFn(date1, date2);
 }

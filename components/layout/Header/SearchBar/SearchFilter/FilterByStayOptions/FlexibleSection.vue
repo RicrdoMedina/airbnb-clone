@@ -22,7 +22,7 @@
       ¿Cuándo quieres ir?
     </h3>
     <div class="w-full mt-4">
-      <MonthYearSlider :months="months" />
+      <MonthYearSlider :items="items" :itemsToShow="5" :selectedItems="selectedItems" @handleClick="toggleMonthSelection" />
     </div>
   </div>
 </template>
@@ -30,11 +30,18 @@
 <script setup>
 import MonthYearSlider from "~/components/common/MonthYearSlider.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { storeToRefs } from "pinia";
+
+const useSearch = useFiltersStore();
+
+const { toggleMonthSelection } = useSearch;
 
 const props = defineProps({
   stayList: Array,
   stayAtPlace: Number,
-  months: Array,
+  items: Array,
+  selectedItems: Array
 });
 
 const defaultClasses =
@@ -49,4 +56,5 @@ const dynamicClasses = (id) =>
     activeClasses,
     inactiveClasses
   ).dynamicClasses;
+
 </script>

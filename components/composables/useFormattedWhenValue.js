@@ -1,20 +1,23 @@
-import { computed } from "vue";
+import { computed, unref, isRef } from "vue";
 import { formatMonthDate } from "~/components/utils/dateUtils";
+import { isEmpty } from "../utils/helpers";
 
 export function useFormattedWhenValue(
-  whenValue,
+  getValue,
   startDate,
   endDate,
   dateFormat
 ) {
   const filterValueWhenFormatted = computed(() => {
-    if (!whenValue.value.length) {
+    const value = typeof getValue === "function" ? getValue() : unref(getValue);
+
+    if (isEmpty(value)) {
       const firstDayNextMonth = formatMonthDate(startDate.value, dateFormat);
       const firstDayLastMonth = formatMonthDate(endDate.value, dateFormat);
       return `${firstDayNextMonth} - ${firstDayLastMonth}`;
     } else {
-      const firstDayNextMonth = formatMonthDate(whenValue.value[0], dateFormat);
-      const firstDayLastMonth = formatMonthDate(whenValue.value[1], dateFormat);
+      const firstDayNextMonth = formatMonthDate(value[0], dateFormat);
+      const firstDayLastMonth = formatMonthDate(value[1], dateFormat);
       return `${firstDayNextMonth} - ${firstDayLastMonth}`;
     }
   });

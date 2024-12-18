@@ -33,6 +33,7 @@ export default {
           "0 3px 12px 0 rgba(0,0,0,0.1),0 1px 2px 0 rgba(0,0,0,0.08)",
       },
       width: {
+        "2px": "2px",
         100: "32rem",
         104: "40rem",
         108: "50rem",

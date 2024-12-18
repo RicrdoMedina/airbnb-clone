@@ -1,33 +1,39 @@
 <template>
-  <button type="button" @click.stop.prevent="handleSelected" :class="buttonDynamicClasses">
-    <img
-      class="w-10"
-      :src="getCalendarImage"
-      alt="Calendar"
-    />
+  <button
+    type="button"
+    @click.stop.prevent="handleSelected"
+    :class="buttonDynamicClasses"
+  >
+    <img class="w-10" :src="getCalendarImage" alt="Calendar" />
     <span class="text-bold font-medium text-base mt-2">{{ name }}</span>
     <span class="text-bold text-sm">{{ year }}</span>
   </button>
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
-import { useSearchStore } from "~/store/HeaderSearchBarStore";
-
-const useSearch = useSearchStore();
 
 const props = defineProps({
   name: {
     type: String,
     default: "Name",
+    required: true,
   },
   year: {
     type: String,
     default: "2024",
+    required: true,
   },
   id: {
     type: Number,
     default: 0,
+    required: true,
+  },
+  selected: {
+    type: Boolean,
+    default: false,
+    required: true,
   },
 });
 
@@ -40,7 +46,8 @@ function handleSelected() {
   emit("handleClick", props.id);
 }
 
-const buttonDefaultClasses = "w-32 h-36 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-black";
+const buttonDefaultClasses =
+  "w-32 h-36 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-black";
 
 const buttonActiveClasses = "border-2 border-black";
 
@@ -53,8 +60,13 @@ const { dynamicClasses: buttonDynamicClasses } = useDynamicClasses(
   buttonInactiveClasses
 );
 
-const getCalendarImage = computed(() => 
-  isActive.value ? '/images/CalendarOpen.jpg' : '/images/Calendar.jpg'
+const getCalendarImage = computed(() =>
+  isActive.value ? "/images/CalendarOpen.jpg" : "/images/Calendar.jpg"
 );
 
+onMounted(() => {
+  if (props.selected) {
+    isActive.value = props.selected;
+  }
+});
 </script>

@@ -36,20 +36,26 @@ const date = ref([]);
 
 const props = defineProps({
   minDate: {
-    type: Date,
-    default: () => new Date(),
+    type: [Date, null],
+    default: null,
+    required: true,
   },
   maxDate: {
-    type: Date,
+    type: [Date, null],
     default: null,
+    required: true,
   },
 });
 
-const emit = defineEmits(["onRangeStart", "onRangeEnd"]);
+const emit = defineEmits(["handleChange"]);
 
 onMounted(() => {
   if (props.minDate && props.maxDate) {
     date.value = [props.minDate, props.maxDate];
+  }
+
+  if (props.minDate && !props.maxDate) {
+    date.value = [props.minDate];
   }
   // const startDate = new Date();
   // const endDate = new Date(new Date().setDate(startDate.getDate() + 7));
@@ -57,16 +63,31 @@ onMounted(() => {
 });
 
 watch(date, async (newDate, oldDate) => {
-  emit("onRangeStart", newDate[0]);
-  emit("onRangeEnd", newDate[1]);
-
+  emit("handleChange", newDate);
 });
 
+watch(
+  () => [props.minDate, props.maxDate],
+  ([newMinDate, newMaxDate], [oldMinDate, oldMaxDate]) => {
+    if (newMinDate && newMaxDate) {
+      date.value = [newMinDate, newMaxDate];
+    }
+
+    if (newMinDate && !newMaxDate) {
+      date.value = [newMinDate];
+    }
+
+    if (!newMinDate && !newMaxDate) {
+      date.value = [];
+    }
+  }
+);
+
 function handleRangeStart(value) {
-  emit("onRangeStart", value);
+  emit("handleChange", value, "MIN");
 }
 
 function handleRangeEnd(value) {
-  emit("onRangeEnd", value);
+  emit("handleChange", value, "MAX");
 }
 </script>
