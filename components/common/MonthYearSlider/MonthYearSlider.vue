@@ -12,8 +12,8 @@
             :name="item.name"
             :year="item.year"
             :id="item.id"
-            :selected="isSelected(item.id).value"
-            @handleClick="(id) => $emit('handleClick', id)"
+            :isSelected="isSelected(item.id).value"
+            @handleClick="handleSelect(item.id)"
           />
         </div>
       </Slide>
@@ -40,7 +40,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import MonthYearDisplayCard from "./MonthYearDisplayCard.vue";
+import MonthYearDisplayCard from "~/components/common/MonthYearDisplayCard/MonthYearDisplayCard.vue";
 
 const props = defineProps({
   items: {
@@ -61,14 +61,14 @@ const props = defineProps({
 
 const emit = defineEmits(["handleClick"]);
 
+const currentSlide = ref(0);
+const currentSlideAux = ref(0);
+
 const isSelected = (id) => {
   return computed(() => {
     return props.selectedItems.includes(id);
   });
 };
-
-const currentSlide = ref(0);
-const currentSlideAux = ref(0);
 
 const handleNext = () => {
   const remainingItems = props.items.length - currentSlideAux.value;
@@ -89,6 +89,11 @@ const handlePrev = () => {
   currentSlideAux.value = prevIndex;
   currentSlide.value = prevIndex;
 };
+
+function handleSelect(id) {
+  emit('handleClick', id)
+}
+
 
 const isNextDisabled = computed(
   () => currentSlideAux.value >= props.items.length - props.itemsToShow

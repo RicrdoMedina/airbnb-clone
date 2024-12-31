@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-full left-0 mt-4 bg-white shadow-xl px-6 py-6 z-10">
+  <div class="w-98 absolute top-full left-8 lg:left-0 mt-4 bg-white shadow-xl px-6 py-6 z-40 rounded-3xl">
     <section class="w-full">
       <h4 class="text-sm text-bold font-medium">Búsqueda por región</h4>
       <div class="w-full flex flex-col items-center justify-between mt-4">

@@ -231,8 +231,8 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { getDateFromMonth, getNextYear } from "../utils/dateUtils";
-import { isEmpty } from "../utils/helpers";
+import { getDateFromMonth, getNextYear } from "~/utils/dateUtils";
+import { isEmpty } from "~/utils/helpers";
 
 const props = defineProps({
   starDate: {

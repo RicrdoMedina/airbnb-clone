@@ -1,6 +1,6 @@
 import { computed, unref, isRef } from "vue";
-import { formatMonthDate } from "~/components/utils/dateUtils";
-import { isEmpty } from "../utils/helpers";
+import { formatMonthDate } from "~/utils/dateUtils";
+import { isEmpty } from "~/utils/helpers";
 
 export function useFormattedWhenValue(
   getValue,

@@ -1,12 +1,11 @@
-import { watch } from "vue";
 import { defineStore } from "pinia";
 import {
   compareDates,
   getDateFromMonth,
   getNext12Months,
   getNextYear,
-} from "~/components/utils/dateUtils";
-import { isArray, isEmpty } from "~/components/utils/helpers";
+} from "~/utils/dateUtils";
+import { isArray, isEmpty } from "~/utils/helpers";
 
 export const useFiltersStore = defineStore("filtersStore", () => {
   // State
@@ -78,6 +77,10 @@ export const useFiltersStore = defineStore("filtersStore", () => {
 
   function resetFilterStates() {
     Object.keys(filterStates).forEach((key) => (filterStates[key] = false));
+  }
+
+  function toggleFilterActive() {
+    isFilterActive.value = !isFilterActive.value;
   }
 
   function toggleSubFilter(filterName, subFilterName) {
@@ -247,5 +250,6 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     toggleMonthSelection,
     handleDateRange,
     handleResetDateRange,
+    toggleFilterActive,
   };
 });

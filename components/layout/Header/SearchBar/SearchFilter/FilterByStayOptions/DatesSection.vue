@@ -31,11 +31,11 @@
 
 <script setup>
 import { computed } from "vue";
-import MultiCalendar from "~/components/common/MultiCalendar.vue";
+import MultiCalendar from "~/components/common/MultiCalendar/MultiCalendar.vue";
 import { storeToRefs } from "pinia";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
-import { isEmpty } from "~/components/utils/helpers";
+import { isEmpty } from "~/utils/helpers";
 
 const useSearch = useFiltersStore();
 

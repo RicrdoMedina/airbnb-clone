@@ -7,5 +7,6 @@
 </template>
 
 <script setup>
-import SelectedGuests from "./SelectedGuests.vue";
+
+import SelectedGuests from "~/components/layout/Header/SearchBar/SearchFilter/FilterNumberOfGuests/SelectedGuests.vue";
 </script>

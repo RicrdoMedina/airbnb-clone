@@ -8,6 +8,6 @@
 
 <script setup>
 
-import SelectedRegion from "./SelectedRegion.vue";
+import SelectedRegion from "~/components/layout/Header/SearchBar/SearchFilter/FilterByRegion/SelectedRegion.vue";
 
 </script>

@@ -1,6 +1,6 @@
 <template>
   <section
-    class="absolute top-full right-0 mt-4 bg-white shadow-xl px-6 pt-6 pb-0 z-10 w-96"
+    class="absolute top-full right-8 lg:right-0 mt-4 bg-white shadow-xl px-6 pt-6 pb-0 z-40 w-96 rounded-3xl"
   >
     <div class="w-full p-6">
       <CounterCard
@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import CounterCard from "~/components/common/CounterCard.vue";
+import CounterCard from "~/components/common/CounterCard/CounterCard.vue";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 
 const useSearch = useFiltersStore();

@@ -10,6 +10,18 @@ export default {
   ],
   theme: {
     extend: {
+      transitionTimingFunction: {
+        "custom-ease": "cubic-bezier(0.2, 0, 0, 1)",
+      },
+      transitionDuration: {
+        250: "250ms",
+        150: "150ms",
+        0: "0ms",
+      },
+      transitionDelay: {
+        100: "100ms",
+        125: "125ms",
+      },
       backgroundColor: ["group-hover", "selected-arrival-hover"],
       textColor: ["group-hover"],
       colors: {
@@ -20,8 +32,8 @@ export default {
           400: "#bfbfbf",
           500: "#a3a3a3",
         },
-        light: "#655d5d",
-        bold: "#000",
+        light: "#6A6A6A",
+        bold: "#222222",
         tomato: "#ff385c",
       },
       boxShadow: {
@@ -31,8 +43,22 @@ export default {
         "search-box-active": "0px 0px 27px 1px #a3a3a3",
         "search-box-inactive":
           "0 3px 12px 0 rgba(0,0,0,0.1),0 1px 2px 0 rgba(0,0,0,0.08)",
+        bottom: "#dddddd 0 1px 0",
+        "bottom-2": "0 2px 0 0 rgba(0, 0, 0, 0.1)",
+        "bottom-black-2": "0 2px 0 0 rgba(0, 0, 0, 1)",
       },
       width: {
+        "2px": "2px",
+        21: "21rem",
+        98: "28rem",
+        100: "32rem",
+        30: "30rem",
+        33: "33rem",
+        37: "37rem",
+        104: "40rem",
+        108: "50rem",
+      },
+      height: {
         "2px": "2px",
         100: "32rem",
         104: "40rem",
@@ -41,6 +67,10 @@ export default {
       backgroundImage: {
         primary:
           "radial-gradient( circle at center,#FF385C 0%,#e61e4d 27.5%,#e31c5f 40%,#d70466 57.5%,#bd1e59 75%,#bd1e59 100% );",
+        "custom-right-gradient-white":
+          "linear-gradient(to right, rgba(255, 255, 255, 0), white 26px)",
+        "custom-left-gradient-white":
+          "linear-gradient(to left, rgba(255, 255, 255, 0), white 19px)",
       },
     },
     screens: {

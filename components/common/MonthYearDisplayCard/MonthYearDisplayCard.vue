@@ -11,7 +11,6 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 
 const props = defineProps({
@@ -30,19 +29,16 @@ const props = defineProps({
     default: 0,
     required: true,
   },
-  selected: {
+  isSelected: {
     type: Boolean,
     default: false,
     required: true,
   },
 });
 
-const isActive = ref(false);
-
 const emit = defineEmits(["handleClick"]);
 
 function handleSelected() {
-  isActive.value = isActive.value ? false : true;
   emit("handleClick", props.id);
 }
 
@@ -54,19 +50,14 @@ const buttonActiveClasses = "border-2 border-black";
 const buttonInactiveClasses = "border border-custom-gray-400";
 
 const { dynamicClasses: buttonDynamicClasses } = useDynamicClasses(
-  isActive,
+  () => props.isSelected,
   buttonDefaultClasses,
   buttonActiveClasses,
   buttonInactiveClasses
 );
 
 const getCalendarImage = computed(() =>
-  isActive.value ? "/images/CalendarOpen.jpg" : "/images/Calendar.jpg"
+  props.isSelected ? "/images/CalendarOpen.jpg" : "/images/Calendar.jpg"
 );
 
-onMounted(() => {
-  if (props.selected) {
-    isActive.value = props.selected;
-  }
-});
 </script>

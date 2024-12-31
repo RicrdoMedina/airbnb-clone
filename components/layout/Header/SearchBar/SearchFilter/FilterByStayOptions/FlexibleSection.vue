@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import MonthYearSlider from "~/components/common/MonthYearSlider.vue";
+import MonthYearSlider from "~/components/common/MonthYearSlider/MonthYearSlider.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";

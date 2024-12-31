@@ -67,7 +67,7 @@ const defaultClasses = computed(() => ({
   "before:left-0": true,
   "before:w-px": true,
   "before:h-8": true,
-  "before:-left-6": true,
+  "before:-left-9": true,
 }));
 
 const hoverBackgroundDefaultClasses =

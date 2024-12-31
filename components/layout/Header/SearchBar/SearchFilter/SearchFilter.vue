@@ -24,16 +24,16 @@
 </template>
 
 <script setup>
-import RegionSelector from "./FilterByRegion/RegionSelector.vue";
-import GuestCountSelector from "./FilterNumberOfGuests/GuestCountSelector.vue";
-import FloatingTabsStayOptions from "./FilterByStayOptions/FloatingTabsStayOptions.vue";
+import RegionSelector from "~/components/layout/Header/SearchBar/SearchFilter/FilterByRegion/RegionSelector.vue";
+import GuestCountSelector from "~/components/layout/Header/SearchBar/SearchFilter/FilterNumberOfGuests/GuestCountSelector.vue";
+import FloatingTabsStayOptions from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/FloatingTabsStayOptions.vue";
 import { useClickOutside } from "~/components/composables/useClickOutside";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
-import FilterByRegion from "./FilterByRegion/FilterByRegion.vue";
-import FilterByStayOptions from "./FilterByStayOptions/FilterByStayOptions.vue";
-import FilterNumberOfGuests from "./FilterNumberOfGuests/FilterNumberOfGuests.vue";
+import FilterByRegion from "~/components/layout/Header/SearchBar/SearchFilter/FilterByRegion/FilterByRegion.vue";
+import FilterByStayOptions from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/FilterByStayOptions.vue";
+import FilterNumberOfGuests from "~/components/layout/Header/SearchBar/SearchFilter/FilterNumberOfGuests/FilterNumberOfGuests.vue";
 
 const $searchFilter = ref(null);
 

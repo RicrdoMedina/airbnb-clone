@@ -16,7 +16,7 @@ import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
-import { truncateString } from "~/components/utils/stringUtils";
+import { truncateString } from "~/utils/stringUtils";
 
 const useSearch = useFiltersStore();
 

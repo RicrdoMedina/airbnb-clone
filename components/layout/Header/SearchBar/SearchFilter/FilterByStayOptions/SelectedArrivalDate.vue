@@ -48,7 +48,7 @@ import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 import { es } from "date-fns/locale";
 import { format } from "date-fns";
-import { isEmpty } from "~/components/utils/helpers";
+import { isEmpty } from "~/utils/helpers";
 const useSearch = useFiltersStore();
 
 const { toggleSubFilter, filterStates, values, handleResetDateRange } =

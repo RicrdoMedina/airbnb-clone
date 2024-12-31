@@ -1,6 +1,10 @@
 <template>
-  <div class="container mx-auto">
+  <div class="w-full">
     <LayoutHeader/>
+    <LayoutListingFilters />
+    <LayoutListingWrapper />
+    <LayoutTravelInspirationTabs/>
+    <LayoutFooter/>
   </div>
 </template>
 

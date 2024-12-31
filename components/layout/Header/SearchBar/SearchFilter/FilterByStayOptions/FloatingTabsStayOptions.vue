@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute top-full left-0 mt-4 bg-white shadow-xl px-6 py-6 z-10 w-108"
+    class="absolute top-full right-0 left-0 mt-4 mx-auto bg-white shadow-xl px-6 py-6 z-40 w-108 rounded-3xl"
   >
     <section class="w-full">
       <div class="w-full flex items-center justify-center">
@@ -26,10 +26,10 @@
 </template>
 
 <script setup>
-import SubFilterButtons from "./SubFilterButtons.vue";
-import DatesSection from "./DatesSection.vue";
-import MonthSection from "./MonthSection.vue";
-import FlexibleSection from "./FlexibleSection.vue";
+import SubFilterButtons from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/SubFilterButtons.vue";
+import DatesSection from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/DatesSection.vue";
+import MonthSection from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/MonthSection.vue";
+import FlexibleSection from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/FlexibleSection.vue";
 
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";

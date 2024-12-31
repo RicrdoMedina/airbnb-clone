@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import SelectedArrivalDate from "./SelectedArrivalDate.vue";
-import SelectedDepartureDate from "./SelectedDepartureDate.vue";
-import SelectedLocation from "./SelectedLocation.vue";
+import SelectedArrivalDate from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/SelectedArrivalDate.vue";
+import SelectedDepartureDate from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/SelectedDepartureDate.vue";
+import SelectedLocation from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/SelectedLocation.vue";
 </script>

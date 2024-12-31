@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import CircularMonthRangeSelectorCopy3 from "~/components/common/CircularMonthRangeSelectorCopy3.vue";
+import CircularMonthRangeSelectorCopy3 from "~/components/common/CircularMonthRangeSelector/CircularMonthRangeSelectorCopy3.vue";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
