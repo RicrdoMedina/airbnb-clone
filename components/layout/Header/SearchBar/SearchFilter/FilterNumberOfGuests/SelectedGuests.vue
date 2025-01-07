@@ -6,10 +6,17 @@
     >
       {{ formattedNumberGuests }}
     </div>
+    <span
+      class="flex items-center justify-center w-6 h-6 absolute right-2 cursor-pointer rounded-full hover:bg-custom-gray-300 ease-in-out transition-all duration-500"
+      v-show="showCloseIcon"
+      @click.stop.prevent="reset"
+    >
+      <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
+    </span>
   </div>
   <div class="w-auto h-full flex items-center justify-center z-50">
     <button :class="buttonDynamicClasses">
-      <span
+      <span class="text-white"
         ><img
           :class="[isFilterActive ? 'w-5 mr-1' : 'w-5']"
           src="/images/Search.svg"
@@ -33,12 +40,13 @@
 
 <script setup>
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
+import { useFormattedGuests } from "~/components/composables/useFormattedGuests";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 
 const useSearch = useFiltersStore();
 
-const { toggleSubFilter, filterStates, values } = useSearch;
+const { toggleSubFilter, filterStates, values, updateValue } = useSearch;
 
 const {
   isFilterActive,
@@ -64,17 +72,16 @@ const defaultClasses = computed(() => ({
   "before:content-['']": true,
   "before:bg-custom-gray-400": true,
   "before:absolute": true,
-  "before:left-0": true,
   "before:w-px": true,
   "before:h-8": true,
-  "before:-left-9": true,
+  "before:-left-6": true,
 }));
 
 const hoverBackgroundDefaultClasses =
   "absolute inset-0 w-full h-full rounded-full ease-in-out transition-all duration-500 z-40";
 
 const buttonDefaultClasses =
-  "text-white rounded-full flex items-center justify-center h-12 font-medium";
+  "text-white rounded-full flex items-center justify-center h-12 font-medium text-white";
 
 const hoverBackgroundActiveClasses = "bg-white shadow-search-box-inactive";
 
@@ -108,13 +115,17 @@ const { dynamicClasses: buttonDynamicClasses } = useDynamicClasses(
   buttonInactiveClasses
 );
 
-const formattedNumberGuests = computed(() => {
+const { formattedNumberGuests } = useFormattedGuests(values);
+
+const showCloseIcon = computed(() => {
   const numberGuests = values.adults + values.children + values.babies;
 
-  if (!numberGuests) return "¿Cuántos?";
-
-  const formattedNumberGuests = `${numberGuests} huéspedes`;
-
-  return formattedNumberGuests;
+  return numberGuests && filterStates.who;
 });
+
+function reset() {
+  updateValue("adults", 0);
+  updateValue("children", 0);
+  updateValue("babies", 0);
+}
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full flex items-center justify-between h-full pr-2 pl-8 group relative"
+    class="w-full flex items-center justify-between h-full pr-2 pl-6 group relative"
   >
     <SelectedGuests />
   </div>

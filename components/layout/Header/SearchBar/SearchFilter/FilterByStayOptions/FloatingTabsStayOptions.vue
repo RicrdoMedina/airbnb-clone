@@ -5,7 +5,7 @@
     <section class="w-full">
       <div class="w-full flex items-center justify-center">
         <SubFilterButtons
-          :options="options"
+          :options="dateOptions"
           :selectedOption="activeSubFilter"
           @change="toggleSubFilter"
         />
@@ -37,14 +37,8 @@ import { storeToRefs } from "pinia";
 const useSearch = useFiltersStore();
 
 const { toggleSubFilter, updateValue, filterStates, values } = useSearch;
-const { activeSubFilter, stayDurations, availableMonths } =
+const { activeSubFilter, stayDurations, availableMonths,dateOptions } =
   storeToRefs(useSearch);
-
-const options = [
-  { label: "Fechas", value: "Dates", filter: "arrival" },
-  { label: "Meses", value: "Month", filter: "when" },
-  { label: "Flexible", value: "Flexible", filter: "when" },
-];
 
 const currentComponent = computed(() => {
   if (activeSubFilter.value === "Dates") return DatesSection;

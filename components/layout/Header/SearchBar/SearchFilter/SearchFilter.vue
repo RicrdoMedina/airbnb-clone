@@ -39,12 +39,19 @@ const $searchFilter = ref(null);
 
 const useSearch = useFiltersStore();
 
-const { isFilterActive, filterStates, searchRegions } = storeToRefs(useSearch);
+const { isFilterActive, filterStates, searchRegions, isStickyFilterActive } =
+  storeToRefs(useSearch);
 
-const { disableSearch, resetFilterStates, handleRegionSelection } = useSearch;
+const {
+  disableSearch,
+  resetFilterStates,
+  handleRegionSelection,
+  toggleLittleSearch,
+  toggleFilterActive,
+} = useSearch;
 
 const defaultClasses =
-  "w-full rounded-full h-16 top-0 left-0 flex overflow-hidden border";
+  "w-full hidden md:flex rounded-full h-16 top-0 left-0 flex overflow-hidden border cursor-pointer";
 
 const activeClasses = "bg-custom-gray-200 border-gray-300";
 
@@ -58,6 +65,9 @@ const { dynamicClasses } = useDynamicClasses(
 );
 
 const handleClickOutside = (event) => {
+  if (window.innerWidth < 768) {
+    return;
+  }
   if ($searchFilter.value && !$searchFilter.value.contains(event.target)) {
     disableSearch();
     resetFilterStates();

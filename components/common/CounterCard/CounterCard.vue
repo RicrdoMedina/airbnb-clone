@@ -1,5 +1,5 @@
 <template>
-  <div class="relative w-ful pb-4">
+  <div class="relative w-full flex flex-col">
     <p class="w-full text-left text-bold text-md">{{ title }}</p>
     <p class="w-full text-left text-light text-sm">{{ subtitle }}</p>
 

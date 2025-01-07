@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontSize: {
+        xxs: "0.65rem",
+      },
       transitionTimingFunction: {
         "custom-ease": "cubic-bezier(0.2, 0, 0, 1)",
       },
@@ -37,14 +40,18 @@ export default {
         tomato: "#ff385c",
       },
       boxShadow: {
+        "mobile-filter": "1px 1px 7px 1px rgb(0 0 0 / 20%)",
         "solid-black": "0 0 0 1px #000",
         "solid-black-2": "0 0 0 2px #000",
+        "solid-black-3": "0 0 0 3px #000",
         "custom-gray": "0 0 0 1px #dddddd",
         "search-box-active": "0px 0px 27px 1px #a3a3a3",
         "search-box-inactive":
           "0 3px 12px 0 rgba(0,0,0,0.1),0 1px 2px 0 rgba(0,0,0,0.08)",
         bottom: "#dddddd 0 1px 0",
         "bottom-2": "0 2px 0 0 rgba(0, 0, 0, 0.1)",
+        "bottom-3": "0 3px 0 0 rgba(0, 0, 0, 0.1)",
+        "bottom-4": "0 4px 0 0 rgba(0, 0, 0, 0.1)",
         "bottom-black-2": "0 2px 0 0 rgba(0, 0, 0, 1)",
       },
       width: {

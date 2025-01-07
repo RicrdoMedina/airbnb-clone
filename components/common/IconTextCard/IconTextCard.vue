@@ -1,10 +1,10 @@
 <template>
   <div
-    class="w-auto relative group shadow-bottom-2 ease-in-out transition-all duration-500 h-16 rounded-md flex flex-col items-center justify-center cursor-pointer"
+    class="w-auto relative group shadow-bottom-2 ease-in-out transition-all duration-500 h-16 md:rounded-md flex flex-col items-center justify-center cursor-pointer"
     @click.stop.prevent="onClick"
   >
     <div class="w-full h-8 flex items-center justify-center">
-      <img class="w-6" :src="url" :alt="text" />
+      <img class="w-5 md:w-6" :src="url" :alt="text" />
     </div>
     <div :class="containerLabelDynamicClasses">
       <p :class="labelDynamicClasses">{{ text }}</p>
@@ -41,7 +41,7 @@ const props = defineProps({
 const emit = defineEmits(["handleClick"]);
 
 const labelDefaultClasses =
-  "text-xs font-medium group-hover:text-black text-center whitespace-nowrap ease-in-out transition-all duration-500";
+  "text-xs md:font-medium group-hover:text-black text-center whitespace-nowrap ease-in-out transition-all duration-500";
 
 const containerLabelDefaultClasses =
   "w-full h-6 flex items-start justify-center mt-1 after:content-[''] after:absolute after:-bottom-0 after:w-full after:h-0.5";

@@ -93,6 +93,16 @@ export function sortDates(data) {
   });
 }
 
+export function getYearAfterMonths(months) {
+  if (months < 1 || months > 12) {
+    throw new Error("El número de meses debe estar entre 1 y 12.");
+  }
+
+  const currentDate = new Date();
+  const futureDate = addMonths(currentDate, months);
+  return futureDate.getFullYear();
+}
+
 export function compareDates(
   date1,
   date2,

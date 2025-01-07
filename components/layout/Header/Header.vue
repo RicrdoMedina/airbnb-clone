@@ -1,8 +1,10 @@
 <template>
-  <div :class="dynamicClasses">
+  <div :class="containerHeaderClasses">
     <div class="w-full">
-      <header class="w-full flex items-center justify-between h-20">
-        <div class="xl:flex-[1_0_140px] flex items-center justify-start z-50">
+      <header id="header" :class="headerDynamicClasses">
+        <div
+          class="xl:flex-[1_0_140px] hidden md:flex items-center justify-start z-50"
+        >
           <NuxtLink to="/" class="hidden xl:block cursor-pointer">
             <img class="w-28" src="/images/Logo.svg" alt="Logo" />
           </NuxtLink>
@@ -10,16 +12,19 @@
             <img class="w-8" src="/images/Isotipo.svg" alt="Logo" />
           </NuxtLink>
         </div>
-        <div class="xl:flex-[0_1_auto] h-full flex items-center justify-center">
+        <div class="xl:flex-[0_1_auto] w-full md:w-auto h-full flex flex-col items-center justify-center">
+          <MobileSearchBar/>
           <LittleSearch />
-          <div class="absolute w-full h-full top-16 lg:top-0 left-0 z-20">
+          <div class="absolute hidden md:block w-full md:h-full md:top-16 lg:top-0 left-0 z-30">
             <SearchBar />
           </div>
         </div>
         <div
-          class="xl:flex-[1_0_140px] flex items-center justify-end relative z-50"
+          class="xl:flex-[1_0_140px] hidden md:flex items-center justify-end relative z-50"
         >
-          <NuxtLink to="/" class="text-sm font-medium cursor-pointer"
+          <NuxtLink
+            to="/"
+            class="text-sm font-medium cursor-pointer flex whitespace-nowrap"
             >Pon tu espacio en Airbnb</NuxtLink
           >
           <div class="inline-block mx-4">
@@ -30,62 +35,98 @@
           </div>
         </div>
       </header>
+      <div
+        class="fixed w-full top-0 left-0 right-0 bottom-0 bg-black opacity-30 z-10"
+        v-show="stickyFilterInitiated"
+      ></div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { storeToRefs } from "pinia";
 import HeaderDropdown from "@/components/layout/Header/HeaderDropdown.vue";
 import LanguageSelector from "@/components/layout/Header/LanguageSelector.vue";
+import MobileSearchBar from "~/components/layout/Header/MobileSearchBar/MobileSearchBar.vue";
 import SearchBar from "@/components/layout/Header/SearchBar/SearchBar.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import LittleSearch from "~/components/layout/Header/SearchBar/SearchFilter/LittleSearch.vue";
 
-const isScrolledDown = ref(false); // Estado que indica si el scroll supera los 50px.
+const useSearch = useFiltersStore();
+
+const { toggleLittleSearch, toggleFilterActive, toggleStickyFilterInitiated } =
+  useSearch;
+
+const { isStickyFilterActive, littleSearchIsActive, stickyFilterInitiated } =
+  storeToRefs(useSearch);
 
 let lastScrollY = 0;
 
-const defaultClasses =
-  "sticky z-50 top-0 left-0 bg-white shadow-bottom md:px-8 lg:px-10 xl:px-11 2xl:px-14 3xl:px-16 transition-all duration-300 ease-custom-ease";
+const headerDefaultClasses =
+  "w-full flex items-center justify-between h-auto md:h-20 after:content-[''] after:absolute after:top-0 after:left-0 after:right-0 after:h-20 after:bg-white";
 
-const activeClasses = "h-20";
+const headerActiveClasses = "active";
 
-const inactiveClasses = "h-60 lg:h-44";
+const headerInactiveClasses = "";
 
-const { dynamicClasses } = useDynamicClasses(
-  isScrolledDown,
-  defaultClasses,
-  activeClasses,
-  inactiveClasses
+const { dynamicClasses: headerDynamicClasses } = useDynamicClasses(
+  isStickyFilterActive,
+  headerDefaultClasses,
+  headerActiveClasses,
+  headerInactiveClasses
 );
 
-const debounce = (func, wait) => {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-};
-const handleScroll = debounce(() => {
-  // Detectar si el usuario ha hecho scroll hacia abajo más de 5px.
-  const currentScrollY = window.scrollY;
-  console.log("currentScrollY", currentScrollY);
-  console.log("lastScrollY", lastScrollY);
-  if (currentScrollY > 5) {
-    isScrolledDown.value = true;
-  } else {
-    isScrolledDown.value = false;
+const containerHeaderClasses = computed(() => {
+  if (isStickyFilterActive.value) {
+    return "container-header flex h-20 sticky w-full z-50 top-0 left-0 bg-white md:shadow-bottom md:px-8 lg:px-10 xl:px-11 2xl:px-14 3xl:px-16 transition-all duration-300 ease-custom-ease";
   }
-  lastScrollY = currentScrollY; // Actualiza la última posición del scroll.
-}, 100);
+
+  if (littleSearchIsActive.value) {
+    return "container-header flex h-20 sticky w-full z-50 top-0 left-0 bg-white md:shadow-bottom md:px-8 lg:px-10 xl:px-11 2xl:px-14 3xl:px-16 transition-all duration-300 ease-custom-ease";
+  }
+
+  return "container-header flex h-auto md:h-60 lg:h-44 sticky w-full z-50 top-0 left-0 bg-white md:shadow-bottom md:px-8 lg:px-10 xl:px-11 2xl:px-14 3xl:px-16 transition-all duration-300 ease-custom-ease";
+});
+
+const handleScroll = () => {
+  const currentScrollY = window.scrollY;
+
+  if (window.innerWidth > 768) {
+    if (!lastScrollY) {
+      if (currentScrollY > 5) {
+        toggleLittleSearch(true);
+      }
+    } else {
+      if (stickyFilterInitiated.value) {
+        if (currentScrollY > 5) {
+          toggleLittleSearch(false);
+          toggleFilterActive(true);
+          toggleStickyFilterInitiated(false);
+        }
+      } else if (isStickyFilterActive.value && !stickyFilterInitiated.value) {
+        toggleLittleSearch(true);
+        toggleFilterActive(false);
+      } else {
+        if (!isStickyFilterActive.value) {
+          if (currentScrollY > 5) {
+            toggleLittleSearch(true);
+          } else {
+            toggleLittleSearch(false);
+          }
+        }
+      }
+    }
+  }
+
+  lastScrollY = currentScrollY;
+};
 
 onMounted(() => {
-  // Agregar el listener para el evento scroll.
   window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
-  // Remover el listener para evitar fugas de memoria.
   window.removeEventListener("scroll", handleScroll);
 });
 </script>

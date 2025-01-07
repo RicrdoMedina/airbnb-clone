@@ -1,6 +1,6 @@
 <template>
   <div class="listing-card w-full flex flex-col items-start justify-start cursor-pointer mb-2">
-    <div class="w-full md:h-96 lg:h-80 xl:h-72 2xl:h-72 3xl:h-64 relative rounded-xl overflow-hidden">
+    <div class="w-full h-72 md:h-96 lg:h-80 xl:h-72 2xl:h-72 3xl:h-64 relative rounded-xl overflow-hidden">
       <div class="absolute top-3 left-2 py-1 px-2 bg-white rounded-2xl text-black font-medium text-sm z-10">Favorito entre huéspedes</div>
       <span class="absolute top-3 right-2 w-6 z-10 cursor-pointer">
         <FavIcon/>

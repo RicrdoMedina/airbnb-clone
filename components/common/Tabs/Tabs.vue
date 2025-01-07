@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <div class="w-full">
-      <ul class="w-full h-12 flex shadow-bottom">
+      <ul class="w-full h-12 hidden md:flex shadow-bottom">
         <li
           :class="dynamicClasses(index).value"
           v-for="(item, index) in items"
@@ -13,6 +13,7 @@
           </button>
         </li>
       </ul>
+      <TravelInspirationSwiper :items="items" :categoryActive="selectedTab" @handleCategorySelected="handleClick"/>
     </div>
     <div class="w-full flex flex-wrap mt-4">
       <template v-for="(item, index) in body[selectedTab]" :key="index">
@@ -29,6 +30,7 @@
 import { onMounted } from "vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import DestinationCard from "~/components/common/DestinationCard/DestinationCard.vue";
+import TravelInspirationSwiper from "~/components/layout/TravelInspirationTabs/TravelInspirationSwiper.vue";
 
 const props = defineProps({
   items: {
@@ -44,7 +46,7 @@ const props = defineProps({
   },
 });
 
-const selectedTab = ref(null);
+const selectedTab = ref(0);
 
 const defaultClasses =
   "w-auto h-full p-4 text-sm font-medium transition-all duration-500 ease-in-out";

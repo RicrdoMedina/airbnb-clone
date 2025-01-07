@@ -10,6 +10,14 @@
       placeholder="Explora destinos"
       :value="values.where"
     />
+
+    <span
+      class="flex items-center justify-center w-6 h-6 absolute right-4 cursor-pointer rounded-full hover:bg-custom-gray-300 ease-in-out transition-all duration-500"
+      v-show="showCloseIcon"
+      @click.stop.prevent="reset"
+    >
+      <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
+    </span>
   </div>
 
   <!-- SelectedRegionHoverBackground -->
@@ -29,7 +37,7 @@ import { storeToRefs } from "pinia";
 
 const useSearch = useFiltersStore();
 
-const { toggleSubFilter, filterStates, values } = useSearch;
+const { toggleSubFilter, filterStates, values,updateValue } = useSearch;
 
 const { isFilterActive } = storeToRefs(useSearch);
 
@@ -44,8 +52,7 @@ const inputActiveClasses = "text-bold font-medium";
 
 const hoverBackgroundInactiveClasses = computed(() => ({
   "group-hover:bg-custom-gray-200": !isFilterActive.value,
-  "group-hover:bg-custom-gray-300":
-    isFilterActive.value && !filterStates.where,
+  "group-hover:bg-custom-gray-300": isFilterActive.value && !filterStates.where,
 }));
 
 const inputInactiveClasses = "text-light";
@@ -63,4 +70,12 @@ const { dynamicClasses: inputDynamicClasses } = useDynamicClasses(
   inputActiveClasses,
   inputInactiveClasses
 );
+
+const showCloseIcon = computed(() => {
+  return values.where && filterStates.where;
+});
+
+function reset() {
+  updateValue("where", null);
+}
 </script>

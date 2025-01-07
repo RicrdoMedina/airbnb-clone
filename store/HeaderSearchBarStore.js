@@ -10,8 +10,10 @@ import { isArray, isEmpty } from "~/utils/helpers";
 export const useFiltersStore = defineStore("filtersStore", () => {
   // State
   const isFilterActive = ref(false);
+  const isStickyFilterActive = ref(false);
   const isSubFilterActive = ref(false);
   const activeFilter = ref(null);
+  const littleSearchIsActive = ref(false);
   const activeSubFilter = ref("Dates");
 
   const filterStates = reactive({
@@ -23,6 +25,8 @@ export const useFiltersStore = defineStore("filtersStore", () => {
   });
 
   const showWhenOptions = ref(false);
+
+  const stickyFilterInitiated = ref(false);
 
   const values = reactive({
     who: ref(null),
@@ -55,11 +59,21 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     { id: 3, name: "Mes" },
   ]);
 
+  const dateOptions = ref([
+    { label: "Fechas", value: "Dates", filter: "arrival" },
+    { label: "Meses", value: "Month", filter: "when" },
+    { label: "Flexible", value: "Flexible", filter: "when" },
+  ]);
+
   const availableMonths = ref(getNext12Months());
 
   // Computed
-  const tripStartDate = computed(() => getDateFromMonth(0, getNextYear()));
-  const tripEndDate = computed(() => getDateFromMonth(3, getNextYear()));
+  const tripStartDate = computed(() => {
+    return getDateFromMonth(1, getYearAfterMonths(1));
+  });
+  const tripEndDate = computed(() => {
+    return getDateFromMonth(3, getYearAfterMonths(3));
+  });
 
   // Methods
 
@@ -79,8 +93,8 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     Object.keys(filterStates).forEach((key) => (filterStates[key] = false));
   }
 
-  function toggleFilterActive() {
-    isFilterActive.value = !isFilterActive.value;
+  function toggleFilterActive(val) {
+    isStickyFilterActive.value = val;
   }
 
   function toggleSubFilter(filterName, subFilterName) {
@@ -98,6 +112,14 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     }
 
     activateFilter(filterName);
+  }
+
+  function openFilter() {
+    isFilterActive.value = true;
+    isSubFilterActive.value = true;
+    isStickyFilterActive.value = true;
+
+    handleDateFilter();
   }
 
   function handleSubFilter(filterName, subFilterName) {
@@ -134,11 +156,15 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     if (region) {
       values.where = region.name;
 
-      if (showWhenOptions.value) {
-        activateFilter("when");
-      } else {
-        activateFilter("arrival");
-      }
+      handleDateFilter();
+    }
+  }
+
+  function handleDateFilter() {
+    if (showWhenOptions.value) {
+      activateFilter("when");
+    } else {
+      activateFilter("arrival");
     }
   }
 
@@ -222,8 +248,17 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     dateRange.value = [];
   }
 
+  function toggleLittleSearch(val) {
+    littleSearchIsActive.value = val;
+  }
+
+  function toggleStickyFilterInitiated(val) {
+    stickyFilterInitiated.value = val;
+  }
+
   return {
     // State
+    isStickyFilterActive,
     isFilterActive,
     isSubFilterActive,
     activeFilter,
@@ -235,6 +270,9 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     stayDurations,
     availableMonths,
     dateRange,
+    littleSearchIsActive,
+    stickyFilterInitiated,
+    dateOptions,
 
     // Computed
     tripStartDate,
@@ -251,5 +289,9 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     handleDateRange,
     handleResetDateRange,
     toggleFilterActive,
+    handleDateFilter,
+    openFilter,
+    toggleLittleSearch,
+    toggleStickyFilterInitiated,
   };
 });

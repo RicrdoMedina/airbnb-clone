@@ -1,8 +1,8 @@
 <template>
   <div class="w-full flex flex-col items-center justify-center mt-8 lg:mb-12 pb-8 shadow-bottom">
-    <div class="w-full 3xl:w-8/12 md:px-8 lg:px-12 xl:px-14 2xl:px-14 3xl:px-0 flex flex-col">
-      <h2 class="text-xl text-black font-medium mb-2">
-        Inspiración para escapadas futuras
+    <div class="w-full 3xl:w-8/12 px-6 md:px-8 lg:px-12 xl:px-14 2xl:px-14 3xl:px-0 flex flex-col">
+      <h2 class="flex flex-col md:flex-row items-start justify-start text-xl text-black font-medium mb-2">
+        Inspiración para escapadas <span class="block md:inline">futuras</span>
       </h2>
       <Tabs :items="items" :defaultValue="0" :body="body" />
     </div>

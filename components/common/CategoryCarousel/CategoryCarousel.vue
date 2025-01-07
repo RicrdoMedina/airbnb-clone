@@ -4,6 +4,7 @@
       v-model="currentSlide"
       :items-to-show="itemsToShow"
       :wrap-around="false"
+      :mouseDrag="true"
       :breakpoints="breakpoints"
       ref="carousel"
     >
@@ -21,7 +22,7 @@
     </Carousel>
 
     <div
-      class="absolute -left-4 top-0 bottom-0 w-10 h-full bg-custom-left-gradient-white flex items-center justify-center"
+      class="absolute -left-4 top-0 bottom-0 w-10 h-full bg-custom-left-gradient-white hidden md:flex items-center justify-center"
       v-show="!isPrevDisabled"
     >
       <button
@@ -34,7 +35,7 @@
     </div>
 
     <div
-      class="absolute -right-4 top-0 bottom-0 w-10 h-full bg-custom-right-gradient-white flex items-center justify-center"
+      class="absolute -right-4 top-0 bottom-0 w-10 h-full bg-custom-right-gradient-white hidden md:flex items-center justify-center"
       v-show="!isNextDisabled"
     >
       <button
@@ -49,7 +50,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed,onMounted, ref } from "vue";
 import IconTextCard from "~/components/common/IconTextCard/IconTextCard.vue";
 
 const props = defineProps({
@@ -76,27 +77,27 @@ const currentSlideAux = ref(0);
 const breakpoints = {
   // 300px and up
   300: {
-    itemsToShow: 2,
+    itemsToShow: 3.5,
     snapAlign: "center",
   },
   // 400px and up
   400: {
-    itemsToShow: 3,
+    itemsToShow: 3.5,
     snapAlign: "start",
   },
   // 500px and up
   500: {
-    itemsToShow: 4,
+    itemsToShow: 3.5,
     snapAlign: "start",
   },
   // 500px and up
   769: {
-    itemsToShow: 4,
+    itemsToShow: 5,
     snapAlign: "start",
   },
   // 500px and up
   900: {
-    itemsToShow: 4,
+    itemsToShow: 5,
     snapAlign: "start",
   },
   // 500px and up
@@ -151,6 +152,8 @@ const isNextDisabled = computed(
 );
 
 const isPrevDisabled = computed(() => currentSlideAux.value === 0);
-</script>
 
-<style lang="scss" scoped></style>
+onMounted(() => {
+
+})
+</script>

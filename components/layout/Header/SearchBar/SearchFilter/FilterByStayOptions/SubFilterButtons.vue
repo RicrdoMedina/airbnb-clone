@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-80 rounded-full h-10 bg-custom-gray-200 flex items-center justify-between p-1"
+    class="w-full md:w-80 rounded-full h-10 bg-custom-gray-200 flex items-center justify-between p-1"
   >
     <button
       type="button"
