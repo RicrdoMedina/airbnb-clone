@@ -28,9 +28,11 @@ export const useFiltersStore = defineStore("filtersStore", () => {
 
   const stickyFilterInitiated = ref(false);
 
+  const circularMonthSelector = ref(3);
+
   const values = reactive({
     who: ref(null),
-    where: ref(null),
+    where: ref(0),
     arrivalDate: ref(null),
     departureDate: ref(null),
     when: ref([]),
@@ -65,14 +67,27 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     { label: "Flexible", value: "Flexible", filter: "when" },
   ]);
 
+  const exactDates = ref([
+    { id: 1, name: "Fechas Exactas", value: "" },
+    { id: 2, name: "1 día", value: 1 },
+    { id: 3, name: "2 días", value: 2 },
+    { id: 4, name: "3 días", value: 3 },
+    { id: 5, name: "4 días", value: 4 },
+    { id: 6, name: "5 días", value: 5 },
+    { id: 7, name: "6 días", value: 6 },
+    { id: 8, name: "7 días", value: 7 },
+  ]);
+
   const availableMonths = ref(getNext12Months());
 
   // Computed
   const tripStartDate = computed(() => {
-    return getDateFromMonth(1, getYearAfterMonths(1));
+    const date = calculateFutureDate(1);
+    return date;
   });
   const tripEndDate = computed(() => {
-    return getDateFromMonth(3, getYearAfterMonths(3));
+    const date = calculateFutureDate(4);
+    return date;
   });
 
   // Methods
@@ -154,7 +169,7 @@ export const useFiltersStore = defineStore("filtersStore", () => {
   function handleRegionSelection(regionId) {
     const region = searchRegions.value.find((r) => r.id === regionId);
     if (region) {
-      values.where = region.name;
+      values.where = region.id;
 
       handleDateFilter();
     }
@@ -256,6 +271,10 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     stickyFilterInitiated.value = val;
   }
 
+  function updateCircularMonthSelector(index) {
+    circularMonthSelector.value = index;
+  }
+
   return {
     // State
     isStickyFilterActive,
@@ -273,6 +292,8 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     littleSearchIsActive,
     stickyFilterInitiated,
     dateOptions,
+    circularMonthSelector,
+    exactDates,
 
     // Computed
     tripStartDate,
@@ -293,5 +314,6 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     openFilter,
     toggleLittleSearch,
     toggleStickyFilterInitiated,
+    updateCircularMonthSelector,
   };
 });

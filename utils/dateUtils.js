@@ -36,6 +36,16 @@ export function getFormattedFirstDayOfMonth(
   return formattedDateFirstMonth;
 }
 
+export function calculateFutureDate(offset) {
+  const currentDate = new Date();
+
+  currentDate.setMonth(currentDate.getMonth() + offset);
+
+  currentDate.setDate(1);
+
+  return currentDate;
+}
+
 export function getNext12Months() {
   const currentDate = new Date();
   const next12Months = [];

@@ -4,7 +4,7 @@
     <div class="month-picker--item-2"></div>
     <div class="month-picker--item-3">
       <div class="month-picker--item-3--el-1 font-semibold">
-        {{ selectedMonth }}
+        {{ value }}
       </div>
       <div class="month-picker--item-3--el-2 font-medium">Meses</div>
     </div>
@@ -38,7 +38,7 @@
           <path
             fill="black"
             filter="blur(10px)"
-            :d="getPathTrackBackground(selectedMonth)"
+            :d="getPathTrackBackground(value)"
           ></path>
         </mask>
         <radialGradient id="trackBackgroundInnerShadow">
@@ -52,7 +52,7 @@
           <path
             fill="white"
             stroke="white"
-            :d="getPathTrackForeground(selectedMonth)"
+            :d="getPathTrackForeground(value)"
           ></path>
         </mask>
         <radialGradient id="trackForegroundFill">
@@ -189,14 +189,14 @@
         fill="#ff234b"
         filter="url(#trackForegroundDropShadow1)"
         mask="url(#trackBackground)"
-        :d="getPath(selectedMonth)"
+        :d="getPath(value)"
       ></path>
 
       <path
         fill="#ff234b"
         filter="url(#trackForegroundDropShadow1)"
         mask="url(#trackBackground)"
-        :d="getPath(selectedMonth)"
+        :d="getPath(value)"
       ></path> -->
 
       <circle
@@ -211,28 +211,27 @@
         fill="#ff234b"
         filter="url(#trackForegroundInsetShadow1)"
         stroke="#ff234b"
-        :d="getPath(selectedMonth)"
+        :d="getPath(value)"
       ></path>
       <path
         fill="#ff234b"
         filter="url(#trackForegroundInsetShadow2)"
         stroke="#ff234b"
-        :d="getPath(selectedMonth)"
+        :d="getPath(value)"
       ></path>
       <path
         fill="#ff234b"
         filter="url(#trackForegroundInsetShadow3)"
         stroke="#ff234b"
-        :d="getPath(selectedMonth)"
+        :d="getPath(value)"
       ></path>
     </svg>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { getDateFromMonth, getNextYear } from "~/utils/dateUtils";
-import { isEmpty } from "~/utils/helpers";
+import { ref } from "vue";
+import { calculateFutureDate } from "~/utils/dateUtils";
 
 const props = defineProps({
   starDate: {
@@ -244,7 +243,7 @@ const props = defineProps({
     required: true,
   },
   value: {
-    type: Array,
+    type: Number,
     required: true,
   },
 });
@@ -252,7 +251,6 @@ const props = defineProps({
 const emit = defineEmits(["handleChange"]);
 
 const dots = Array.from({ length: 12 }, (_, i) => i);
-const selectedMonth = ref(0);
 const angle = ref(0);
 
 const pathValues = [
@@ -302,15 +300,13 @@ const pathTrackForeground = [
 
 function toggleMonth(monthIndex) {
   const monthUpdated = monthIndex + 1;
-  selectedMonth.value = monthUpdated;
-  const nextYear = getNextYear();
-  const endDate = getDateFromMonth(monthUpdated, nextYear);
-  emit("handleChange", [props.starDate, endDate]);
+  const endDate = calculateFutureDate(monthUpdated + 1);
+  emit("handleChange", monthUpdated, [props.starDate, endDate]);
   angle.value = monthIndex * 30;
 }
 
 function isActive(monthIndex) {
-  return selectedMonth.value === monthIndex;
+  return props.value === monthIndex;
 }
 
 function getPath(monthIndex) {
@@ -324,16 +320,6 @@ function getPathTrackBackground(monthIndex) {
 function getPathTrackForeground(monthIndex) {
   return pathTrackForeground[monthIndex - 1];
 }
-
-onMounted(() => {
-  if (!isEmpty(props.value)) {
-    const endDate = props.value[1].getMonth();
-    selectedMonth.value = endDate;
-  } else {
-    const endDate = props.endDate.getMonth();
-    selectedMonth.value = endDate;
-  }
-});
 </script>
 
 <style lang="css" scoped>

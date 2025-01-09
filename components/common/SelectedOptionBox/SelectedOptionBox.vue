@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full h-14 px-4 shadow-bottom-2 rounded-xl flex items-center justify-between"
+    class="mx-3 h-14 px-4 shadow-bottom-2 mt-2 rounded-xl flex items-center justify-between"
     :class="$attrs.class"
     @click.stop.prevent="handleClick()"
   >
@@ -18,7 +18,7 @@ const props = defineProps({
     required: true,
   },
   value: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
   placeholder: {

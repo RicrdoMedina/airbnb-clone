@@ -10,6 +10,10 @@ export default {
   ],
   theme: {
     extend: {
+      zIndex: {
+        60: "60",
+        70: "70",
+      },
       fontSize: {
         xxs: "0.65rem",
       },
@@ -53,6 +57,7 @@ export default {
         "bottom-3": "0 3px 0 0 rgba(0, 0, 0, 0.1)",
         "bottom-4": "0 4px 0 0 rgba(0, 0, 0, 0.1)",
         "bottom-black-2": "0 2px 0 0 rgba(0, 0, 0, 1)",
+        "floating-card": "0px 1px 15px 3px rgb(0 0 0 / 18%)",
       },
       width: {
         "2px": "2px",

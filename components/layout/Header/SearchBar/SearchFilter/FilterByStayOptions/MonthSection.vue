@@ -9,12 +9,12 @@
       <CircularMonthRangeSelectorCopy3
         :starDate="tripStartDate"
         :endDate="tripEndDate"
-        :value="values.when"
+        :value="circularMonthSelector"
         @handleChange="handleChange"
       />
       <div class="w-full flex items-center justify-center mt-4">
         <p class="text-light text-sm">
-          {{ filterValueWhenFormatted }}
+          {{ filterValueWhenFormatted.startDate }} - {{ filterValueWhenFormatted.endDate  }}
         </p>
       </div>
     </div>
@@ -29,10 +29,10 @@ import { useFormattedWhenValue } from "~/components/composables/useFormattedWhen
 
 const useSearch = useFiltersStore();
 
-const { updateValue,values } = useSearch;
+const { updateValue, values, updateCircularMonthSelector } = useSearch;
 
-
-const { tripEndDate, tripStartDate } = storeToRefs(useSearch);
+const { tripEndDate, tripStartDate, circularMonthSelector } =
+  storeToRefs(useSearch);
 
 const { filterValueWhenFormatted } = useFormattedWhenValue(
   () => values.when,
@@ -41,7 +41,8 @@ const { filterValueWhenFormatted } = useFormattedWhenValue(
   "d MMM. yyyy"
 );
 
-function handleChange (value) {
-  updateValue("when",value)
+function handleChange(index, value) {
+  updateValue("when", value);
+  updateCircularMonthSelector(index);
 }
 </script>

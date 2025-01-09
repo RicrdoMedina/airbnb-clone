@@ -1,88 +1,142 @@
 <template>
-  <div class="w-full h-full p-6 flex flex-col">
-    <ul class="w-full flex items-center justify-center h-12 flex-grow-0">
-      <li
-        :class="dynamicClasses(index).value"
-        v-for="(tab, index) in tabsArr"
-        :key="index"
-        @click.stop.prevent="handleClick(index)"
-      >
-        {{ tab }}
-      </li>
-    </ul>
-
-    <div class="w-full flex flex-col flex-grow py-4">
+  <div class="w-full flex flex-col justify-between">
+    <div class="w-full flex flex-col flex-grow pt-2 pb-4">
       <SelectedOptionBox
         label="Dónde"
-        :value="values.where"
+        :value="getValueInputRegion"
         placeholder="Explora destinos"
-        :class="{'mb-2':true, hidden:filterStates.where}"
-        @handleSelectOption="toggleSubFilter('where')"
+        :class="{ hidden: filterStates.where }"
+        @handleSelectOption="openFilter('where')"
       />
 
-      <MobileRegionSelector :isOpen="filterStates.where"/>
+      <MobileRegionSelector
+        title="¿A dónde quieres ir?"
+        placeholder="Explora destinos"
+        :isOpen="filterStates.where"
+        :items="searchRegions"
+        :inputValue="getValueInputRegion"
+        :selectedItem="values.where"
+        @setSelectItem="setSelectRegion"
+      />
 
-      <SelectedOptionBox label="Cuándo" :value="values.where" class="mb-2"  :class="{'mb-2':true, hidden:true}"/>
+      <SelectedOptionBox
+        label="Cuándo"
+        placeholder="Agrega fechas"
+        :value="selectedFilterValue"
+        :class="{ hidden: showWhenFilter }"
+        @handleSelectOption="openDateFilter()"
+      />
 
-      <MobileFilterByStayDateSelector :isOpen="true"/>
+      <MobileFilterByStayDateSelector :isOpen="showWhenFilter" />
 
       <SelectedOptionBox
         label="Quién"
         :value="formattedNumberGuests"
-        class="mb-2"
+        :class="{ hidden: filterStates.who || showWhenFilter }"
+        @handleSelectOption="openFilter('who')"
       />
-    </div>
-    <div class="w-full flex items-center justify-between flex-grow-0 h-16">
-      <DefaultButton class="text-bold font-medium text-sm underline">
-        Limpiar Todo
-      </DefaultButton>
 
-      <DefaultButton
-        class="h-12 px-4 rounded-lg flex items-center justify-center bg-tomato font-medium text-white"
-      >
-        <OutlineSearch size="16px" stroke-width="3px" />
-        <span class="ml-1"> Buscar </span>
-      </DefaultButton>
+      <MobileGuestCountSelector
+        :isOpen="filterStates.who"
+        :adultsCounter="values.adults"
+        :childrenCounter="values.children"
+        :babiesCounter="values.babies"
+        @setNumberAdults="setNumberAdults"
+        @setNumberChildren="setNumberChildren"
+        @setNumberBabies="setNumberBabies"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useAppModalStore } from "~/store/AppModalStore";
 import { storeToRefs } from "pinia";
-import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useFormattedGuests } from "~/components/composables/useFormattedGuests";
+import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
+import { useFilterWhenDoYouWantToGo } from "~/components/composables/useFilterWhenDoYouWantToGo";
+import { useValueInputRegion } from "~/components/composables/useValueInputRegion";
 import SelectedOptionBox from "~/components/common/SelectedOptionBox/SelectedOptionBox.vue";
 import MobileRegionSelector from "~/components/common/MobileRegionSelector/MobileRegionSelector.vue";
 import MobileFilterByStayDateSelector from "~/components/common/MobileFilterByStayDateSelector/MobileFilterByStayDateSelector.vue";
-import OutlineSearch from "~/components/common/Svg/OutlineSearch.vue";
-import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
+import MobileGuestCountSelector from "~/components/common/MobileGuestCountSelector/MobileGuestCountSelector.vue";
+import { truncateString } from "~/utils/stringUtils";
 
 const useSearch = useFiltersStore();
+const useModalStore = useAppModalStore();
+const { setHideFooter } = useModalStore;
+const {
+  toggleSubFilter,
+  filterStates,
+  values,
+  updateValue,
+  handleRegionSelection,
+} = useSearch;
 
-const { toggleSubFilter, filterStates, values, updateValue } = useSearch;
-
-const { isFilterActive } = storeToRefs(useSearch);
-
-const defaultClasses =
-  "w-auto h-full py-2 px-4 text-sm font-medium transition-all duration-500 ease-in-out";
-const activeClasses = "text-bold shadow-bottom-black-2";
-const inactiveClasses = "text-light hover:text-black";
-
-const tabsArr = ["Estadías", "Experiencias"];
-const selectedTab = ref(0);
-
-const dynamicClasses = (id) =>
-  useDynamicClasses(
-    () => selectedTab.value === id,
-    defaultClasses,
-    activeClasses,
-    inactiveClasses
-  ).dynamicClasses;
+const {
+  showWhenOptions,
+  activeSubFilter,
+  stayDurations,
+  availableMonths,
+  tripStartDate,
+  tripEndDate,
+  searchRegions
+} = storeToRefs(useSearch);
 
 const { formattedNumberGuests } = useFormattedGuests(values);
 
-function handleClick(id) {
-  selectedTab.value = id;
+const { filterValueWhenFormatted } = useFormattedWhenValue(
+  () => values.when,
+  tripStartDate,
+  tripEndDate,
+  "d MMM."
+);
+
+const { filterWhenDoYouWantToGoFormatted } = useFilterWhenDoYouWantToGo(
+  values,
+  stayDurations,
+  availableMonths,
+  truncateString
+);
+
+const selectedFilterValue = computed(() =>
+  activeSubFilter.value === "Month"
+    ? `${filterValueWhenFormatted.value.startDate} - ${filterValueWhenFormatted.value.endDate}`
+    : filterWhenDoYouWantToGoFormatted.value
+);
+
+const showWhenFilter = computed(() => {
+  return filterStates.arrival || filterStates.output || filterStates.when;
+});
+
+const { getValueInputRegion } = useValueInputRegion(values, searchRegions);
+
+
+function setSelectRegion(id) {
+  setHideFooter(true);
+  handleRegionSelection(id);
+}
+
+function openFilter(filterName) {
+  setHideFooter(false);
+  toggleSubFilter(filterName);
+}
+
+function openDateFilter() {
+  setHideFooter(true);
+  toggleSubFilter("when");
+}
+
+function setNumberAdults(value) {
+  updateValue("adults", value);
+}
+
+function setNumberChildren(value) {
+  updateValue("children", value);
+}
+
+function setNumberBabies(value) {
+  updateValue("babies", value);
 }
 </script>

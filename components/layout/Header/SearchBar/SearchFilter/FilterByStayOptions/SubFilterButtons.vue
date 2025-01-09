@@ -28,7 +28,7 @@ const handleChange = (filter,subFilter) => {
 };
 
 const defaultClasses =
-  "text-sm px-6 py-3 rounded-full ease-in-out transition-all duration-500 h-full flex items-center justify-center text-bold cursor-pointer";
+  "text-sm px-3 md:px-6 py-3 rounded-full ease-in-out transition-all duration-500 h-full flex items-center justify-center text-bold cursor-pointer";
 
 const activeClasses = "bg-white border border-custom-gray-300";
 

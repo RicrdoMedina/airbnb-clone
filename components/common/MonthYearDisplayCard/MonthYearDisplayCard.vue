@@ -43,7 +43,7 @@ function handleSelected() {
 }
 
 const buttonDefaultClasses =
-  "w-32 h-36 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-black";
+  "w-28 md:w-32 h-32 md:h-36 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-black";
 
 const buttonActiveClasses = "border-2 border-black";
 

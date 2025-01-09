@@ -34,7 +34,6 @@ const props = defineProps({
   subtitle: {
     type: String,
     default: "",
-    required: true,
   },
   min: { type: Number, default: 0 },
   max: { type: Number, default: 100 },

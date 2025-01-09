@@ -3,7 +3,7 @@
     class="absolute top-full right-0 left-0 mt-4 mx-auto bg-white shadow-xl px-6 py-6 z-40 w-108 rounded-3xl"
   >
     <section class="w-full">
-      <div class="w-full flex items-center justify-center">
+      <div class="flex items-center justify-center">
         <SubFilterButtons
           :options="dateOptions"
           :selectedOption="activeSubFilter"
@@ -18,6 +18,7 @@
         :stayAtPlace="values.stayDuration"
         :items="availableMonths"
         :selectedItems="values.selectedMonths"
+        :exactDates="exactDates"
         @setApproximateDays="handleApproximateDays"
         @handleStayAtPlace="handleStayAtPlace"
       />
@@ -37,7 +38,7 @@ import { storeToRefs } from "pinia";
 const useSearch = useFiltersStore();
 
 const { toggleSubFilter, updateValue, filterStates, values } = useSearch;
-const { activeSubFilter, stayDurations, availableMonths,dateOptions } =
+const { activeSubFilter, stayDurations, availableMonths,dateOptions,exactDates } =
   storeToRefs(useSearch);
 
 const currentComponent = computed(() => {

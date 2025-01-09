@@ -1,6 +1,6 @@
 <template>
   <div :class="dynamicClasses">
-    <h4 class="text-bold font-medium text-2xl mb-4">¿A dónde quieres ir?</h4>
+    <h4 class="text-bold font-medium text-2xl mb-4">{{ title }}</h4>
     <div
       class="w-full h-12 rounded-lg flex items-center justify-start border border-gray-500 px-4"
     >
@@ -10,45 +10,55 @@
       <input
         class="w-full h-full pl-2 outline-0 border-none"
         type="text"
-        placeholder="Explora destinos"
-        :value="values.where"
+        :placeholder="placeholder"
+        :value="inputValue"
       />
     </div>
     <div class="w-full relative mt-6 mb-2">
       <RegionSwiper
-        :items="searchRegions"
-        :category-active="selectedRegion"
-        @handle-category-selected="handleClick"
+        :items="items"
+        :categoryActive="selectedItem"
+        @handleCategorySelected="handleSelectItem"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
-import { storeToRefs } from "pinia";
 import OutlineSearch from "~/components/common/Svg/OutlineSearch.vue";
 import RegionSwiper from "~/components/common/RegionSwiper/RegionSwiper.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 
-const useSearch = useFiltersStore();
-
-const { handleRegionSelection, values } = useSearch;
-
-const { searchRegions } = storeToRefs(useSearch);
-
-const selectedRegion = ref(null);
-
 const props = defineProps({
+  title: {
+    type: String,
+    default: "",
+  },
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  inputValue: {
+    type: String,
+    default: "",
+  },
   isOpen: {
     type: Boolean,
-    default:false,
+    default: false,
+  },
+  items: {
+    type: Array,
+    default: [],
+  },
+  selectedItem: {
+    type: Number,
+    default: 0,
   },
 });
 
+const emit = defineEmits(["setSelectItem"]);
 
-const defaultClasses =
-  "w-full rounded-xl p-4 shadow-lg";
+const defaultClasses = "mx-3 rounded-2xl p-4 shadow-floating-card";
 
 const activeClasses = "block";
 
@@ -61,9 +71,7 @@ const { dynamicClasses } = useDynamicClasses(
   inactiveClasses
 );
 
-
-function handleClick(id) {
-  handleRegionSelection(id)
-  selectedRegion.value = id;
+function handleSelectItem(id) {
+  emit("setSelectItem", id);
 }
 </script>

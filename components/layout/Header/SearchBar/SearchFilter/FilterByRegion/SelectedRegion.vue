@@ -8,7 +8,7 @@
       :class="inputDynamicClasses"
       type="text"
       placeholder="Explora destinos"
-      :value="values.where"
+      :value="getValueInputRegion"
     />
 
     <span
@@ -32,14 +32,15 @@
 
 <script setup>
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
+import { useValueInputRegion } from "~/components/composables/useValueInputRegion";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 
 const useSearch = useFiltersStore();
 
-const { toggleSubFilter, filterStates, values,updateValue } = useSearch;
+const { toggleSubFilter, filterStates, values, updateValue } = useSearch;
 
-const { isFilterActive } = storeToRefs(useSearch);
+const { isFilterActive, searchRegions } = storeToRefs(useSearch);
 
 const hoverBackgroundDefaultClasses =
   "absolute inset-0 w-full h-full rounded-full ease-in-out transition-all duration-500 z-40";
@@ -70,6 +71,8 @@ const { dynamicClasses: inputDynamicClasses } = useDynamicClasses(
   inputActiveClasses,
   inputInactiveClasses
 );
+
+const { getValueInputRegion } = useValueInputRegion(values, searchRegions);
 
 const showCloseIcon = computed(() => {
   return values.where && filterStates.where;

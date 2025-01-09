@@ -8,23 +8,16 @@
     <div class="w-full mt-4 flex items-center justify-start">
       <button
         type="button"
-        :class="exactDateButtonDynamicClasses"
-        @click.stop.prevent="$emit('setApproximateDays', '')"
+        v-for="date in exactDates"
+        :key="date.id"
+        :class="dynamicClasses(date.value).value"
+        @click.stop.prevent="$emit('setApproximateDays', date.value)"
       >
-        Fechas Exactas
+        <span class="inline-block mr-2" v-if="date.value">
+          <img class="w-3" src="/images/IconDate.svg" alt="Fechas Exactas" />
+        </span>
+        {{ date.name }}
       </button>
-      <template v-for="day in [1, 2, 3, 7]" :key="day">
-        <button
-          type="button"
-          :class="dynamicClasses(day).value"
-          @click.stop.prevent="$emit('setApproximateDays', day)"
-        >
-          <span class="inline-block mr-2">
-            <img class="w-3" src="/images/IconDate.svg" alt="Fechas Exactas" />
-          </span>
-          {{ day }} día{{ day > 1 ? "s" : "" }}
-        </button>
-      </template>
     </div>
   </div>
 </template>
@@ -44,6 +37,10 @@ const { dateRange } = storeToRefs(useSearch);
 const { handleDateRange } = useSearch;
 
 const props = defineProps({
+  exactDates: {
+    type: Array,
+    required: true,
+  },
   approximateDays: {
     type: Number,
     default: 0,
@@ -52,19 +49,13 @@ const props = defineProps({
 });
 
 const exactDateButtonDefaultClasses =
-  "text-xs px-3 py-1 mr-3 ease-in-out transition-all duration-500 h-full flex items-center justify-center text-light cursor-pointer rounded-full";
+  "text-xs px-3 py-1 mr-3 ease-in-out transition-all duration-500 h-full flex items-center justify-center text-light cursor-pointer rounded-full cursor-pointer z-10";
 
 const exactDateButtonActiveClasses = "shadow-solid-black-2";
 
 const exactDateButtonInactiveClasses =
   "shadow-custom-gray hover:shadow-solid-black";
 
-const { dynamicClasses: exactDateButtonDynamicClasses } = useDynamicClasses(
-  () => !props.approximateDays,
-  exactDateButtonDefaultClasses,
-  exactDateButtonActiveClasses,
-  exactDateButtonInactiveClasses
-);
 
 const dynamicClasses = (day) =>
   useDynamicClasses(
@@ -82,6 +73,6 @@ const getMinDate = computed(() => {
 });
 
 const getMaxDate = computed(() => {
-   return isEmpty(dateRange.value) ? null : dateRange.value[1];
+  return isEmpty(dateRange.value) ? null : dateRange.value[1];
 });
 </script>

@@ -16,6 +16,7 @@ import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { storeToRefs } from "pinia";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
+import { useFilterWhenDoYouWantToGo } from "~/components/composables/useFilterWhenDoYouWantToGo";
 import { truncateString } from "~/utils/stringUtils";
 
 const useSearch = useFiltersStore();
@@ -46,7 +47,7 @@ const defaultClasses = computed(() => ({
   "transition-all": true,
   "duration-500": true,
   "z-10": true,
-  "before:hidden":isFilterActive.value,
+  "before:hidden": isFilterActive.value,
   "before:content-['']": true,
   "before:bg-custom-gray-400": true,
   "before:absolute": true,
@@ -75,6 +76,13 @@ const { filterValueWhenFormatted } = useFormattedWhenValue(
   "d MMM."
 );
 
+const { filterWhenDoYouWantToGoFormatted } = useFilterWhenDoYouWantToGo(
+  values,
+  stayDurations,
+  availableMonths,
+  truncateString
+);
+
 const { dynamicClasses } = useDynamicClasses(
   () => filterStates.when,
   defaultClasses,
@@ -89,35 +97,10 @@ const { dynamicClasses: inputDynamicClasses } = useDynamicClasses(
   inputInactiveClasses
 );
 
-const filterWhenDoYouWantToGoFormatted = computed(() => {
-  const selected = stayDurations.value.filter(
-    (item) => item.id === values.stayDuration
-  );
-
-  if (values.selectedMonths.length > 0) {
-    let message = "";
-    const selectedIdsList = values.selectedMonths;
-
-    availableMonths.value.forEach((month) => {
-      selectedIdsList.forEach((id) => {
-        if (id === month.id) {
-          message += `${month.shortName},`;
-        }
-      });
-    });
-
-    return truncateString(
-      `${selected[0]["name"].toLowerCase()} en ${message}`,
-      24
-    );
-  }
-
-  return truncateString(`Cualquier ${selected[0]["name"].toLowerCase()}`, 24);
-});
 
 const selectedFilterValue = computed(() =>
   activeSubFilter.value === "Month"
-    ? filterValueWhenFormatted.value
+    ? `${filterValueWhenFormatted.value.startDate} - ${filterValueWhenFormatted.value.endDate}`
     : filterWhenDoYouWantToGoFormatted.value
 );
 </script>
