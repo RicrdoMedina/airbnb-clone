@@ -85,7 +85,7 @@ const showOnScroll = ref(false);
 let lastScrollY = 0;
 
 const defaultClasses =
-  "fixed w-full left-0 right-0 z-50 bg-white border-t border-custom-gray-300 block md:hidden ease-in-out transition-all duration-500";
+  "fixed bg-white w-full left-0 right-0 z-50 bg-white border-t border-custom-gray-300 block md:hidden ease-in-out transition-all duration-500";
 const activeClasses = "bottom-0";
 const inactiveClasses = "-bottom-96";
 

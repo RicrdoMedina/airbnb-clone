@@ -187,6 +187,7 @@
 .container-swiper .swiper-slide {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: auto;
 }
 

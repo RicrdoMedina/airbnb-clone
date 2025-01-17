@@ -3,7 +3,7 @@
     <MultiCalendar
       :minDate="getMinDate"
       :maxDate="getMaxDate"
-      @handleChange="handleDateRange"
+      @handleChange="handleChange"
     />
     <div class="w-full mt-4 flex items-center justify-start">
       <button
@@ -25,18 +25,14 @@
 <script setup>
 import { computed } from "vue";
 import MultiCalendar from "~/components/common/MultiCalendar/MultiCalendar.vue";
-import { storeToRefs } from "pinia";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { isEmpty } from "~/utils/helpers";
 
-const useSearch = useFiltersStore();
-
-const { dateRange } = storeToRefs(useSearch);
-
-const { handleDateRange } = useSearch;
-
 const props = defineProps({
+  dateRange:{
+    type: Array,
+    required: true,
+  },
   exactDates: {
     type: Array,
     required: true,
@@ -47,6 +43,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const emit = defineEmits(["handleDateRange"]);
 
 const exactDateButtonDefaultClasses =
   "text-xs px-3 py-1 mr-3 ease-in-out transition-all duration-500 h-full flex items-center justify-center text-light cursor-pointer rounded-full cursor-pointer z-10";
@@ -69,10 +67,14 @@ const dynamicClasses = (day) =>
 // const maxDate = ref(new Date(new Date().setDate(new Date().getDate() + 7)));
 
 const getMinDate = computed(() => {
-  return isEmpty(dateRange.value) ? null : dateRange.value[0];
+  return isEmpty(props.dateRange) ? null : props.dateRange[0];
 });
 
 const getMaxDate = computed(() => {
-  return isEmpty(dateRange.value) ? null : dateRange.value[1];
+  return isEmpty(props.dateRange) ? null : props.dateRange[1];
 });
+
+function handleChange (val, range) {
+  emit("handleDateRange", val, range);
+}
 </script>

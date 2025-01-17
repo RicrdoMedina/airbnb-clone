@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mx-3 h-14 px-4 shadow-bottom-2 mt-2 rounded-xl flex items-center justify-between"
+    class="bg-white mx-3 h-14 px-4 shadow-bottom-2 mb-2 rounded-xl flex items-center justify-between"
     :class="$attrs.class"
     @click.stop.prevent="handleClick()"
   >

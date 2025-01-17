@@ -1,39 +1,35 @@
 <template>
-  <div class="w-full relative flex md:hidden">
-    <div class="w-full flex">
+  <div class="container-swiper w-full h-full relative flex md:hidden">
+    <div class="w-full h-ful flex">
       <swiper
-      :slides-per-view="2.5"
-      :space-between="20"
-      :pagination="{
-        type: 'fraction',
-      }"
-      class="mySwiper"
-    >
-      <swiper-slide v-for="(item, index) in items" :key="index">
-        <div
-            class="carousel__item w-full h-full"
+        :slides-per-view="'auto'"
+        :space-between="10"
+        :pagination="{
+          type: 'fraction',
+        }"
+        class="mySwiper"
+      >
+        <swiper-slide v-for="(item, index) in items" :key="index">
+          <button
+            class="flex w-28 h-32 items-center justify-center flex-col"
+            type="button"
             @click.stop.prevent="handleSelectCategory(item.id)"
           >
-            <button
-              class="flex w-full h-full items-center justify-center flex-col"
-              type="button"
-            >
             <div class="w-full">
-
               <img
                 :class="pictureDynamicClasses(item.id).value"
                 :src="item.img"
                 :alt="item.name"
               />
             </div>
-              <span :style="{ fontSize: '0.75rem' }" :class="labelDynamicClasses(item.id).value">{{
-                item.name
-              }}</span>
-            </button>
-          </div>
-      </swiper-slide>
-    </swiper>
-     
+            <span
+              :style="{ fontSize: '0.75rem' }"
+              :class="labelDynamicClasses(item.id).value"
+              >{{ item.name }}</span
+            >
+          </button>
+        </swiper-slide>
+      </swiper>
     </div>
   </div>
 </template>
@@ -50,8 +46,7 @@ const pictureDefaultClasses =
 const pictureActiveClasses = "border-black";
 const pictureInactiveClasses = "border-custom-gray-300";
 
-const labelDefaultClasses =
-  "block text-left w-full mt-2 whitespace-nowrap";
+const labelDefaultClasses = "block text-left w-full mt-2 whitespace-nowrap";
 const labelActiveClasses = "text-bold font-medium";
 const labelInactiveClasses = "text-light";
 
@@ -63,7 +58,7 @@ const pictureDynamicClasses = (id) =>
     pictureInactiveClasses
   ).dynamicClasses;
 
-  const labelDynamicClasses = (id) =>
+const labelDynamicClasses = (id) =>
   useDynamicClasses(
     () => props.categoryActive === id,
     labelDefaultClasses,

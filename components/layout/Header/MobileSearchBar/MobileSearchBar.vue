@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full block md:hidden z-50 relative">
+  <div class="w-full block md:hidden z-50 relative bg-white">
     <div
       class="w-full h-full flex items-center justify-center overflow-hidden pt-3 pb-2 px-6 z-50"
     >
@@ -36,7 +36,7 @@
       </div>
       <div class="flex flex-grow-0">
         <span
-          class="w-10 h-10 rounded-full flex items-center justify-center border border-custom-gray-400"
+          class="w-10 h-10 rounded-full flex items-center justify-center bg-white border border-custom-gray-400"
         >
           <img class="w-4" src="/images/FilterIcon.svg" alt="Filter" />
         </span>

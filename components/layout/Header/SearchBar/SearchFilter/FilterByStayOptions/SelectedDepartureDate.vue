@@ -110,16 +110,16 @@ const { dynamicClasses: containerDynamicClasses } = useDynamicClasses(
 );
 
 const { dynamicClasses: blockDynamicClasses } = useDynamicClasses(
-  () => dateRange.value.length > 1,
+  () => values.travelDate.length > 1,
   blockDefaultClasses,
   blockActiveClasses,
   blockInactiveClasses
 );
 
 const formattedDepartureDate = computed(() => {
-  if (dateRange.value.length < 2) return "Agregar fecha";
+  if (values.travelDate.length < 2) return "Agregar fecha";
 
-  const formattedDate = format(dateRange.value[1], "dd MMM", {
+  const formattedDate = format(values.travelDate[1], "dd MMM", {
     locale: es,
   });
 
@@ -127,6 +127,6 @@ const formattedDepartureDate = computed(() => {
 });
 
 const showCloseIcon = computed(() => {
-  return dateRange.value.length > 1 && filterStates.output;
+  return values.travelDate.length > 1 && filterStates.output;
 });
 </script>

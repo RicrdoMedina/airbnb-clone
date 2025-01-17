@@ -2,33 +2,33 @@
   <div class="container-swiper w-full h-10 relative flex items-center">
     <div class="w-full h-full flex items-center">
       <swiper
-        :slides-per-view="'auto'"
-        :space-between="10"
-        :pagination="{
-          type: 'fraction',
-        }"
+        :slidesPerView="'auto'"
+        :spaceBetween="10"
+        :observer="true"
+        :observe-parents="true"
         class="mySwiper"
       >
         <swiper-slide
           v-for="(item, index) in items"
           :key="index"
-          class="flex-shrink-0"
+          class="flex-shrink-0 w-auto"
         >
-          <button
-            type="button"
-            :key="item.id"
-            :class="dynamicClasses(item.value).value"
-            @click.stop.prevent="handleSelect(item.value)"
-          >
-            <span class="inline-block mr-2" v-if="item.value">
-              <img
-                class="w-3"
-                src="/images/IconDate.svg"
-                alt="Fechas Exactas"
-              />
-            </span>
-            {{ item.name }}
-          </button>
+          <div class="carousel__item">
+            <div
+              :key="item.id"
+              :class="dynamicClasses(item.value).value"
+              @click.prevent="handleSelect(item.value)"
+            >
+              <span class="inline-block mr-2" v-if="item.value">
+                <img
+                  class="w-3"
+                  src="/images/IconDate.svg"
+                  alt="Fechas Exactas"
+                />
+              </span>
+              {{ item.name }}
+            </div>
+          </div>
         </swiper-slide>
       </swiper>
     </div>
@@ -58,12 +58,11 @@ const props = defineProps({
 const emit = defineEmits(["handleClick"]);
 
 const exactDateButtonDefaultClasses =
-  "px-4 h-8 text-sm ease-in-out border transition-all duration-500 flex items-center justify-center text-light rounded-full cursor-pointer z-10";
+  "px-4 relative h-8 text-sm ease-in-out border transition-all duration-500 flex items-center justify-center text-light rounded-full cursor-pointer";
 
 const exactDateButtonActiveClasses = "border-black";
 
-const exactDateButtonInactiveClasses =
-  "border-custom-gray";
+const exactDateButtonInactiveClasses = "border-custom-gray";
 
 const dynamicClasses = (day) =>
   useDynamicClasses(

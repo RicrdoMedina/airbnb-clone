@@ -59,7 +59,7 @@ const emit = defineEmits([
   "setNumberBabies",
 ]);
 
-const defaultClasses = "mx-3 mt-3 bg-white z-60 rounded-3xl shadow-floating-card overflow-hidden px-6 pb-4";
+const defaultClasses = "bg-white mx-3 mt-1 bg-white z-60 rounded-3xl shadow-floating-card overflow-hidden px-6 pb-4";
 
 const activeClasses = "block";
 

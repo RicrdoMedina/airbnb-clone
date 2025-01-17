@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper bg-secondary md:bg-white">
     <LayoutHeader />
     <LayoutListingFilters />
     <main>

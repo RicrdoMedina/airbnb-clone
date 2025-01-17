@@ -14,7 +14,7 @@
         :value="inputValue"
       />
     </div>
-    <div class="w-full relative mt-6 mb-2">
+    <div class="w-full relative h-36 mt-3 mb-2">
       <RegionSwiper
         :items="items"
         :categoryActive="selectedItem"
@@ -58,7 +58,7 @@ const props = defineProps({
 
 const emit = defineEmits(["setSelectItem"]);
 
-const defaultClasses = "mx-3 rounded-2xl p-4 shadow-floating-card";
+const defaultClasses = "bg-white mx-3 rounded-3xl p-4 shadow-floating-card mt-2 mb-4";
 
 const activeClasses = "block";
 

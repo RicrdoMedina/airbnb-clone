@@ -36,6 +36,30 @@ export function getFormattedFirstDayOfMonth(
   return formattedDateFirstMonth;
 }
 
+export function generateMonthDays(month, year) {
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  const isCurrentMonthAndYear =
+    today.getFullYear() === year && today.getMonth() === month;
+
+  const days = [];
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(year, month, day);
+    const weekDay = date.getDay();
+
+    days.push({
+      id: date.toString(),
+      value: day,
+      date: date,
+      key: weekDay,
+      active: isCurrentMonthAndYear ? day >= today.getDate() : true,
+      isLastDayOfWeek: weekDay === 6, // If the day is Saturday, it's the last day of the week
+    });
+  }
+
+  return days;
+}
+
 export function calculateFutureDate(offset) {
   const currentDate = new Date();
 

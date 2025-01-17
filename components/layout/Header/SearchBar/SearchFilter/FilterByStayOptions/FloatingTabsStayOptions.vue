@@ -13,6 +13,7 @@
 
       <component
         :is="currentComponent"
+        :dateRange="values.travelDate"
         :approximateDays="values.approximateDays"
         :stayList="stayDurations"
         :stayAtPlace="values.stayDuration"
@@ -21,6 +22,7 @@
         :exactDates="exactDates"
         @setApproximateDays="handleApproximateDays"
         @handleStayAtPlace="handleStayAtPlace"
+        @handleDateRange="handleDateRange"
       />
     </section>
   </div>
@@ -37,7 +39,7 @@ import { storeToRefs } from "pinia";
 
 const useSearch = useFiltersStore();
 
-const { toggleSubFilter, updateValue, filterStates, values } = useSearch;
+const { toggleSubFilter, updateValue, filterStates, values,handleDateRange } = useSearch;
 const { activeSubFilter, stayDurations, availableMonths,dateOptions,exactDates } =
   storeToRefs(useSearch);
 

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-col justify-between">
-    <div class="w-full flex flex-col flex-grow pt-2 pb-4">
+    <div class="w-full flex flex-col flex-grow pb-4">
       <SelectedOptionBox
         label="Dónde"
         :value="getValueInputRegion"
@@ -27,7 +27,10 @@
         @handleSelectOption="openDateFilter()"
       />
 
-      <MobileFilterByStayDateSelector :isOpen="showWhenFilter" />
+      <MobileFilterByStayDateSelector
+        :isOpen="showWhenFilter"
+        @handleNext="openFilter('who')"
+      />
 
       <SelectedOptionBox
         label="Quién"
@@ -50,6 +53,9 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+import { es } from "date-fns/locale";
+import { format } from "date-fns";
 import { useFiltersStore } from "~/store/HeaderSearchBarStore";
 import { useAppModalStore } from "~/store/AppModalStore";
 import { storeToRefs } from "pinia";
@@ -75,13 +81,12 @@ const {
 } = useSearch;
 
 const {
-  showWhenOptions,
   activeSubFilter,
   stayDurations,
   availableMonths,
   tripStartDate,
   tripEndDate,
-  searchRegions
+  searchRegions,
 } = storeToRefs(useSearch);
 
 const { formattedNumberGuests } = useFormattedGuests(values);
@@ -100,18 +105,45 @@ const { filterWhenDoYouWantToGoFormatted } = useFilterWhenDoYouWantToGo(
   truncateString
 );
 
-const selectedFilterValue = computed(() =>
-  activeSubFilter.value === "Month"
-    ? `${filterValueWhenFormatted.value.startDate} - ${filterValueWhenFormatted.value.endDate}`
-    : filterWhenDoYouWantToGoFormatted.value
-);
+const selectedFilterValue = computed(() => {
+  if (activeSubFilter.value === "Dates" && !isEmpty(values.travelDate)) {
+    if (values.travelDate.length > 1) {
+      const starDate = format(values.travelDate[0], "dd MMM", {
+        locale: es,
+      });
+
+      const endDate = format(values.travelDate[1], "dd MMM", {
+        locale: es,
+      });
+
+      return values.approximateDays
+        ? `${starDate} ±${values.approximateDays} - ${endDate} ±${values.approximateDays}`
+        : `${starDate} - ${endDate}`;
+    }
+
+    const formattedDate = format(values.travelDate[0], "dd MMM", {
+      locale: es,
+    });
+
+    return formattedDate;
+  }
+
+  if (activeSubFilter.value === "Month" && !isEmpty(values.when)) {
+    return `${filterValueWhenFormatted.value.startDate} - ${filterValueWhenFormatted.value.endDate}`;
+  }
+
+  if (activeSubFilter.value === "Flexible" && !isEmpty(values.selectedMonths)) {
+    return filterWhenDoYouWantToGoFormatted.value;
+  }
+
+  return "Agrega fechas";
+});
 
 const showWhenFilter = computed(() => {
   return filterStates.arrival || filterStates.output || filterStates.when;
 });
 
 const { getValueInputRegion } = useValueInputRegion(values, searchRegions);
-
 
 function setSelectRegion(id) {
   setHideFooter(true);
@@ -139,4 +171,8 @@ function setNumberChildren(value) {
 function setNumberBabies(value) {
   updateValue("babies", value);
 }
+
+onMounted(() => {
+  openFilter("where");
+});
 </script>

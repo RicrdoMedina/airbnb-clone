@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-auto relative group shadow-bottom-2 ease-in-out transition-all duration-500 h-16 md:rounded-md flex flex-col items-center justify-center cursor-pointer"
+    class="w-auto px-4 md:px-0 relative group shadow-bottom-2 ease-in-out transition-all duration-500 h-16 md:rounded-md flex flex-col items-center justify-center cursor-pointer"
     @click.stop.prevent="onClick"
   >
     <div class="w-full h-8 flex items-center justify-center">

@@ -1,8 +1,8 @@
 <template>
   <div class="container-swiper w-full h-full relative">
     <swiper
-      :slides-per-view="3"
-      :space-between="0"
+      :slides-per-view="'auto'"
+      :space-between="10"
       :pagination="{
         type: 'fraction',
       }"

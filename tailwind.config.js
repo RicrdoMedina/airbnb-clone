@@ -42,6 +42,7 @@ export default {
         light: "#6A6A6A",
         bold: "#222222",
         tomato: "#ff385c",
+        secondary: "#F7F7F7",
       },
       boxShadow: {
         "mobile-filter": "1px 1px 7px 1px rgb(0 0 0 / 20%)",
@@ -57,7 +58,8 @@ export default {
         "bottom-3": "0 3px 0 0 rgba(0, 0, 0, 0.1)",
         "bottom-4": "0 4px 0 0 rgba(0, 0, 0, 0.1)",
         "bottom-black-2": "0 2px 0 0 rgba(0, 0, 0, 1)",
-        "floating-card": "0px 1px 15px 3px rgb(0 0 0 / 18%)",
+        "floating-card":
+          "0 0 2px 1px rgb(0 0 0/4%),0px 3px 12px rgb(0 0 0/20%)",
       },
       width: {
         "2px": "2px",

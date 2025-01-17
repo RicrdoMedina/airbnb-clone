@@ -30,11 +30,12 @@ export const useFiltersStore = defineStore("filtersStore", () => {
 
   const circularMonthSelector = ref(3);
 
+  const selectedDateId = ref([]);
+
   const values = reactive({
     who: ref(null),
     where: ref(0),
-    arrivalDate: ref(null),
-    departureDate: ref(null),
+    travelDate: ref([]),
     when: ref([]),
     approximateDays: ref(0),
     adults: ref(0),
@@ -43,8 +44,6 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     stayDuration: ref(1),
     selectedMonths: ref([]),
   });
-
-  const dateRange = ref([]);
 
   const searchRegions = ref([
     { id: 1, name: "Búsqueda Flexible", img: "/images/FlexibleSearch.jpg" },
@@ -191,18 +190,23 @@ export const useFiltersStore = defineStore("filtersStore", () => {
 
   function toggleMonthSelection(month) {
     const index = values.selectedMonths.indexOf(month);
+
+    let newValue;
+
     if (index === -1) {
-      values.selectedMonths.push(month);
+      newValue = [...values.selectedMonths, month];
     } else {
-      values.selectedMonths.splice(index, 1);
+      newValue = values.selectedMonths.filter((item) => item !== month);
     }
+
+    values.selectedMonths = newValue;
   }
 
   function handleDateRange(date, range) {
-    const minDate = dateRange.value[0] || null;
+    const minDate = values.travelDate[0] || null;
 
     if (isArray(date)) {
-      dateRange.value = [...date];
+      updateValue("travelDate", [...date]);
       // activateFilter("output");
       return;
     }
@@ -226,19 +230,23 @@ export const useFiltersStore = defineStore("filtersStore", () => {
           ignoreTime: true,
         })
       ) {
-        dateRange.value = [minDate, date];
+        const newValue = [minDate, date];
+        updateValue("travelDate", newValue);
       } else if (
         compareDates(date, minDate, {
           comparisonType: "equal",
           ignoreTime: true,
         })
       ) {
-        dateRange.value = [date, date];
+        const newValue = [date, date];
+        updateValue("travelDate", newValue);
       } else {
-        dateRange.value = [date];
+        const newValue = [date];
+        updateValue("travelDate", newValue);
       }
     } else {
-      dateRange.value = [date];
+      const newValue = [date];
+      updateValue("travelDate", newValue);
     }
   }
 
@@ -250,17 +258,20 @@ export const useFiltersStore = defineStore("filtersStore", () => {
           ignoreTime: true,
         })
       ) {
-        dateRange.value = [date, minDate];
+        const newValue = [date, minDate];
+        updateValue("travelDate", newValue);
       } else {
-        dateRange.value = [minDate, date];
+        const newValue = [minDate, date];
+        updateValue("travelDate", newValue);
       }
     } else {
-      dateRange.value = [date];
+      const newValue = [date];
+      updateValue("travelDate", newValue);
     }
   }
 
   function handleResetDateRange() {
-    dateRange.value = [];
+    updateValue("travelDate", []);
   }
 
   function toggleLittleSearch(val) {
@@ -273,6 +284,14 @@ export const useFiltersStore = defineStore("filtersStore", () => {
 
   function updateCircularMonthSelector(index) {
     circularMonthSelector.value = index;
+  }
+
+  function handleSelectedDateId(val) {
+    if (isArray(val)) {
+      selectedDateId.value = val;
+      return;
+    }
+    selectedDateId.value.push(val);
   }
 
   return {
@@ -288,12 +307,12 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     searchRegions,
     stayDurations,
     availableMonths,
-    dateRange,
     littleSearchIsActive,
     stickyFilterInitiated,
     dateOptions,
     circularMonthSelector,
     exactDates,
+    selectedDateId,
 
     // Computed
     tripStartDate,
@@ -315,5 +334,6 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     toggleLittleSearch,
     toggleStickyFilterInitiated,
     updateCircularMonthSelector,
+    handleSelectedDateId,
   };
 });
