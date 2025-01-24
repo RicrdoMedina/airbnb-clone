@@ -56,8 +56,8 @@
 import { onMounted } from "vue";
 import { es } from "date-fns/locale";
 import { format } from "date-fns";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
-import { useAppModalStore } from "~/store/AppModalStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
+import { useAppModalStore } from "~/store/app/AppModalStore";
 import { storeToRefs } from "pinia";
 import { useFormattedGuests } from "~/components/composables/useFormattedGuests";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
@@ -69,7 +69,7 @@ import MobileFilterByStayDateSelector from "~/components/common/MobileFilterBySt
 import MobileGuestCountSelector from "~/components/common/MobileGuestCountSelector/MobileGuestCountSelector.vue";
 import { truncateString } from "~/utils/stringUtils";
 
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
 const useModalStore = useAppModalStore();
 const { setHideFooter } = useModalStore;
 const {
@@ -78,16 +78,16 @@ const {
   values,
   updateValue,
   handleRegionSelection,
-} = useSearch;
+  tripStartDate,
+  tripEndDate,
+} = useSearchBar;
 
 const {
   activeSubFilter,
   stayDurations,
   availableMonths,
-  tripStartDate,
-  tripEndDate,
   searchRegions,
-} = storeToRefs(useSearch);
+} = storeToRefs(useSearchBar);
 
 const { formattedNumberGuests } = useFormattedGuests(values);
 

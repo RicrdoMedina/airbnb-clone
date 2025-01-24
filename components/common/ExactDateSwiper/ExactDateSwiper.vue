@@ -1,5 +1,5 @@
 <template>
-  <div class="container-swiper w-full h-10 relative flex items-center">
+  <div class="container-swiper w-full h-full relative flex items-center">
     <div class="w-full h-full flex items-center">
       <swiper
         :slidesPerView="'auto'"
@@ -17,7 +17,7 @@
             <div
               :key="item.id"
               :class="dynamicClasses(item.value).value"
-              @click.prevent="handleSelect(item.value)"
+              @click.prevent="handleSelectCategory(item.value)"
             >
               <span class="inline-block mr-2" v-if="item.value">
                 <img
@@ -48,14 +48,14 @@ const props = defineProps({
     default: [],
     required: true,
   },
-  approximateDays: {
+  categoryActive: {
     type: [String, Number],
     default: [],
     required: true,
   },
 });
 
-const emit = defineEmits(["handleClick"]);
+const emit = defineEmits(["handleSelectCategory"]);
 
 const exactDateButtonDefaultClasses =
   "px-4 relative h-8 text-sm ease-in-out border transition-all duration-500 flex items-center justify-center text-light rounded-full cursor-pointer";
@@ -66,13 +66,13 @@ const exactDateButtonInactiveClasses = "border-custom-gray";
 
 const dynamicClasses = (day) =>
   useDynamicClasses(
-    () => props.approximateDays === day,
+    () => props.categoryActive === day,
     exactDateButtonDefaultClasses,
     exactDateButtonActiveClasses,
     exactDateButtonInactiveClasses
   ).dynamicClasses;
 
-function handleSelect(id) {
-  emit("handleClick", id);
+function handleSelectCategory(id) {
+  emit("handleSelectCategory", id);
 }
 </script>

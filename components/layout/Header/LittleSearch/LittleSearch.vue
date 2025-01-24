@@ -1,42 +1,57 @@
 <template>
   <div :class="littleSearchClasses">
     <div
-      class="w-full flex items-center justify-between rounded-full h-12 flex overflow-hidden border bg-white shadow-search-box-inactive"
+      class="w-full items-center justify-between rounded-full h-12 flex overflow-hidden border bg-white shadow-search-box-inactive"
     >
-      <button
+      <DefaultButton
         class="flex-grow relative flex items-center justify-start pl-5 text-bold text-sm font-medium cursor-pointer"
-        @click.stop.prevent="handleClick('where')"
+        @click="handleClick('where')"
       >
-        {{ text1 }}
-      </button>
-      <button
-        class="w-36 relative flex items-center justify-end text-bold flex-grow-0 text-sm font-medium before:content-[''] before:bg-custom-gray-400 before:absolute before:left-4  lg:before:-left-2 before:w-px before:h-6 cursor-pointer"
-        @click.stop.prevent="toggleDateFilter"
+        <span class="rounded-md" :class="{ 'background-animation': isLoading }">{{ text1 }}</span>
+      </DefaultButton>
+
+      <DefaultButton
+        class="w-36 relative flex items-center justify-end text-bold flex-grow-0 text-sm font-medium before:content-[''] before:bg-custom-gray-400 before:absolute before:left-4 lg:before:-left-2 before:w-px before:h-6 cursor-pointer"
+        @click="toggleDateFilter"
       >
-        <span class="absolute right-5">{{ text2 }}</span>
-      </button>
-      <button
+        <span
+          class="absolute right-5 rounded-md"
+          :class="{ 'background-animation': isLoading }"
+          >{{ text2 }}</span
+        >
+      </DefaultButton>
+
+      <DefaultButton
         class="w-36 relative text-light flex-grow-0 text-sm flex items-center justify-end before:content-[''] before:bg-custom-gray-400 before:absolute before:left-4 lg:before:-left-2 before:w-px before:h-6 cursor-pointer"
-        @click.stop.prevent="handleClick('who')"
+        @click="handleClick('who')"
       >
-        <span class="absolute right-16">{{ text3 }}</span>
-      </button>
-      <button
+        <span
+          class="absolute right-16 rounded-md"
+          :class="{ 'background-animation': isLoading }"
+          >{{ text3 }}</span
+        >
+      </DefaultButton>
+
+      <DefaultButton
         class="absolute right-2 bg-tomato w-8 h-8 text-white rounded-full flex items-center justify-center font-medium"
       >
-        <span><img class="w-5" src="/images/Search.svg" alt="Search" /></span>
-      </button>
+        <span><OutlineSearch size="15px" :strokeWidth="'4px'" /></span>
+      </DefaultButton>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
+import { useAppDataStore } from "~/store/app/AppDataStore";
 import { storeToRefs } from "pinia";
 import { truncateString } from "~/utils/stringUtils";
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import OutlineSearch from "~/components/common/Svg/OutlineSearch.vue";
 
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
+const useDataStore = useAppDataStore();
 
 const {
   toggleSubFilter,
@@ -44,9 +59,10 @@ const {
   toggleLittleSearch,
   toggleStickyFilterInitiated,
   handleDateFilter,
-} = useSearch;
+} = useSearchBar;
 
-const { littleSearchIsActive } = storeToRefs(useSearch);
+const { littleSearchIsActive } = storeToRefs(useSearchBar);
+const { isLoading } = storeToRefs(useDataStore);
 
 const windowWidth = ref(0);
 

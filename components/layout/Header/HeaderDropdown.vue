@@ -5,9 +5,13 @@
     @click="openMenu"
   >
     <img class="w-4" src="/images/Hamburger.svg" alt="Hamburger" />
-    <img class="md:w-6 lg:w-6 xl:w-6 2xl:w-8 3xl:w-8" src="/images/User.svg" alt="Hamburger" />
-    <div
-      v-if="open"
+    <img
+      class="md:w-6 lg:w-6 xl:w-6 2xl:w-8 3xl:w-8"
+      src="/images/User.svg"
+      alt="Hamburger"
+    />
+    <nav
+      v-if="isOpen"
       class="absolute right-4 w-56 top-12 p-2 bg-white shadow-xl"
     >
       <ul class="flex flex-col">
@@ -30,21 +34,21 @@
           <NuxtLink to="/" class=""> Centro de ayuda </NuxtLink>
         </li>
       </ul>
-    </div>
+    </nav>
   </div>
 </template>
 
 <script setup>
 const $dropdown = ref(null);
 
-const open = ref(false);
+const isOpen = ref(false);
 
 function openMenu() {
-  open.value = !open.value;
+  isOpen.value = !isOpen.value;
 }
 
 function hideMenu() {
-  open.value = false;
+  isOpen.value = false;
 }
 
 const handleClickOutside = (event) => {

@@ -14,10 +14,10 @@
       >
         <swiper-slide v-for="(item, index) in items" :key="index">
           <div
-  :class="dynamicClasses(index).value"
-            @click.stop.prevent="handleSelectCategory(index)"
+            :class="dynamicClasses(item.id).value"
+            @click.stop.prevent="handleCategorySelected(item.id)"
           >
-            {{ item }}
+            {{ item.name }}
           </div>
         </swiper-slide>
       </swiper>
@@ -27,7 +27,7 @@
 
 <script setup>
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Pagination, Navigation } from "swiper/modules";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -53,10 +53,6 @@ const props = defineProps({
 
 const emit = defineEmits(["handleCategorySelected"]);
 
-const paginationOptions = {
-  clickable: true,
-};
-
 const defaultClasses =
   "carousel__item w-full h-12 flex items-center justify-center text-sm font-medium transition-all duration-500 ease-in-out";
 const activeClasses = "font-bold border-b-2 border-black";
@@ -70,8 +66,7 @@ const dynamicClasses = (id) =>
     inactiveClasses
   ).dynamicClasses;
 
-
-function handleSelectCategory(id) {
+function handleCategorySelected(id) {
   emit("handleCategorySelected", id);
 }
 </script>

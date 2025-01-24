@@ -1,50 +1,36 @@
 <template>
-  <div class="w-98 absolute top-full left-8 lg:left-0 mt-4 bg-white shadow-xl px-6 py-6 z-40 rounded-3xl">
+  <div
+    class="w-98 absolute top-full left-8 lg:left-0 mt-4 bg-white shadow-xl px-6 py-6 z-40 rounded-3xl"
+  >
     <section class="w-full">
       <h4 class="text-sm text-bold font-medium">Búsqueda por región</h4>
       <div class="w-full flex flex-col items-center justify-between mt-4">
         <div class="w-full flex">
           <div
             class="w-40 p-2"
-            v-for="option in options.slice(0, 3)"
+            v-for="option in searchRegions.slice(0, 3)"
             :key="option.id"
           >
-            <button
-              class="flex items-center justify-center flex-col"
-              type="button"
-              @click.stop.prevent="$emit('handleClick', option.id)"
-            >
-              <img
-                class="rounded-md ease-in-out transition-all duration-500 border border-gray-200 hover:border-gray-900"
-                :src="option.img"
-                :alt="option.name"
-              />
-              <span class="block text-left w-full mt-2 text-sm text-light">{{
-                option.name
-              }}</span>
-            </button>
+            <RegionCard
+              :imgUrl="option.img"
+              :label="option.name"
+              :isSelected="values.where === option.id"
+              @handleCategorySelected="handleSelectCategory(option.id)"
+            />
           </div>
         </div>
         <div class="w-full flex mt-4">
           <div
             class="w-40 p-2"
-            v-for="option in options.slice(3, 6)"
+            v-for="option in searchRegions.slice(3, 6)"
             :key="option.id"
           >
-            <button
-              class="flex items-center justify-center flex-col"
-              type="button"
-              @click.stop.prevent="$emit('handleClick', option.id)"
-            >
-              <img
-                class="rounded-md ease-in-out transition-all duration-500 border border-gray-200 hover:border-gray-900"
-                :src="option.img"
-                :alt="option.name"
-              />
-              <span class="block text-left w-full mt-2 text-sm text-light">{{
-                option.name
-              }}</span>
-            </button>
+            <RegionCard
+              :imgUrl="option.img"
+              :label="option.name"
+              :isSelected="values.where === option.id"
+              @handleCategorySelected="handleSelectCategory(option.id)"
+            />
           </div>
         </div>
       </div>
@@ -53,14 +39,17 @@
 </template>
 
 <script setup>
+import RegionCard from "~/components/common/RegionCard/RegionCard.vue";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
+import { storeToRefs } from "pinia";
 
-const props = defineProps({
-  options: {
-    type: Array,
-    default: [],
-  },
-});
+const useSearchBar = useSearchBarStore();
 
-const emit = defineEmits(["handleClick"]);
+const { values, handleRegionSelection } = useSearchBar;
 
+const { searchRegions } = storeToRefs(useSearchBar);
+
+function handleSelectCategory(id) {
+  handleRegionSelection(id);
+}
 </script>

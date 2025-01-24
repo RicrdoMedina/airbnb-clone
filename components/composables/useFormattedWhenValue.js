@@ -12,8 +12,8 @@ export function useFormattedWhenValue(
     const value = typeof getValue === "function" ? getValue() : unref(getValue);
 
     if (isEmpty(value)) {
-      const firstDayNextMonth = formatMonthDate(startDate.value, dateFormat);
-      const firstDayLastMonth = formatMonthDate(endDate.value, dateFormat);
+      const firstDayNextMonth = formatMonthDate(startDate, dateFormat);
+      const firstDayLastMonth = formatMonthDate(endDate, dateFormat);
       return {
         startDate: `${firstDayNextMonth}`,
         endDate: `${firstDayLastMonth}`,

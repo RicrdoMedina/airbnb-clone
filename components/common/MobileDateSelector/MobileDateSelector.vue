@@ -21,15 +21,6 @@ const props = defineProps({
   dateRange: {
     type: Array,
     default: [],
-  },
-  exactDates: {
-    type: Array,
-    default: [],
-  },
-  approximateDays: {
-    type: [String, Number],
-    default: [],
-    required: true,
   }
 });
 

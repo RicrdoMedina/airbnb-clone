@@ -10,11 +10,12 @@
         :starDate="tripStartDate"
         :endDate="tripEndDate"
         :value="circularMonthSelector"
-        @handleChange="handleChange"
+        @handleSelectedMonthRange="handleSelectedMonthRange"
       />
       <div class="w-full flex items-center justify-center mt-4">
         <p class="text-light text-sm">
-          {{ filterValueWhenFormatted.startDate }} - {{ filterValueWhenFormatted.endDate  }}
+          {{ filterValueWhenFormatted.startDate }} -
+          {{ filterValueWhenFormatted.endDate }}
         </p>
       </div>
     </div>
@@ -23,26 +24,38 @@
 
 <script setup>
 import CircularMonthRangeSelectorCopy3 from "~/components/common/CircularMonthRangeSelector/CircularMonthRangeSelectorCopy3.vue";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
-import { storeToRefs } from "pinia";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
 
-const useSearch = useFiltersStore();
+const props = defineProps({
+  tripStartDate: {
+    type: Date,
+    required: true,
+  },
+  tripEndDate: {
+    type: Date,
+    required: true,
+  },
+  selectedMonth: {
+    type: Array,
+    required: true,
+  },
+  circularMonthSelector: {
+    type: Number,
+    default: 0,
+    required: true,
+  },
+});
 
-const { updateValue, values, updateCircularMonthSelector } = useSearch;
-
-const { tripEndDate, tripStartDate, circularMonthSelector } =
-  storeToRefs(useSearch);
+const emit = defineEmits(["handleSelectedMonthRange"]);
 
 const { filterValueWhenFormatted } = useFormattedWhenValue(
-  () => values.when,
-  tripStartDate,
-  tripEndDate,
+  () => props.selectedMonth,
+  props.tripStartDate,
+  props.tripEndDate,
   "d MMM. yyyy"
 );
 
-function handleChange(index, value) {
-  updateValue("when", value);
-  updateCircularMonthSelector(index);
+function handleSelectedMonthRange(index, value) {
+  emit("handleSelectedMonthRange", index, value);
 }
 </script>

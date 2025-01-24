@@ -5,26 +5,49 @@
     >
       <div class="w-3/6 flex-grow relative pr-4">
         <CategoryCarousel
-          :items="categories"
+          :items="categoriesData"
           :itemsToShow="12"
           :categoryActive="categoryActive"
+          :isLoading="isLoading"
           @handleCategorySelected="setCategoryActive"
         />
       </div>
       <div class="flex-grow-0 flex items-center justify-center pl-4">
         <DefaultButton
           class="w-28 h-11 rounded-lg shadow-custom-gray hover:shadow-solid-black flex items-center justify-center ease-in-out transition-all duration-500"
+          :isDisabled="isLoading"
         >
-          <img class="w-4" src="/images/FilterIcon.svg" alt="Filter" />
-          <span class="ml-2 text-sm"> Filtros </span>
+          <img
+            class="w-4"
+            src="/images/FilterIcon.svg"
+            alt="Filter"
+            v-if="!isLoading"
+          />
+          <span v-else class="w-4 h-4 rounded-md background-animation"></span>
+          <span
+            class="ml-2 text-sm rounded-lg"
+            :class="{ 'background-animation': isLoading }"
+          >
+            Filtros
+          </span>
         </DefaultButton>
 
         <DefaultButton
           class="w-64 h-11 ml-4 rounded-lg shadow-custom-gray hover:shadow-solid-black flex items-center justify-center ease-in-out transition-all duration-500"
+          :isDisabled="isLoading"
         >
-          <span class="mr-2 text-sm"> Precio Total sin impuestos </span>
+          <span
+            class="mr-2 text-sm rounded-lg"
+            :class="{ 'background-animation': isLoading }"
+          >
+            Precio Total sin impuestos
+          </span>
 
-          <SwitchButton v-model="isSwitchOn" />
+          <span
+            v-if="isLoading"
+            class="w-12 h-6 background-animation rounded-xl"
+          ></span>
+          <SwitchButton v-model="isSwitchOn" v-else />
         </DefaultButton>
       </div>
     </div>
@@ -32,22 +55,20 @@
 </template>
 
 <script setup>
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
-import { useCategoryCarouselStore } from "~/store/CategoryCarouselStore";
+import { useAppDataStore } from "~/store/app/AppDataStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
 import CategoryCarousel from "~/components/common/CategoryCarousel/CategoryCarousel.vue";
 import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 import SwitchButton from "~/components/common/SwitchButton/SwitchButton.vue";
 
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
+const useDataStore = useAppDataStore();
+const { categoriesData, isLoading } = storeToRefs(useDataStore);
+const { setCategoryActive } = useSearchBar;
 
-const useCategoryStore = useCategoryCarouselStore();
-
-const { setCategoryActive } = useCategoryStore;
-
-const { categoryActive, categories } = storeToRefs(useCategoryStore);
-
-const { littleSearchIsActive, isStickyFilterActive } = storeToRefs(useSearch);
+const { littleSearchIsActive, isStickyFilterActive, categoryActive } =
+  storeToRefs(useSearchBar);
 
 const isSwitchOn = ref(false);
 
@@ -62,7 +83,4 @@ const listingFiltersClasses = computed(() => {
 
   return "sticky  hidden md:flex  w-full z-30 bg-white transition-all duration-300 ease-custom-ease overflow-hidden top-20";
 });
-
 </script>
-
-<style lang="scss" scoped></style>

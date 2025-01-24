@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      NUXT_PUBLIC_SERVER_URL: process.env.NUXT_PUBLIC_SERVER_URL || "https://default-server.com",
+    },
+  },
   app: {
     head: {
       htmlAttrs: {

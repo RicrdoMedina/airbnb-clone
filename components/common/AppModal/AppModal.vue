@@ -8,12 +8,12 @@
         <div
           class="w-full h-20 flex flex-grow-0 relative justify-between items-center"
         >
-          <button
-            @click="closeModal"
+          <DefaultButton
             class="absolute w-8 h-8 rounded-full flex items-center justify-center left-4 border bg-white border-custom-gray-400"
+            @onClick="closeModal"
           >
             <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
-          </button>
+          </DefaultButton>
 
           <ul class="w-full h-8 flex items-center justify-center">
             <li
@@ -33,7 +33,10 @@
           class="w-full px-4 flex items-center justify-between flex-grow-0 h-16 bg-white"
           :class="{ hidden: hideFooter }"
         >
-          <DefaultButton class="text-bold font-medium text-sm underline"  @click.stop.prevent="clearAll()">
+          <DefaultButton
+            class="text-bold font-medium text-sm underline"
+            @onClick="clearAll()"
+          >
             Limpiar Todo
           </DefaultButton>
 
@@ -51,22 +54,19 @@
 
 <script setup>
 import { computed, watch } from "vue";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
-import { useAppModalStore } from "~/store/AppModalStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
+import { useAppModalStore } from "~/store/app/AppModalStore";
 import { storeToRefs } from "pinia";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import MobileSearchFilter from "~/components/common/MobileSearchFilter/MobileSearchFilter.vue";
 import OutlineSearch from "~/components/common/Svg/OutlineSearch.vue";
 import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 const selectedTab = ref(0);
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
 const useModalStore = useAppModalStore();
 
-const {
-  updateValue,
-  handleSelectedDateId,
-  updateCircularMonthSelector
-} = useSearch;
+const { updateValue, handleSelectedDateId, updateCircularMonthSelector } =
+  useSearchBar;
 
 const { setOpen } = useModalStore;
 
@@ -102,14 +102,14 @@ function handleClick(id) {
   selectedTab.value = id;
 }
 
-function clearAll () {
+function clearAll() {
   handleSelectedDateId([]);
   updateValue("travelDate", []);
   updateCircularMonthSelector(3);
   updateValue("selectedMonths", []);
   updateValue("when", []);
-  updateValue("adults", 0)
-  updateValue("children",0);
+  updateValue("adults", 0);
+  updateValue("children", 0);
   updateValue("babies", 0);
 }
 

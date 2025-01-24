@@ -28,13 +28,8 @@
 
 <script setup>
 import CounterCard from "~/components/common/CounterCard/CounterCard.vue";
-import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 
 const props = defineProps({
-  dateRange: {
-    type: Array,
-    default: [],
-  },
   monthCounter: {
     type: Number,
     default: 0,
@@ -58,11 +53,7 @@ const props = defineProps({
   endDate: {
     type: String,
     required: true,
-  },
-  secondaryButtonText: {
-    type: String,
-    default: "Omite",
-  },
+  }
 });
 
 const emit = defineEmits(["setMonthCounter", "handleNext", "handleReset"]);

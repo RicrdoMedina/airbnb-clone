@@ -21,6 +21,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
     "@vuepic/vue-datepicker": "^7.2.0",
+    "axios": "^1.7.9",
     "date-fns": "^2.30.0",
     "nuxi": "3.16.0",
     "pinia": "^2.1.7",

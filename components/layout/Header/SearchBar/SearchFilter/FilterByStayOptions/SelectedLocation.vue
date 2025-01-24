@@ -12,26 +12,25 @@
 </template>
 
 <script setup>
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
 import { useFilterWhenDoYouWantToGo } from "~/components/composables/useFilterWhenDoYouWantToGo";
 import { truncateString } from "~/utils/stringUtils";
 
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
 
-const { toggleSubFilter, filterStates, values } = useSearch;
+const { toggleSubFilter, filterStates, values, tripStartDate, tripEndDate } =
+useSearchBar;
 
 const {
   isFilterActive,
   showWhenOptions,
   stayDurations,
   availableMonths,
-  tripStartDate,
-  tripEndDate,
   activeSubFilter,
-} = storeToRefs(useSearch);
+} = storeToRefs(useSearchBar);
 
 const defaultClasses = computed(() => ({
   filter: true,
@@ -96,7 +95,6 @@ const { dynamicClasses: inputDynamicClasses } = useDynamicClasses(
   inputActiveClasses,
   inputInactiveClasses
 );
-
 
 const selectedFilterValue = computed(() =>
   activeSubFilter.value === "Month"

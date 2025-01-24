@@ -19,9 +19,13 @@
     </template>
 
     <div
-      class="w-full h-full z-50 flex flex-col items-center justify-center relative"
+      class="w-full h-full z-50 flex flex-col items-start justify-center relative"
     >
-      <span class="w-full text-xs font-medium text-bold">Llegada</span>
+      <span
+        class="text-xs font-medium text-bold rounded-md"
+        :class="{ 'background-animation': isLoading }"
+        >Llegada</span
+      >
       <div :class="blockDynamicClasses">
         {{ formattedArrivalDate }}
         <span
@@ -33,7 +37,7 @@
 
       <span
         class="flex items-center justify-center w-6 h-6 absolute right-0 cursor-pointer rounded-full hover:bg-custom-gray-300 ease-in-out transition-all duration-500"
-        v-show="showCloseIcon"
+        v-show="shouldShowCloseIcon"
         @click.stop.prevent="handleResetDateRange"
       >
         <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
@@ -44,26 +48,24 @@
 
 <script setup>
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useAppDataStore } from "~/store/app/AppDataStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
 import { es } from "date-fns/locale";
 import { format } from "date-fns";
 import { isEmpty } from "~/utils/helpers";
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
+const useDataStore = useAppDataStore();
 
 const { toggleSubFilter, filterStates, values, handleResetDateRange } =
-  useSearch;
+useSearchBar;
 
-const {
-  isFilterActive,
-  showWhenOptions,
-  tripStartDate,
-  tripEndDate,
-  dateRange,
-} = storeToRefs(useSearch);
+const { isFilterActive, showWhenOptions } = storeToRefs(useSearchBar);
+
+const { isLoading } = storeToRefs(useDataStore);
 
 const defaultClasses = computed(() => ({
-  "filter": true,
+  filter: true,
   "w-36": true,
   "h-full": true,
   relative: true,
@@ -96,8 +98,19 @@ const inactiveClasses = computed(() => ({
     !filterStates.output,
 }));
 
-const blockDefaultClasses =
-  "w-full bg-transparent border-0 outline-0 text-sm text-ellipsis overflow-hidden whitespace-nowrap";
+const blockDefaultClasses = computed(() => ({
+  "w-full": true,
+  "bg-transparent": true,
+  "border-0": true,
+  "outline-0": true,
+  "text-sm": true,
+  "text-ellipsis": true,
+  "overflow-hidden": true,
+  "whitespace-nowrap": true,
+  "background-animation": isLoading.value,
+  "rounded-md": isLoading.value,
+  "mt-0.5": isLoading.value,
+}));
 
 const blockActiveClasses = "text-bold font-medium";
 
@@ -127,7 +140,7 @@ const formattedArrivalDate = computed(() => {
   return formattedDate;
 });
 
-const showCloseIcon = computed(() => {
+const shouldShowCloseIcon = computed(() => {
   return !isEmpty(values.travelDate) && filterStates.arrival;
 });
 </script>

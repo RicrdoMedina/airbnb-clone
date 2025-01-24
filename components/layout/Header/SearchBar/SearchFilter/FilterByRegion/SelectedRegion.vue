@@ -3,17 +3,25 @@
     class="w-full h-full flex flex-col items-start justify-center relative z-50"
     @click.stop.prevent="toggleSubFilter('where')"
   >
-    <label class="text-xs font-medium text-bold" for="">Dónde</label>
+    <label
+      class="text-xs font-medium text-bold rounded-md"
+      :class="{ 'background-animation': isLoading }"
+      for=""
+      >Dónde</label
+    >
+
+    <span class="w-4/5 h-5 mt-0.5 rounded-md background-animation" v-if="isLoading"></span>
     <input
       :class="inputDynamicClasses"
       type="text"
       placeholder="Explora destinos"
       :value="getValueInputRegion"
+      v-else
     />
 
     <span
       class="flex items-center justify-center w-6 h-6 absolute right-4 cursor-pointer rounded-full hover:bg-custom-gray-300 ease-in-out transition-all duration-500"
-      v-show="showCloseIcon"
+      v-show="shouldShowCloseIcon"
       @click.stop.prevent="reset"
     >
       <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
@@ -26,21 +34,24 @@
   <!-- SelectedRegionHoverBackground -->
   <div
     class="w-64 h-full group-hover:bg-custom-gray-300 absolute rounded-full -right-20 ease-in-out transition-all duration-500 z-0"
-    v-show="filterStates.arrival || filterStates.when"
+    v-show="shouldShowHoverBackground"
   ></div>
 </template>
 
 <script setup>
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useValueInputRegion } from "~/components/composables/useValueInputRegion";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useAppDataStore } from "~/store/app/AppDataStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
+const useDataStore = useAppDataStore();
+const useSearchBar = useSearchBarStore();
 
-const useSearch = useFiltersStore();
+const { toggleSubFilter, filterStates, values, updateValue } = useSearchBar;
 
-const { toggleSubFilter, filterStates, values, updateValue } = useSearch;
+const { isFilterActive, searchRegions } = storeToRefs(useSearchBar);
 
-const { isFilterActive, searchRegions } = storeToRefs(useSearch);
+const { isLoading } = storeToRefs(useDataStore);
 
 const hoverBackgroundDefaultClasses =
   "absolute inset-0 w-full h-full rounded-full ease-in-out transition-all duration-500 z-40";
@@ -74,8 +85,12 @@ const { dynamicClasses: inputDynamicClasses } = useDynamicClasses(
 
 const { getValueInputRegion } = useValueInputRegion(values, searchRegions);
 
-const showCloseIcon = computed(() => {
+const shouldShowCloseIcon = computed(() => {
   return values.where && filterStates.where;
+});
+
+const shouldShowHoverBackground = computed(() => {
+  return filterStates.arrival || filterStates.when;
 });
 
 function reset() {

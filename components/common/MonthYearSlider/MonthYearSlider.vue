@@ -91,9 +91,8 @@ const handlePrev = () => {
 };
 
 function handleSelect(id) {
-  emit('handleClick', id)
+  emit("handleClick", id);
 }
-
 
 const isNextDisabled = computed(
   () => currentSlideAux.value >= props.items.length - props.itemsToShow
@@ -101,11 +100,3 @@ const isNextDisabled = computed(
 
 const isPrevDisabled = computed(() => currentSlideAux.value <= 0);
 </script>
-
-<style lang="css" scoped>
-.carousel__item {
-}
-
-.carousel__slide {
-}
-</style>

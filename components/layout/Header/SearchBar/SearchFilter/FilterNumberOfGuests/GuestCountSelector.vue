@@ -31,12 +31,11 @@
 
 <script setup>
 import CounterCard from "~/components/common/CounterCard/CounterCard.vue";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
 
-const { updateValue, values } = useSearch;
-
+const { updateValue, values } = useSearchBar;
 
 function setNumberAdults (value) {
 updateValue("adults",value)

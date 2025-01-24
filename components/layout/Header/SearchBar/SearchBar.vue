@@ -7,11 +7,11 @@
 
 <script setup>
 import SearchFilter from "~/components/layout/Header/SearchBar/SearchFilter/SearchFilter.vue";
-import SearchOptions from "~/components/layout/Header/SearchBar/SearchOptions.vue";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import SearchOptions from "~/components/layout/Header/SearchBar/SearchOptions/SearchOptions.vue";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
-const useSearch = useFiltersStore();
-const { isStickyFilterActive, littleSearchIsActive } = storeToRefs(useSearch);
+const useSearchBar = useSearchBarStore();
+const { isStickyFilterActive, littleSearchIsActive } = storeToRefs(useSearchBar);
 
 const searchBarClasses = computed(() => {
   if (isStickyFilterActive.value) {

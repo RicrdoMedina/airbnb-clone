@@ -6,18 +6,17 @@
       @handleChange="handleChange"
     />
     <div class="w-full mt-4 flex items-center justify-start">
-      <button
-        type="button"
-        v-for="date in exactDates"
+      <DefaultButton
+        v-for="date in additionalOptions"
         :key="date.id"
         :class="dynamicClasses(date.value).value"
-        @click.stop.prevent="$emit('setApproximateDays', date.value)"
+        @onClick="handleApproximateDays(date.value)"
       >
         <span class="inline-block mr-2" v-if="date.value">
           <img class="w-3" src="/images/IconDate.svg" alt="Fechas Exactas" />
         </span>
         {{ date.name }}
-      </button>
+      </DefaultButton>
     </div>
   </div>
 </template>
@@ -27,24 +26,25 @@ import { computed } from "vue";
 import MultiCalendar from "~/components/common/MultiCalendar/MultiCalendar.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { isEmpty } from "~/utils/helpers";
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 
 const props = defineProps({
-  dateRange:{
+  dateRange: {
     type: Array,
     required: true,
   },
-  exactDates: {
+  additionalOptions: {
     type: Array,
-    required: true,
+    default: [],
   },
-  approximateDays: {
+  selectedDate: {
     type: Number,
     default: 0,
     required: true,
   },
 });
 
-const emit = defineEmits(["handleDateRange"]);
+const emit = defineEmits(["handleDateRange", "handleApproximateDays"]);
 
 const exactDateButtonDefaultClasses =
   "text-xs px-3 py-1 mr-3 ease-in-out transition-all duration-500 h-full flex items-center justify-center text-light cursor-pointer rounded-full cursor-pointer z-10";
@@ -54,10 +54,9 @@ const exactDateButtonActiveClasses = "shadow-solid-black-2";
 const exactDateButtonInactiveClasses =
   "shadow-custom-gray hover:shadow-solid-black";
 
-
 const dynamicClasses = (day) =>
   useDynamicClasses(
-    () => props.approximateDays === day,
+    () => props.selectedDate === day,
     exactDateButtonDefaultClasses,
     exactDateButtonActiveClasses,
     exactDateButtonInactiveClasses
@@ -74,7 +73,11 @@ const getMaxDate = computed(() => {
   return isEmpty(props.dateRange) ? null : props.dateRange[1];
 });
 
-function handleChange (val, range) {
+function handleChange(val, range) {
   emit("handleDateRange", val, range);
+}
+
+function handleApproximateDays(val) {
+  emit("handleApproximateDays", val);
 }
 </script>

@@ -9,7 +9,7 @@
           <SubFilterButtons
             :options="dateOptions"
             :selectedOption="activeSubFilter"
-            @change="toggleSubFilter"
+            @handleClick="toggleSubFilter"
           />
         </div>
 
@@ -51,8 +51,8 @@
               >
                 <ExactDateSwiper
                   :items="exactDates"
-                  :approximateDays="values.approximateDays"
-                  @handleClick="setApproximateDays"
+                  :categoryActive="values.approximateDays"
+                  @handleSelectCategory="setApproximateDays"
                 />
               </div>
               <div
@@ -60,14 +60,14 @@
               >
                 <DefaultButton
                   class="text-bold font-medium text-sm underline"
-                  @click="handleReset"
+                  @onClick="handleReset"
                 >
                   {{ secondaryButtonText }}
                 </DefaultButton>
 
                 <DefaultButton
                   class="h-12 px-4 rounded-lg flex items-center justify-center bg-black font-medium text-white"
-                  @click="handleNext"
+                  @onClick="handleNext"
                 >
                   <span class="ml-1"> Siguiente </span>
                 </DefaultButton>
@@ -81,7 +81,7 @@
 </template>
 <script setup>
 import { watch, toRefs } from "vue";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
 import SubFilterButtons from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/SubFilterButtons.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
@@ -92,19 +92,17 @@ import { calculateFutureDate } from "~/utils/dateUtils";
 import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 import ExactDateSwiper from "~/components/common/ExactDateSwiper/ExactDateSwiper.vue";
 
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
 
 const {
-  handleRegionSelection,
   values,
   toggleMonthSelection,
   toggleSubFilter,
   updateCircularMonthSelector,
   updateValue,
   handleDateRange,
-  handleResetDateRange,
   handleSelectedDateId,
-} = useSearch;
+} = useSearchBar;
 
 const {
   dateOptions,
@@ -116,7 +114,7 @@ const {
   circularMonthSelector,
   exactDates,
   selectedDateId,
-} = storeToRefs(useSearch);
+} = storeToRefs(useSearchBar);
 
 const { travelDate, when, selectedMonths } = toRefs(values);
 

@@ -1,13 +1,8 @@
 import { defineStore } from "pinia";
-import {
-  compareDates,
-  getDateFromMonth,
-  getNext12Months,
-  getNextYear,
-} from "~/utils/dateUtils";
-import { isArray, isEmpty } from "~/utils/helpers";
+import { compareDates, getNext12Months } from "~/utils/dateUtils";
+import { isArray } from "~/utils/helpers";
 
-export const useFiltersStore = defineStore("filtersStore", () => {
+export const useSearchBarStore = defineStore("searchBarStore", () => {
   // State
   const isFilterActive = ref(false);
   const isStickyFilterActive = ref(false);
@@ -15,6 +10,7 @@ export const useFiltersStore = defineStore("filtersStore", () => {
   const activeFilter = ref(null);
   const littleSearchIsActive = ref(false);
   const activeSubFilter = ref("Dates");
+  const categoryActive = ref(0);
 
   const filterStates = reactive({
     where: ref(false),
@@ -67,7 +63,7 @@ export const useFiltersStore = defineStore("filtersStore", () => {
   ]);
 
   const exactDates = ref([
-    { id: 1, name: "Fechas Exactas", value: "" },
+    { id: 1, name: "Fechas Exactas", value: 0 },
     { id: 2, name: "1 día", value: 1 },
     { id: 3, name: "2 días", value: 2 },
     { id: 4, name: "3 días", value: 3 },
@@ -294,6 +290,10 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     selectedDateId.value.push(val);
   }
 
+  function setCategoryActive(val) {
+    categoryActive.value = val;
+  }
+
   return {
     // State
     isStickyFilterActive,
@@ -313,6 +313,7 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     circularMonthSelector,
     exactDates,
     selectedDateId,
+    categoryActive,
 
     // Computed
     tripStartDate,
@@ -335,5 +336,6 @@ export const useFiltersStore = defineStore("filtersStore", () => {
     toggleStickyFilterInitiated,
     updateCircularMonthSelector,
     handleSelectedDateId,
+    setCategoryActive,
   };
 });

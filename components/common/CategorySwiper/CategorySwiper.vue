@@ -8,13 +8,14 @@
       }"
       class="mySwiper"
     >
-      <swiper-slide v-for="(item, index) in items" :key="index">
+      <swiper-slide v-for="(item, index) in displayItems" :key="index">
         <div class="carousel__item">
           <IconTextCard
             :id="item.id"
             :url="item.url"
             :text="item.name"
-            :isSelected="item.id === categoryActive"
+            :isSelected="isSelected(item.id).value"
+            :isLoading="isLoading"
             @handleClick="handleSelectCategory(item.id)"
           />
         </div>
@@ -40,13 +41,28 @@ const props = defineProps({
     default: null,
     required: true,
   },
-  itemsToShow: {
-    type: Number,
-    default: 5,
+  isLoading: {
+    type: Boolean,
+    default: false,
   },
 });
 
+const loadingPlaceholder = Array.from({ length: 24 }, (_, i) => ({ id: i }));
+
+const displayItems = computed(() =>
+  props.isLoading ? loadingPlaceholder : props.items
+);
+
 const emit = defineEmits(["handleCategorySelected"]);
+
+const isSelected = (id) =>
+  computed(() => {
+    if (props.isLoading) {
+      return false;
+    }
+
+    return id === props.categoryActive;
+  });
 
 function handleSelectCategory(id) {
   emit("handleCategorySelected", id);

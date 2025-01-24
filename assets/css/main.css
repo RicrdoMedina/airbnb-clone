@@ -204,6 +204,41 @@
   scrollbar-width: none;
 }
 
+.background-animation {
+  color: transparent !important;
+  background: linear-gradient(
+      -45deg,
+      rgb(228, 226, 225),
+      rgb(234, 236, 239),
+      rgb(228, 226, 225),
+      rgb(234, 236, 239)
+    )
+    0% 0% / 400% 400%;
+  animation: backgroundAnimation 3s ease infinite;
+  -webkit-animation: backgroundAnimation 3s ease infinite;
+  -moz-animation: backgroundAnimation 3s ease infinite;
+  -o-animation: backgroundAnimation 3s ease infinite;
+  -ms-animation: backgroundAnimation 3s ease infinite;
+}
+
+/*
+==============================================
+Background Animation
+==============================================
+*/
+
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @supports not (height: -webkit-fill-available) {
   .max-h-universal {
     max-height: calc(6px + 1vh);

@@ -4,20 +4,15 @@
     <FilterByStayOptions />
     <FilterNumberOfGuests />
 
-    <template v-if="filterStates.where">
-      <RegionSelector
-        :options="searchRegions"
-        @handleClick="handleRegionSelection"
-      />
+    <template v-if="shouldShowRegionSelector">
+      <RegionSelector />
     </template>
 
-    <template
-      v-if="filterStates.arrival || filterStates.output || filterStates.when"
-    >
+    <template v-if="shouldShowFloatingTabs">
       <FloatingTabsStayOptions />
     </template>
 
-    <template v-if="filterStates.who">
+    <template v-if="shouldShowGuestCountSelector">
       <GuestCountSelector />
     </template>
   </div>
@@ -29,7 +24,7 @@ import GuestCountSelector from "~/components/layout/Header/SearchBar/SearchFilte
 import FloatingTabsStayOptions from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/FloatingTabsStayOptions.vue";
 import { useClickOutside } from "~/components/composables/useClickOutside";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
 import FilterByRegion from "~/components/layout/Header/SearchBar/SearchFilter/FilterByRegion/FilterByRegion.vue";
 import FilterByStayOptions from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/FilterByStayOptions.vue";
@@ -37,18 +32,11 @@ import FilterNumberOfGuests from "~/components/layout/Header/SearchBar/SearchFil
 
 const $searchFilter = ref(null);
 
-const useSearch = useFiltersStore();
+const useSearchBar = useSearchBarStore();
 
-const { isFilterActive, filterStates, searchRegions, isStickyFilterActive } =
-  storeToRefs(useSearch);
+const { isFilterActive, filterStates } = storeToRefs(useSearchBar);
 
-const {
-  disableSearch,
-  resetFilterStates,
-  handleRegionSelection,
-  toggleLittleSearch,
-  toggleFilterActive,
-} = useSearch;
+const { disableSearch, resetFilterStates } = useSearchBar;
 
 const defaultClasses =
   "w-full hidden md:flex rounded-full h-16 top-0 left-0 flex overflow-hidden border cursor-pointer";
@@ -73,6 +61,22 @@ const handleClickOutside = (event) => {
     resetFilterStates();
   }
 };
+
+const shouldShowRegionSelector = computed(() => {
+  return filterStates.value.where;
+});
+
+const shouldShowFloatingTabs = computed(() => {
+  return (
+    filterStates.value.arrival ||
+    filterStates.value.output ||
+    filterStates.value.when
+  );
+});
+
+const shouldShowGuestCountSelector = computed(() => {
+  return filterStates.value.who;
+});
 
 useClickOutside(handleClickOutside);
 </script>

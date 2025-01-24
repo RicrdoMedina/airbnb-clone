@@ -46,7 +46,7 @@
       <div class="w-full mt-4 px-6">
         <DefaultButton
           class="text-bold font-medium w-full h-12 rounded-lg border border-black flex items-center justify-center"
-          @click="handleClick"
+          @onClick="handleClick"
         >
           Carga más fechas
         </DefaultButton>

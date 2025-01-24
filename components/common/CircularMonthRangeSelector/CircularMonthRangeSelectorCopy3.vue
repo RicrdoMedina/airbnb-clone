@@ -248,7 +248,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["handleChange"]);
+const emit = defineEmits(["handleSelectedMonthRange"]);
 
 const dots = Array.from({ length: 12 }, (_, i) => i);
 const angle = ref(0);
@@ -301,7 +301,7 @@ const pathTrackForeground = [
 function toggleMonth(monthIndex) {
   const monthUpdated = monthIndex + 1;
   const endDate = calculateFutureDate(monthUpdated + 1);
-  emit("handleChange", monthUpdated, [props.starDate, endDate]);
+  emit("handleSelectedMonthRange", monthUpdated, [props.starDate, endDate]);
   angle.value = monthIndex * 30;
 }
 

@@ -8,9 +8,18 @@
       :breakpoints="breakpoints"
       ref="carousel"
     >
-      <Slide v-for="item in items" :key="item.id">
+      <Slide v-for="(item, index) in displayItems" :key="`slide-${index}`">
         <div class="carousel__item">
           <IconTextCard
+            v-if="isLoading"
+            :isLoading="true"
+            :id="null"
+            :url="null"
+            :text="null"
+            :isSelected="false"
+          />
+          <IconTextCard
+            v-else
             :id="item.id"
             :url="item.url"
             :text="item.name"
@@ -50,7 +59,7 @@
 </template>
 
 <script setup>
-import { computed,onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import IconTextCard from "~/components/common/IconTextCard/IconTextCard.vue";
 
 const props = defineProps({
@@ -67,6 +76,10 @@ const props = defineProps({
     type: Number,
     default: 5,
   },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["handleCategorySelected"]);
@@ -75,57 +88,23 @@ const currentSlide = ref(0);
 const currentSlideAux = ref(0);
 
 const breakpoints = {
-  // 300px and up
-  300: {
-    itemsToShow: 3.5,
-    snapAlign: "center",
-  },
-  // 400px and up
-  400: {
-    itemsToShow: 3.5,
-    snapAlign: "start",
-  },
-  // 500px and up
-  500: {
-    itemsToShow: 3.5,
-    snapAlign: "start",
-  },
-  // 500px and up
-  769: {
-    itemsToShow: 5,
-    snapAlign: "start",
-  },
-  // 500px and up
-  900: {
-    itemsToShow: 5,
-    snapAlign: "start",
-  },
-  // 500px and up
-  1100: {
-    itemsToShow: 6,
-    snapAlign: "start",
-  },
-  // 500px and up
-  1280: {
-    itemsToShow: 7,
-    snapAlign: "start",
-  },
-  // 500px and up
-  1400: {
-    itemsToShow: 9,
-    snapAlign: "start",
-  },
-    // 500px and up
-    1500: {
-    itemsToShow: 10,
-    snapAlign: "start",
-  },
-      // 500px and up
-      1700: {
-    itemsToShow: 12,
-    snapAlign: "start",
-  },
+  300: { itemsToShow: 3.5, snapAlign: "center" },
+  400: { itemsToShow: 3.5, snapAlign: "start" },
+  500: { itemsToShow: 3.5, snapAlign: "start" },
+  769: { itemsToShow: 5, snapAlign: "start" },
+  900: { itemsToShow: 5, snapAlign: "start" },
+  1100: { itemsToShow: 6, snapAlign: "start" },
+  1280: { itemsToShow: 7, snapAlign: "start" },
+  1400: { itemsToShow: 9, snapAlign: "start" },
+  1500: { itemsToShow: 10, snapAlign: "start" },
+  1700: { itemsToShow: 12, snapAlign: "start" },
 };
+
+const loadingPlaceholder = Array.from({ length: 24 }, (_, i) => ({ id: i }));
+
+const displayItems = computed(() =>
+  props.isLoading ? loadingPlaceholder : props.items
+);
 
 function handleNext() {
   const remainingItems = props.items.length - currentSlideAux.value;
@@ -152,8 +131,4 @@ const isNextDisabled = computed(
 );
 
 const isPrevDisabled = computed(() => currentSlideAux.value === 0);
-
-onMounted(() => {
-
-})
 </script>

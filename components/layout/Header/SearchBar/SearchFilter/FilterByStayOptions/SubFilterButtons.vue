@@ -2,29 +2,29 @@
   <div
     class="w-full md:w-80 rounded-full h-10 bg-custom-gray-200 flex items-center justify-between p-1"
   >
-    <button
-      type="button"
+    <DefaultButton
       v-for="option in options"
       :key="option.value"
       :class="dynamicClasses(option.value).value"
-      @click.stop.prevent="handleChange(option.filter, option.value)"
+      @onClick="handleChange(option.filter, option.value)"
     >
-      {{ option.label }}
-    </button>
+      <span> {{ option.label }}</span>
+    </DefaultButton>
   </div>
 </template>
 
 <script setup>
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 
 const props = defineProps({
-  options: Array,
-  selectedOption: String,
+  options: { type: Array, default: [] },
+  selectedOption: { type: String, default: [] },
 });
 
-const emit = defineEmits(["change"]);
-const handleChange = (filter,subFilter) => {
-  emit("change", filter,subFilter);
+const emit = defineEmits(["handleClick"]);
+const handleChange = (filter, subFilter) => {
+  emit("handleClick", filter, subFilter);
 };
 
 const defaultClasses =

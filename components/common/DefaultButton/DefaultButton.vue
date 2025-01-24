@@ -3,7 +3,7 @@
     :class="$attrs.class"
     :disabled="isDisabled"
     :type="type"
-    @click="handleClick"
+    @click.stop.prevent="handleClick"
   >
     <slot />
   </button>
@@ -23,11 +23,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits(["onClick"]);
 
 const handleClick = (event) => {
-  if (!props.isDisabled) {
-    emit("click", event);
-  }
+  emit("onClick", event);
 };
 </script>

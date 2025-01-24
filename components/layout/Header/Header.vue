@@ -12,10 +12,14 @@
             <img class="w-8" src="/images/Isotipo.svg" alt="Logo" />
           </NuxtLink>
         </div>
-        <div class="xl:flex-[0_1_auto] w-full md:w-auto h-full flex flex-col items-center justify-center">
-          <MobileSearchBar/>
+        <div
+          class="xl:flex-[0_1_auto] w-full md:w-auto h-full flex flex-col items-center justify-center"
+        >
+          <MobileSearchBar />
           <LittleSearch />
-          <div class="absolute hidden md:block w-full md:h-full md:top-16 lg:top-0 left-0 z-30">
+          <div
+            class="absolute hidden md:block w-full md:h-full md:top-16 lg:top-0 left-0 z-30"
+          >
             <SearchBar />
           </div>
         </div>
@@ -24,7 +28,8 @@
         >
           <NuxtLink
             to="/"
-            class="text-sm font-medium cursor-pointer flex whitespace-nowrap"
+            class="text-sm font-medium cursor-pointer flex whitespace-nowrap rounded-xl"
+            :class="{ 'background-animation': isLoading }"
             >Pon tu espacio en Airbnb</NuxtLink
           >
           <div class="inline-block mx-4">
@@ -44,22 +49,29 @@
 </template>
 
 <script setup>
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
+import { useAppDataStore } from "~/store/app/AppDataStore";
 import { storeToRefs } from "pinia";
-import HeaderDropdown from "@/components/layout/Header/HeaderDropdown.vue";
-import LanguageSelector from "@/components/layout/Header/LanguageSelector.vue";
-import MobileSearchBar from "~/components/layout/Header/MobileSearchBar/MobileSearchBar.vue";
-import SearchBar from "@/components/layout/Header/SearchBar/SearchBar.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
-import LittleSearch from "~/components/layout/Header/SearchBar/SearchFilter/LittleSearch.vue";
+import HeaderDropdown from "~/components/layout/Header/HeaderDropdown.vue";
+import LanguageSelector from "~/components/layout/Header/LanguageSelector.vue";
+import MobileSearchBar from "~/components/layout/Header/MobileSearchBar/MobileSearchBar.vue";
+import SearchBar from "~/components/layout/Header/SearchBar/SearchBar.vue";
+import LittleSearch from "~/components/layout/Header/LittleSearch/LittleSearch.vue";
 
-const useSearch = useFiltersStore();
+const useDataStore = useAppDataStore();
+const useSearchBar = useSearchBarStore();
 
-const { toggleLittleSearch, toggleFilterActive, toggleStickyFilterInitiated } =
-  useSearch;
+const {
+  toggleLittleSearch,
+  toggleFilterActive,
+  toggleStickyFilterInitiated,
+  disableSearch,
+} = useSearchBar;
 
 const { isStickyFilterActive, littleSearchIsActive, stickyFilterInitiated } =
-  storeToRefs(useSearch);
+  storeToRefs(useSearchBar);
+const { isLoading } = storeToRefs(useDataStore);
 
 let lastScrollY = 0;
 
@@ -103,6 +115,7 @@ const handleScroll = () => {
           toggleLittleSearch(false);
           toggleFilterActive(true);
           toggleStickyFilterInitiated(false);
+          disableSearch();
         }
       } else if (isStickyFilterActive.value && !stickyFilterInitiated.value) {
         toggleLittleSearch(true);

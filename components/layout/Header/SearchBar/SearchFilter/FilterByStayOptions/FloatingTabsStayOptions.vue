@@ -7,41 +7,59 @@
         <SubFilterButtons
           :options="dateOptions"
           :selectedOption="activeSubFilter"
-          @change="toggleSubFilter"
+          @handleClick="toggleSubFilter"
         />
       </div>
 
       <component
         :is="currentComponent"
         :dateRange="values.travelDate"
-        :approximateDays="values.approximateDays"
+        :selectedDate="values.approximateDays"
+        :additionalOptions="exactDates"
         :stayList="stayDurations"
         :stayAtPlace="values.stayDuration"
         :items="availableMonths"
         :selectedItems="values.selectedMonths"
-        :exactDates="exactDates"
-        @setApproximateDays="handleApproximateDays"
+        :tripStartDate="tripStartDate"
+        :tripEndDate="tripEndDate"
+        :selectedMonth="values.when"
+        :circularMonthSelector="circularMonthSelector"
+        @handleApproximateDays="handleApproximateDays"
         @handleStayAtPlace="handleStayAtPlace"
         @handleDateRange="handleDateRange"
+        @handleSelectedMonthRange="handleSelectedMonthRange"
       />
     </section>
   </div>
 </template>
 
 <script setup>
+import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
+import { storeToRefs } from "pinia";
 import SubFilterButtons from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/SubFilterButtons.vue";
 import DatesSection from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/DatesSection.vue";
 import MonthSection from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/MonthSection.vue";
 import FlexibleSection from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/FlexibleSection.vue";
 
-import { useFiltersStore } from "~/store/HeaderSearchBarStore";
-import { storeToRefs } from "pinia";
+const useSearchBar = useSearchBarStore();
 
-const useSearch = useFiltersStore();
-
-const { toggleSubFilter, updateValue, filterStates, values,handleDateRange } = useSearch;
-const { activeSubFilter, stayDurations, availableMonths,dateOptions,exactDates } =
-  storeToRefs(useSearch);
+const {
+  toggleSubFilter,
+  updateValue,
+  values,
+  handleDateRange,
+  updateCircularMonthSelector,
+} = useSearchBar;
+const {
+  activeSubFilter,
+  stayDurations,
+  availableMonths,
+  dateOptions,
+  exactDates,
+  tripEndDate,
+  tripStartDate,
+  circularMonthSelector,
+} = storeToRefs(useSearchBar);
 
 const currentComponent = computed(() => {
   if (activeSubFilter.value === "Dates") return DatesSection;
@@ -55,5 +73,10 @@ function handleApproximateDays(value) {
 
 function handleStayAtPlace(value) {
   updateValue("stayDuration", value);
+}
+
+function handleSelectedMonthRange(index, value) {
+  updateValue("when", value);
+  updateCircularMonthSelector(index);
 }
 </script>

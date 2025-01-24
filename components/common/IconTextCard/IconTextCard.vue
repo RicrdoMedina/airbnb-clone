@@ -4,7 +4,11 @@
     @click.stop.prevent="onClick"
   >
     <div class="w-full h-8 flex items-center justify-center">
-      <img class="w-5 md:w-6" :src="url" :alt="text" />
+      <span
+        v-if="isLoading"
+        class="background-animation w-6 h-6 rounded-full"
+      ></span>
+      <img class="w-5 md:w-6" :src="url" :alt="text" v-else />
     </div>
     <div :class="containerLabelDynamicClasses">
       <p :class="labelDynamicClasses">{{ text }}</p>
@@ -36,15 +40,33 @@ const props = defineProps({
     default: false,
     required: true,
   },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["handleClick"]);
 
-const labelDefaultClasses =
-  "text-xs md:font-medium group-hover:text-black text-center whitespace-nowrap ease-in-out transition-all duration-500";
+const labelDefaultClasses = computed(() => ({
+  "text-xs": true,
+  "md:font-medium": true,
+  "group-hover:text-black": true,
+  "text-center": true,
+  "whitespace-nowrap": true,
+  "ease-in-out": true,
+  "transition-all": true,
+  "duration-500": true,
+  "background-animation": props.isLoading,
+  "rounded-md": props.isLoading,
+  "text-transparent": props.isLoading,
+  "w-20": props.isLoading,
+  "md:w-16": props.isLoading,
+  "h-4": props.isLoading,
+}));
 
 const containerLabelDefaultClasses =
-  "w-full h-6 flex items-start justify-center mt-1 after:content-[''] after:absolute after:-bottom-0 after:w-full after:h-0.5";
+  "w-full h-6 flex items-start justify-center mt-1 after:content-[''] after:absolute after:absolute after:-bottom-0 after:w-full after:h-0.5";
 
 const labelActiveClasses = "text-black";
 
@@ -72,5 +94,3 @@ function onClick() {
   emit("handleClick");
 }
 </script>
-
-<style lang="scss" scoped></style>
