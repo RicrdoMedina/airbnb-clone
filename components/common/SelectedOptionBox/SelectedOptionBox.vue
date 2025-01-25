@@ -1,7 +1,6 @@
 <template>
   <div
-    class="bg-white mx-3 h-14 px-4 shadow-bottom-2 mb-2 rounded-xl flex items-center justify-between"
-    :class="$attrs.class"
+    class="bg-white mx-3 h-14 px-4 shadow-bottom-2 mb-2 rounded-xl flex items-center justify-between slide-down"
     @click.stop.prevent="handleClick()"
   >
     <span class="text-light font-medium text-sm"> {{ label }} </span>

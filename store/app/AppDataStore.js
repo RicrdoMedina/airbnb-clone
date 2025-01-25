@@ -9,6 +9,7 @@ export const useAppDataStore = defineStore("appDataStore", () => {
   const travelCategoriesData = ref([]);
   const categoriesData = ref([]);
   const isLoading = ref(true);
+  const isLoadingListingData = ref(true);
   const error = ref(null);
   const hasMoreResults = ref(true);
 
@@ -22,6 +23,7 @@ export const useAppDataStore = defineStore("appDataStore", () => {
 
   async function fetchAllDataHomePage() {
     isLoading.value = true;
+    isLoadingListingData.value = true;
     error.value = null;
     try {
       const [responseA, responseB, responseC] = await Promise.all([
@@ -42,11 +44,12 @@ export const useAppDataStore = defineStore("appDataStore", () => {
       error.value = err.message || "Error fetching data";
     } finally {
       isLoading.value = false;
+      isLoadingListingData.value = false;
     }
   }
 
   async function getListings() {
-    isLoading.value = true;
+    isLoadingListingData.value = true;
     error.value = null;
     try {
       const response = await $http
@@ -67,7 +70,7 @@ export const useAppDataStore = defineStore("appDataStore", () => {
     } catch (err) {
       error.value = err.message || "Error fetching data";
     } finally {
-      isLoading.value = false;
+      isLoadingListingData.value = false;
     }
   }
 
@@ -76,6 +79,7 @@ export const useAppDataStore = defineStore("appDataStore", () => {
     travelCategoriesData,
     categoriesData,
     isLoading,
+    isLoadingListingData,
     listingCurrentNum,
     hasMoreResults,
     setListing,

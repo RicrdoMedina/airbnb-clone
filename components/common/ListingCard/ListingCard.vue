@@ -23,7 +23,13 @@
         >
           {{ item.location }}
           <span class="flex items-center justify-start text-light font-normal">
-            <img class="w-3 mr-2" src="/images/StarIcon.svg" />
+            <NuxtImg
+              class="w-3 mr-2"
+              loading="lazy"
+              src="/images/StarIcon.svg"
+              alt="Rating"
+            />
+
             {{ item.rating }}
           </span>
         </h4>
@@ -42,7 +48,7 @@
 
 <script setup>
 import Carousel from "~/components/common/Carousel/Carousel.vue";
-import FavIcon from "~/components/common/FavIcon/FavIcon.vue";
+import FavIcon from "~/components/common/Svg/FavIcon.vue";
 
 const props = defineProps({
   item: {

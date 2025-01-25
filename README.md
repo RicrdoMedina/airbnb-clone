@@ -1,75 +1,19 @@
-# Nuxt 3 Minimal Starter
+# Petgram progresive web app
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Este repositorio contiene una app sencilla para ver fotos de mascotas, desarrollada con react-hooks.
 
-## Setup
+![Captura de la App](./readme-static/captura.jpg)
 
-Make sure to install the dependencies:
+[Ver la aplicación](https://react-advanced-rcrdmedina-oibkzmh6p-ricrdomedina.vercel.app/)
 
-```bash
-# npm
-npm install
+## Cómo funciona?
 
-# pnpm
-pnpm install
+Requiere Node.JS 10
 
-# yarn
-yarn install
+* `yarn` para instalar las dependencias.
+* `yarn dev` para el entorno de desarrollo.
+* `yarn build` para el entorno de producción.
 
-# bun
-bun install
-```
+## Licencia 
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+MIT

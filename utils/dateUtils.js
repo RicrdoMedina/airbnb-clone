@@ -10,7 +10,7 @@ import {
   isEqual,
   startOfDay,
 } from "date-fns";
-import { es } from "date-fns/locale";
+import { es } from "date-fns/locale/index.js";
 
 export function getMonthWithOffset(offset) {
   const currentDate = new Date();
@@ -52,8 +52,8 @@ export function generateMonthDays(month, year) {
       value: day,
       date: date,
       key: weekDay,
-      active: isCurrentMonthAndYear ? day >= today.getDate() : true,
-      isLastDayOfWeek: weekDay === 6, // If the day is Saturday, it's the last day of the week
+      disabled: isCurrentMonthAndYear ? day <= today.getDate() : false,
+      isLastDayOfWeek: weekDay === 6,
     });
   }
 

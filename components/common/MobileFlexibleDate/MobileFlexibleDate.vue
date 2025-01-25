@@ -7,13 +7,9 @@
     </h3>
     <div class="w-full flex items-center justify-start md:justify-center mt-4">
       <template v-for="option in stayList" :key="option.id">
-        <button
-          type="button"
-          :class="dynamicClasses(option.id).value"
-          @click.stop.prevent="handleStayAtPlace(option.id)"
-        >
+        <DefaultButton :class="dynamicClasses(option.id).value" @onClick="handleStayAtPlace(option.id)">
           {{ option.name }}
-        </button>
+        </DefaultButton>
       </template>
     </div>
     <div class="w-full mt-4 border-t border-custom-gray-200">
@@ -34,6 +30,7 @@
 
 <script setup>
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 import MonthYearSwiper from "~/components/common/MonthYearSwiper/MonthYearSwiper.vue";
 
 const props = defineProps({

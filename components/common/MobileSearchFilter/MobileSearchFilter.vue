@@ -5,7 +5,7 @@
         label="Dónde"
         :value="getValueInputRegion"
         placeholder="Explora destinos"
-        :class="{ hidden: filterStates.where }"
+        :class="regionClasses"
         @handleSelectOption="openFilter('where')"
       />
 
@@ -23,7 +23,7 @@
         label="Cuándo"
         placeholder="Agrega fechas"
         :value="selectedFilterValue"
-        :class="{ hidden: showWhenFilter }"
+        :class="whenClasses"
         @handleSelectOption="openDateFilter()"
       />
 
@@ -35,7 +35,7 @@
       <SelectedOptionBox
         label="Quién"
         :value="formattedNumberGuests"
-        :class="{ hidden: filterStates.who || showWhenFilter }"
+        :class="whoClasses"
         @handleSelectOption="openFilter('who')"
       />
 
@@ -54,7 +54,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { es } from "date-fns/locale";
+import { es } from "date-fns/locale/index.js";
 import { format } from "date-fns";
 import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { useAppModalStore } from "~/store/app/AppModalStore";
@@ -82,14 +82,12 @@ const {
   tripEndDate,
 } = useSearchBar;
 
-const {
-  activeSubFilter,
-  stayDurations,
-  availableMonths,
-  searchRegions,
-} = storeToRefs(useSearchBar);
+const { activeSubFilter, stayDurations, availableMonths, searchRegions } =
+  storeToRefs(useSearchBar);
 
 const { formattedNumberGuests } = useFormattedGuests(values);
+
+const isActive = ref(false);
 
 const { filterValueWhenFormatted } = useFormattedWhenValue(
   () => values.when,
@@ -143,6 +141,28 @@ const showWhenFilter = computed(() => {
   return filterStates.arrival || filterStates.output || filterStates.when;
 });
 
+const regionClasses = computed(() => {
+  const active = isActive.value ? 'active': '';
+  const hidden = filterStates.where ? 'hidden' : '';
+  
+  return `${active} ${hidden}`
+});
+
+const whenClasses = computed(() => {
+  const active = isActive.value ? 'active': '';
+  const hidden = showWhenFilter.value ? 'hidden' : '';
+  
+  return `${active} ${hidden}`
+});
+
+
+const whoClasses = computed(() => {
+  const active = isActive.value ? 'active': '';
+  const hidden = filterStates.who || showWhenFilter.value ? 'hidden' : '';
+  
+  return `${active} ${hidden}`
+});
+
 const { getValueInputRegion } = useValueInputRegion(values, searchRegions);
 
 function setSelectRegion(id) {
@@ -174,5 +194,8 @@ function setNumberBabies(value) {
 
 onMounted(() => {
   openFilter("where");
+  setTimeout(() => {
+    isActive.value = true;
+  }, 100);
 });
 </script>

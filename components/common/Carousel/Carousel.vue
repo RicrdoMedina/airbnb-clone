@@ -7,7 +7,12 @@
     >
       <Slide v-for="item in items" :key="item">
         <div class="carousel__item w-full h-full">
-          <img class="w-full h-full object-cover" :src="item" />
+          <NuxtImg
+            class="w-full h-full object-cover"
+            loading="lazy"
+            :src="item"
+            alt="Carousel Image"
+          />
         </div>
       </Slide>
 

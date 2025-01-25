@@ -30,13 +30,14 @@
                 :key="weekIndex"
               >
                 <td v-for="(day, dayIndex) in week" :key="dayIndex">
-                  <div
+                  <DefaultButton
                     :class="cellDynamicClasses(day.id).value"
                     style="width: 38px; height: 38px"
-                    @click.stop.prevent="handleSelectDate(day)"
+                    @onClick="handleSelectDate(day)"
+                    :disabled="day.disabled"
                   >
-                    {{ day.value }}
-                  </div>
+                    <span>{{ day.value }}</span>
+                  </DefaultButton>
                 </td>
               </tr>
             </tbody>
@@ -58,7 +59,7 @@
 <script setup>
 import { onMounted, watch } from "vue";
 import { getMonth, getYear, format } from "date-fns";
-import { es } from "date-fns/locale";
+import { es } from "date-fns/locale/index.js";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import {
   generateMonthDays,
@@ -109,7 +110,7 @@ function monthRows(monthDays) {
       id: "",
       value: "",
       date: "",
-      active: "",
+      disabled: true,
       isLastDayOfWeek: "",
     });
 
@@ -230,3 +231,9 @@ watch(
   }
 );
 </script>
+
+<style scoped>
+button:disabled {
+  opacity: 0.5;
+}
+</style>

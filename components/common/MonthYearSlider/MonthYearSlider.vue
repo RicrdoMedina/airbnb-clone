@@ -19,26 +19,36 @@
       </Slide>
     </Carousel>
 
-    <button
+    <DefaultButton
       class="absolute left-0 top-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300"
-      type="button"
-      @click="handlePrev"
+      @onClick="handlePrev"
       v-show="!isPrevDisabled"
     >
-      <img class="w-4" src="/images/PrevIcon.svg" alt="Prev" />
-    </button>
-    <button
+      <NuxtImg
+        class="w-4"
+        loading="lazy"
+        src="/images/PrevIcon.svg"
+        alt="Prev"
+      />
+    </DefaultButton>
+
+    <DefaultButton
       class="absolute right-0 top-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300"
-      type="button"
-      @click="handleNext"
+      @onClick="handleNext"
       v-show="!isNextDisabled"
     >
-      <img class="w-4" src="/images/NextIcon.svg" alt="Next" />
-    </button>
+      <NuxtImg
+        class="w-4"
+        loading="lazy"
+        src="/images/NextIcon.svg"
+        alt="Next"
+      />
+    </DefaultButton>
   </div>
 </template>
 
 <script setup>
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 import { computed, ref } from "vue";
 import MonthYearDisplayCard from "~/components/common/MonthYearDisplayCard/MonthYearDisplayCard.vue";
 

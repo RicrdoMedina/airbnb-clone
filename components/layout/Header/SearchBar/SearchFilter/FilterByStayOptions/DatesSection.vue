@@ -13,7 +13,12 @@
         @onClick="handleApproximateDays(date.value)"
       >
         <span class="inline-block mr-2" v-if="date.value">
-          <img class="w-3" src="/images/IconDate.svg" alt="Fechas Exactas" />
+          <NuxtImg
+            class="w-3"
+            src="/images/IconDate.svg"
+            alt="Fechas Exactas"
+            loading="lazy"
+          />
         </span>
         {{ date.name }}
       </DefaultButton>

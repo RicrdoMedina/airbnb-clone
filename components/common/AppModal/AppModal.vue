@@ -5,14 +5,20 @@
   >
     <div class="relative flex flex-col w-full h-full overflow-clip max-h-full">
       <div class="w-full h-full flex flex-col justify-between bg-secondary">
-        <div
+        <header
           class="w-full h-20 flex flex-grow-0 relative justify-between items-center"
+          :class="{ 'fade-in-down': isOpen }"
         >
           <DefaultButton
             class="absolute w-8 h-8 rounded-full flex items-center justify-center left-4 border bg-white border-custom-gray-400"
             @onClick="closeModal"
           >
-            <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
+            <NuxtImg
+              class="w-3"
+              loading="lazy"
+              src="/images/CloseIcon.svg"
+              alt="Close"
+            />
           </DefaultButton>
 
           <ul class="w-full h-8 flex items-center justify-center">
@@ -25,13 +31,16 @@
               {{ tab }}
             </li>
           </ul>
-        </div>
-        <div class="flex-grow overflow-y-auto overflow-x-hidden scrollbar-none">
+        </header>
+        <section
+          class="flex-grow overflow-y-auto overflow-x-hidden scrollbar-none"
+          :class="{ 'fade-in-down': isOpen }"
+        >
           <component :is="currentComponent" v-bind="componentProps" />
-        </div>
+        </section>
         <footer
           class="w-full px-4 flex items-center justify-between flex-grow-0 h-16 bg-white"
-          :class="{ hidden: hideFooter }"
+          :class="{ hidden: hideFooter, 'fade-in-up': isOpen }"
         >
           <DefaultButton
             class="text-bold font-medium text-sm underline"

@@ -20,8 +20,9 @@
               @click.prevent="handleSelectCategory(item.value)"
             >
               <span class="inline-block mr-2" v-if="item.value">
-                <img
+                <NuxtImg
                   class="w-3"
+                  loading="lazy"
                   src="/images/IconDate.svg"
                   alt="Fechas Exactas"
                 />

@@ -34,32 +34,41 @@
       class="absolute -left-4 top-0 bottom-0 w-10 h-full bg-custom-left-gradient-white hidden md:flex items-center justify-center"
       v-show="!isPrevDisabled"
     >
-      <button
+      <DefaultButton
         class="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300"
-        type="button"
-        @click="handlePrev"
+        @onClick="handlePrev"
       >
-        <img class="w-4" src="/images/PrevIcon.svg" alt="Prev" />
-      </button>
+        <NuxtImg
+          class="w-4"
+          loading="lazy"
+          src="/images/PrevIcon.svg"
+          alt="Prev"
+        />
+      </DefaultButton>
     </div>
 
     <div
       class="absolute -right-4 top-0 bottom-0 w-10 h-full bg-custom-right-gradient-white hidden md:flex items-center justify-center"
       v-show="!isNextDisabled"
     >
-      <button
+      <DefaultButton
         class="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300"
-        type="button"
-        @click="handleNext"
+        @onClick="handleNext"
       >
-        <img class="w-4" src="/images/NextIcon.svg" alt="Next" />
-      </button>
+        <NuxtImg
+          class="w-4"
+          loading="lazy"
+          src="/images/NextIcon.svg"
+          alt="Next"
+        />
+      </DefaultButton>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 import IconTextCard from "~/components/common/IconTextCard/IconTextCard.vue";
 
 const props = defineProps({

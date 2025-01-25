@@ -4,8 +4,7 @@
     @click="toggle"
   >
     <div
-      class="toggle-switch-circle absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform transition-all duration-300 will-change-auto"
-      :class="{ 'translate-x-6': modelValue }"
+      :class="toggleSwitchDynamicClasses"
     />
   </div>
 </template>
@@ -41,5 +40,21 @@ const { dynamicClasses } = useDynamicClasses(
   activeClasses,
   inactiveClasses
 );
+
+const toggleSwitchDefaultClasses =
+  "toggle-switch-circle absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transform transition-all duration-300 will-change-auto";
+
+const toggleSwitchActiveClasses = "translate-x-6";
+
+const toggleSwitchInactiveClasses = "";
+
+
+const { dynamicClasses:toggleSwitchDynamicClasses } = useDynamicClasses(
+  () => props.modelValue,
+  toggleSwitchDefaultClasses,
+  toggleSwitchActiveClasses,
+  toggleSwitchInactiveClasses
+);
+
 
 </script>

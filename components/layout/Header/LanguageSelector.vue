@@ -1,6 +1,6 @@
 <template>
   <DefaultButton>
-    <img class="w-4" src="/images/Language.svg" alt="Language" />
+    <NuxtImg class="w-4" preload src="/images/Language.svg" alt="Languagr Icon"/>
   </DefaultButton>
 </template>
 

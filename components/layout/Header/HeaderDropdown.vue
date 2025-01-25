@@ -4,12 +4,15 @@
     class="relative flex items-center justify-between md:w-20 lg:w-20 xl:w-20 2xl:w-24 3xl:w-24 py-2 px-4 rounded-full bg-white border border-gray-300 cursor-pointer"
     @click="openMenu"
   >
-    <img class="w-4" src="/images/Hamburger.svg" alt="Hamburger" />
-    <img
+    <NuxtImg class="w-4" preload src="/images/Hamburger.svg" alt="Hamburger" />
+
+    <NuxtImg
       class="md:w-6 lg:w-6 xl:w-6 2xl:w-8 3xl:w-8"
+      preload
       src="/images/User.svg"
       alt="Hamburger"
     />
+
     <nav
       v-if="isOpen"
       class="absolute right-4 w-56 top-12 p-2 bg-white shadow-xl"

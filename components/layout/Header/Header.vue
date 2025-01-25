@@ -1,15 +1,15 @@
 <template>
-  <div :class="containerHeaderClasses">
+  <header :class="containerHeaderClasses">
     <div class="w-full">
-      <header id="header" :class="headerDynamicClasses">
+      <div id="contentHeader" :class="headerDynamicClasses">
         <div
           class="xl:flex-[1_0_140px] hidden md:flex items-center justify-start z-50"
         >
           <NuxtLink to="/" class="hidden xl:block cursor-pointer">
-            <img class="w-28" src="/images/Logo.svg" alt="Logo" />
+            <NuxtImg class="w-28" preload src="/images/Logo.svg" alt="Logo" />
           </NuxtLink>
           <NuxtLink to="/" class="block xl:hidden cursor-pointer">
-            <img class="w-8" src="/images/Isotipo.svg" alt="Logo" />
+            <NuxtImg class="w-8" preload src="/images/Isotipo.svg" alt="Logo" />
           </NuxtLink>
         </div>
         <div
@@ -39,13 +39,9 @@
             <HeaderDropdown />
           </div>
         </div>
-      </header>
-      <div
-        class="fixed w-full top-0 left-0 right-0 bottom-0 bg-black opacity-30 z-10"
-        v-show="stickyFilterInitiated"
-      ></div>
+      </div>
     </div>
-  </div>
+  </header>
 </template>
 
 <script setup>

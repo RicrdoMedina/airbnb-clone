@@ -1,14 +1,13 @@
 import { computed, unref, isRef } from "vue";
 
 export function useDynamicClasses(
-  flagOrComparison, // Puede ser una referencia, prop o función
+  flagOrComparison,
   defaultClasses,
   activeClasses,
   inactiveClasses
 ) {
-  // Helper para resolver clases (string, object o computed)
   const resolveClasses = (classes) => {
-    const resolved = unref(classes); // Maneja ref o computed
+    const resolved = unref(classes);
     if (typeof resolved === "string") return resolved;
     if (typeof resolved === "object") {
       return Object.entries(resolved)
@@ -22,11 +21,10 @@ export function useDynamicClasses(
   const dynamicClasses = computed(() => {
     const baseClasses = resolveClasses(defaultClasses);
 
-    // Verificar el tipo de flagOrComparison
     const isActive =
       typeof flagOrComparison === "function"
-        ? flagOrComparison() // Ejecutar si es función
-        : unref(flagOrComparison); // Resolver si es referencia o prop
+        ? flagOrComparison()
+        : unref(flagOrComparison);
 
     const active = isActive
       ? resolveClasses(activeClasses)

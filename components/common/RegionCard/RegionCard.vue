@@ -4,7 +4,13 @@
     @click.stop.prevent="handleSelectCategory()"
   >
     <div class="w-full h-full box-border">
-      <img :class="pictureDynamicClasses" :src="imgUrl" :alt="label" />
+      <NuxtImg
+        :class="pictureDynamicClasses"
+        loading="lazy"
+        :src="imgUrl"
+        :alt="label"
+        v-if="imgUrl"
+      />
     </div>
     <span :class="labelDynamicClasses">{{ label }}</span>
   </div>

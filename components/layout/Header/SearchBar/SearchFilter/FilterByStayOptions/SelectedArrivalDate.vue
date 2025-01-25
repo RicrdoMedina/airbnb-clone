@@ -22,8 +22,7 @@
       class="w-full h-full z-50 flex flex-col items-start justify-center relative"
     >
       <span
-        class="text-xs font-medium text-bold rounded-md"
-        :class="{ 'background-animation': isLoading }"
+        :class="labelDynamicClasses"
         >Llegada</span
       >
       <div :class="blockDynamicClasses">
@@ -40,7 +39,12 @@
         v-show="shouldShowCloseIcon"
         @click.stop.prevent="handleResetDateRange"
       >
-        <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
+        <NuxtImg
+          class="w-3"
+          src="/images/CloseIcon.svg"
+          alt="Close"
+          loading="lazy"
+        />
       </span>
     </div>
   </div>
@@ -51,14 +55,14 @@ import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useAppDataStore } from "~/store/app/AppDataStore";
 import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
-import { es } from "date-fns/locale";
+import { es } from "date-fns/locale/index.js";
 import { format } from "date-fns";
 import { isEmpty } from "~/utils/helpers";
 const useSearchBar = useSearchBarStore();
 const useDataStore = useAppDataStore();
 
 const { toggleSubFilter, filterStates, values, handleResetDateRange } =
-useSearchBar;
+  useSearchBar;
 
 const { isFilterActive, showWhenOptions } = storeToRefs(useSearchBar);
 
@@ -116,6 +120,13 @@ const blockActiveClasses = "text-bold font-medium";
 
 const blockInactiveClasses = "text-light";
 
+const labelDefaultClasses =
+  "text-xs font-medium text-bold rounded-md";
+
+const labelActiveClasses = "background-animation";
+
+const labelInactiveClasses = "";
+
 const { dynamicClasses } = useDynamicClasses(
   () => filterStates.arrival,
   defaultClasses,
@@ -128,6 +139,13 @@ const { dynamicClasses: blockDynamicClasses } = useDynamicClasses(
   blockDefaultClasses,
   blockActiveClasses,
   blockInactiveClasses
+);
+
+const { dynamicClasses: labelDynamicClasses } = useDynamicClasses(
+  isLoading,
+  labelDefaultClasses,
+  labelActiveClasses,
+  labelInactiveClasses
 );
 
 const formattedArrivalDate = computed(() => {

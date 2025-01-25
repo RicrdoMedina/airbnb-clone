@@ -4,27 +4,36 @@
     <p class="w-full text-left text-light text-sm">{{ subtitle }}</p>
 
     <div class="flex absolute top-0 right-0">
-      <button
-        type="button"
-        @click.stop.prevent="decrease"
+      <DefaultButton
+        class="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 hover:border-black ease-in-out transition-all duration-500 cursor-pointer"
+        @onClick="decrease"
         v-if="counter > 0"
-        class="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 hover:border-black ease-in-out transition-all duration-500 cursor-pointer"
       >
-        <img class="w-3" src="/images/MinusIcon.svg" alt="Minus" />
-      </button>
+        <NuxtImg
+          class="w-3"
+          loading="lazy"
+          src="/images/MinusIcon.svg"
+          alt="Minus"
+        />
+      </DefaultButton>
       <div class="text-light text-lg mx-4">{{ counter }}</div>
-      <button
-        type="button"
-        @click.stop.prevent="increase"
+      <DefaultButton
         class="w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 hover:border-black ease-in-out transition-all duration-500 cursor-pointer"
+        @onClick="increase"
       >
-        <img class="w-3" src="/images/PlusIcon.svg" alt="Plus" />
-      </button>
+        <NuxtImg
+          class="w-3"
+          loading="lazy"
+          src="/images/PlusIcon.svg"
+          alt="Plus"
+        />
+      </DefaultButton>
     </div>
   </div>
 </template>
 
 <script setup>
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 const props = defineProps({
   title: {
     type: String,

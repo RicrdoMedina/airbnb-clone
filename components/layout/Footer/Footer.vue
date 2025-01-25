@@ -1,7 +1,11 @@
 <template>
   <div class="w-full flex flex-col items-center justify-center">
-    <div class="w-full 3xl:w-8/12 px-6 md:px-8 lg:px-12 xl:px-14 2xl:px-14 3xl:px-0 flex flex-col lg:flex-row lg:shadow-bottom lg:pb-8">
-      <div class="w-full shadow-bottom lg:shadow-none lg:w-1/3 flex flex-col py-6 lg:py-0">
+    <div
+      class="w-full 3xl:w-8/12 px-6 md:px-8 lg:px-12 xl:px-14 2xl:px-14 3xl:px-0 flex flex-col lg:flex-row lg:shadow-bottom lg:pb-8"
+    >
+      <div
+        class="w-full shadow-bottom lg:shadow-none lg:w-1/3 flex flex-col py-6 lg:py-0"
+      >
         <p class="text-bold font-medium mb-2">Asistencia</p>
         <ul class="flex flex-col">
           <li
@@ -79,7 +83,9 @@
           </li>
         </ul>
       </div>
-      <div class="w-full shadow-bottom lg:shadow-none lg:w-1/3 3xl:pl-8 py-6 lg:py-0">
+      <div
+        class="w-full shadow-bottom lg:shadow-none lg:w-1/3 3xl:pl-8 py-6 lg:py-0"
+      >
         <p class="text-bold font-medium mb-2">Airbnb</p>
         <ul class="flex flex-col">
           <li
@@ -110,9 +116,15 @@
         </ul>
       </div>
     </div>
-    <div class="w-full 3xl:w-8/12 xl:h-14 relative flex flex-col-reverse xl:flex-row items-start md:items-center justify-between mt-2 lg:mt-8 px-6 md:px-8 lg:px-12 xl:px-14 2xl:px-14 3xl:px-0 mb-16 md:mb-0">
-      <div class="h-14 xl:h-full flex flex-col md:flex-row items-center justify-start">
-        <p class="text-bold text-sm pl-1 md:pl-0 mr-3 w-full md:w-auto h-full flex items-center text-left md:text-center">
+    <div
+      class="w-full 3xl:w-8/12 xl:h-14 relative flex flex-col-reverse xl:flex-row items-start md:items-center justify-between mt-2 lg:mt-8 px-6 md:px-8 lg:px-12 xl:px-14 2xl:px-14 3xl:px-0 mb-16 md:mb-0"
+    >
+      <div
+        class="h-14 xl:h-full flex flex-col md:flex-row items-center justify-start"
+      >
+        <p
+          class="text-bold text-sm pl-1 md:pl-0 mr-3 w-full md:w-auto h-full flex items-center text-left md:text-center"
+        >
           © 2024 Airbnb, Inc.
         </p>
         <ul class="flex h-full md:pl-2 relative">
@@ -135,7 +147,13 @@
       </div>
       <div class="h-14 xl:h-full flex items-center justify-start">
         <NuxtLink to="/" class="flex items-center">
-          <img class="w-4" src="/images/Language.svg" alt="Language" />
+          <NuxtImg
+            class="w-4"
+            preload
+            src="/images/Language.svg"
+            alt="Language"
+          />
+
           <span class="ml-1 hover:underline text-bold text-sm font-medium"
             >Español (BO)</span
           >
@@ -147,13 +165,23 @@
           >
         </NuxtLink>
         <NuxtLink to="/" class="hidden md:flex items-center ml-4">
-          <img class="w-4" src="/images/FacebookIcon.svg" alt="Facebook" />
+          <NuxtImg
+            class="w-4"
+            preload
+            src="/images/FacebookIcon.svg"
+            alt="Facebook"
+          />
         </NuxtLink>
         <NuxtLink to="/" class="hidden md:flex items-center ml-4">
-          <img class="w-4" src="/images/XIcon.svg" alt="X" />
+          <NuxtImg class="w-4" preload src="/images/XIcon.svg" alt="X" />
         </NuxtLink>
         <NuxtLink to="/" class="hidden md:flex items-center ml-4">
-          <img class="w-4" src="/images/InstagramIcon.svg" alt="Instagram" />
+          <NuxtImg
+            class="w-4"
+            preload
+            src="/images/InstagramIcon.svg"
+            alt="Instagram"
+          />
         </NuxtLink>
       </div>
     </div>

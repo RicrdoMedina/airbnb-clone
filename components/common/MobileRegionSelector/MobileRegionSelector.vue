@@ -58,9 +58,9 @@ const props = defineProps({
 
 const emit = defineEmits(["setSelectItem"]);
 
-const defaultClasses = "bg-white mx-3 rounded-3xl p-4 shadow-floating-card mt-2 mb-4";
+const defaultClasses = "bg-white mx-3 rounded-3xl p-4 shadow-floating-card mt-2 mb-4 slide-down";
 
-const activeClasses = "block";
+const activeClasses = "block active";
 
 const inactiveClasses = "hidden";
 

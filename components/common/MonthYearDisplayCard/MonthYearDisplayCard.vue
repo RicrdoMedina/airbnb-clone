@@ -1,16 +1,18 @@
 <template>
-  <button
-    type="button"
-    @click.stop.prevent="handleSelected"
-    :class="buttonDynamicClasses"
-  >
-    <img class="w-10" :src="getCalendarImage" alt="Calendar" />
+  <DefaultButton :class="buttonDynamicClasses" @onClick="handleSelected">
+    <NuxtImg
+      class="w-8"
+      loading="lazy"
+      :src="getCalendarImage"
+      alt="Calendar"
+    />
     <span class="text-bold font-medium text-base mt-2">{{ name }}</span>
     <span class="text-bold text-sm">{{ year }}</span>
-  </button>
+  </DefaultButton>
 </template>
 
 <script setup>
+import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 
 const props = defineProps({
@@ -59,5 +61,4 @@ const { dynamicClasses: buttonDynamicClasses } = useDynamicClasses(
 const getCalendarImage = computed(() =>
   props.isSelected ? "/images/CalendarOpen.jpg" : "/images/Calendar.jpg"
 );
-
 </script>

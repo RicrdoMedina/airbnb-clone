@@ -1,5 +1,5 @@
 <template>
-  <div
+  <section
     class="w-full flex flex-col items-center justify-center mt-8 lg:mb-12 pb-8 shadow-bottom"
   >
     <div
@@ -21,7 +21,7 @@
         />
       </template>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>

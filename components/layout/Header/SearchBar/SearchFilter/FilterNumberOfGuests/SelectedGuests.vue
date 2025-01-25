@@ -1,13 +1,11 @@
 <template>
   <div :class="dynamicClasses" @click.stop.prevent="toggleSubFilter('who')">
     <span
-      class="text-xs font-medium text-bold rounded-md"
-      :class="{ 'background-animation': isLoading }"
+      :class="labelDynamicClasses"
       >Quién</span
     >
     <div
-      class="w-4/5 text-light bg-transparent border-0 outline-0 text-sm text-ellipsis overflow-hidden whitespace-nowrap rounded-md"
-      :class="{ 'background-animation': isLoading, 'mt-0.5': isLoading }"
+      :class="fieldDynamicClasses"
     >
       {{ formattedNumberGuests }}
     </div>
@@ -16,11 +14,20 @@
       v-show="shouldShowCloseIcon"
       @click.stop.prevent="reset"
     >
-      <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
+      <NuxtImg
+        class="w-3"
+        src="/images/CloseIcon.svg"
+        alt="Close"
+        loading="lazy"
+      />
     </span>
   </div>
   <div class="w-auto h-full flex items-center justify-center z-50">
-    <DefaultButton :class="buttonDynamicClasses" :isDisabled="!isFilterActive" @onClick="getListings">
+    <DefaultButton
+      :class="buttonDynamicClasses"
+      :isDisabled="!isFilterActive"
+      @onClick="getListings"
+    >
       <span :class="[isFilterActive ? 'w-5 mr-1' : 'w-5']">
         <OutlineSearch size="20px" :strokeWidth="'4px'" />
       </span>
@@ -58,24 +65,12 @@ const { getListings } = useDataStore;
 const { isFilterActive } = storeToRefs(useSearchBar);
 const { isLoading } = storeToRefs(useDataStore);
 
-const defaultClasses = computed(() => ({
-  filter: true,
-  "w-full": true,
-  "h-full": true,
-  flex: true,
-  "flex-col": true,
-  "items-start": true,
-  "justify-center": true,
-  relative: true,
-  "z-50": true,
-  "before:hidden": isFilterActive.value,
-  "before:content-['']": true,
-  "before:bg-custom-gray-400": true,
-  "before:absolute": true,
-  "before:w-px": true,
-  "before:h-8": true,
-  "before:-left-6": true,
-}));
+const defaultClasses =
+  "filter w-full h-full flex flex-col items-start justify-center relative z-50 before:content-[''] before:bg-custom-gray-400 before:absolute before:w-px before:h-8 before:-left-6";
+
+const activeClasses = "before:hidden";
+
+const inactiveClasses = "";
 
 const hoverBackgroundDefaultClasses =
   "absolute inset-0 w-full h-full rounded-full ease-in-out transition-all duration-500 z-40";
@@ -94,11 +89,25 @@ const hoverBackgroundInactiveClasses = computed(() => ({
 
 const buttonInactiveClasses = "w-12";
 
+const labelDefaultClasses =
+  "text-xs font-medium text-bold rounded-md";
+
+const labelActiveClasses = "background-animation";
+
+const labelInactiveClasses = "";
+
+const fieldDefaultClasses =
+  "w-4/5 text-light bg-transparent border-0 outline-0 text-sm text-ellipsis overflow-hidden whitespace-nowrap rounded-md";
+
+const fieldActiveClasses = "background-animation mt-0.5";
+
+const fieldInactiveClasses = "";
+
 const { dynamicClasses } = useDynamicClasses(
-  () => false,
+  isFilterActive,
   defaultClasses,
-  "",
-  ""
+  activeClasses,
+  inactiveClasses
 );
 
 const { dynamicClasses: hoverBackgroundDynamicClasses } = useDynamicClasses(
@@ -114,6 +123,21 @@ const { dynamicClasses: buttonDynamicClasses } = useDynamicClasses(
   buttonActiveClasses,
   buttonInactiveClasses
 );
+
+const { dynamicClasses: labelDynamicClasses } = useDynamicClasses(
+  isLoading,
+  labelDefaultClasses,
+  labelActiveClasses,
+  labelInactiveClasses
+);
+
+const { dynamicClasses: fieldDynamicClasses } = useDynamicClasses(
+  isLoading,
+  fieldDefaultClasses,
+  fieldActiveClasses,
+  fieldInactiveClasses
+);
+
 
 const { formattedNumberGuests } = useFormattedGuests(values);
 

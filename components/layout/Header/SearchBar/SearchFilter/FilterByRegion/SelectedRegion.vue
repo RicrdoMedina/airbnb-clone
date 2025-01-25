@@ -4,13 +4,15 @@
     @click.stop.prevent="toggleSubFilter('where')"
   >
     <label
-      class="text-xs font-medium text-bold rounded-md"
-      :class="{ 'background-animation': isLoading }"
+      :class="labelDynamicClasses"
       for=""
       >Dónde</label
     >
 
-    <span class="w-4/5 h-5 mt-0.5 rounded-md background-animation" v-if="isLoading"></span>
+    <span
+      class="w-4/5 h-5 mt-0.5 rounded-md background-animation"
+      v-if="isLoading"
+    ></span>
     <input
       :class="inputDynamicClasses"
       type="text"
@@ -24,7 +26,12 @@
       v-show="shouldShowCloseIcon"
       @click.stop.prevent="reset"
     >
-      <img class="w-3" src="/images/CloseIcon.svg" alt="Close" />
+      <NuxtImg
+        class="w-3"
+        src="/images/CloseIcon.svg"
+        alt="Close"
+        loading="lazy"
+      />
     </span>
   </div>
 
@@ -69,6 +76,13 @@ const hoverBackgroundInactiveClasses = computed(() => ({
 
 const inputInactiveClasses = "text-light";
 
+const labelDefaultClasses =
+  "text-xs font-medium text-bold rounded-md";
+
+const labelActiveClasses = "background-animation";
+
+const labelInactiveClasses = "";
+
 const { dynamicClasses: hoverBackgroundDynamicClasses } = useDynamicClasses(
   () => filterStates.where,
   hoverBackgroundDefaultClasses,
@@ -81,6 +95,13 @@ const { dynamicClasses: inputDynamicClasses } = useDynamicClasses(
   inputDefaultClasses,
   inputActiveClasses,
   inputInactiveClasses
+);
+
+const { dynamicClasses: labelDynamicClasses } = useDynamicClasses(
+  isLoading,
+  labelDefaultClasses,
+  labelActiveClasses,
+  labelInactiveClasses
 );
 
 const { getValueInputRegion } = useValueInputRegion(values, searchRegions);

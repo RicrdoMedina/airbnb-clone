@@ -62,11 +62,4 @@ function handleUpdateCounter(val) {
   emit("setMonthCounter", val);
 }
 
-function handleNext() {
-  emit("handleNext");
-}
-
-function handleReset() {
-  emit("handleReset");
-}
 </script>

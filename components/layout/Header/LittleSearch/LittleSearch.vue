@@ -1,13 +1,13 @@
 <template>
-  <div :class="littleSearchClasses">
+  <section :class="littleSearchClasses">
     <div
-      class="w-full items-center justify-between rounded-full h-12 flex overflow-hidden border bg-white shadow-search-box-inactive"
+      class="w-full items-center justify-between rounded-full h-12 flex overflow-hidden border md:bg-white shadow-search-box-inactive"
     >
       <DefaultButton
         class="flex-grow relative flex items-center justify-start pl-5 text-bold text-sm font-medium cursor-pointer"
         @click="handleClick('where')"
       >
-        <span class="rounded-md" :class="{ 'background-animation': isLoading }">{{ text1 }}</span>
+        <span class="rounded-md">{{ text1 }}</span>
       </DefaultButton>
 
       <DefaultButton
@@ -16,7 +16,6 @@
       >
         <span
           class="absolute right-5 rounded-md"
-          :class="{ 'background-animation': isLoading }"
           >{{ text2 }}</span
         >
       </DefaultButton>
@@ -27,7 +26,6 @@
       >
         <span
           class="absolute right-16 rounded-md"
-          :class="{ 'background-animation': isLoading }"
           >{{ text3 }}</span
         >
       </DefaultButton>
@@ -38,20 +36,18 @@
         <span><OutlineSearch size="15px" :strokeWidth="'4px'" /></span>
       </DefaultButton>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup>
 import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
-import { useAppDataStore } from "~/store/app/AppDataStore";
 import { storeToRefs } from "pinia";
 import { truncateString } from "~/utils/stringUtils";
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import OutlineSearch from "~/components/common/Svg/OutlineSearch.vue";
 
 const useSearchBar = useSearchBarStore();
-const useDataStore = useAppDataStore();
 
 const {
   toggleSubFilter,
@@ -62,7 +58,6 @@ const {
 } = useSearchBar;
 
 const { littleSearchIsActive } = storeToRefs(useSearchBar);
-const { isLoading } = storeToRefs(useDataStore);
 
 const windowWidth = ref(0);
 
