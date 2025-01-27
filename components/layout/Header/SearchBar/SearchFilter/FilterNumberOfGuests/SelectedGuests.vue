@@ -58,9 +58,7 @@ const {
   toggleSubFilter,
   filterStates,
   values,
-  updateValue,
-  disableSearch,
-  resetFilterStates,
+  updateValue
 } = useSearchBar;
 const { setIsLoadingListingData } = useDataStore;
 
@@ -158,8 +156,6 @@ function reset() {
 }
 
 function submit() {
-  disableSearch();
-  resetFilterStates();
   setIsLoadingListingData(true);
   setTimeout(() => {
     setIsLoadingListingData(false);
