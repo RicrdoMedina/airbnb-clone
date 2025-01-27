@@ -81,6 +81,7 @@
 </template>
 <script setup>
 import { watch, toRefs } from "vue";
+const { $localeEs } = useNuxtApp();
 import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
 import SubFilterButtons from "~/components/layout/Header/SearchBar/SearchFilter/FilterByStayOptions/SubFilterButtons.vue";
@@ -168,16 +169,29 @@ const filterValueWhenFormatted = computed(() => {
   if (isEmpty(values.when)) {
     const firstDayNextMonth = formatMonthDate(
       tripStartDate.value,
+      $localeEs,
       "d MMM. yyyy"
     );
-    const firstDayLastMonth = formatMonthDate(tripEndDate.value, "d MMM. yyyy");
+    const firstDayLastMonth = formatMonthDate(
+      tripEndDate.value,
+      $localeEs,
+      "d MMM. yyyy"
+    );
     return {
       startDate: `${firstDayNextMonth}`,
       endDate: `${firstDayLastMonth}`,
     };
   } else {
-    const firstDayNextMonth = formatMonthDate(values.when[0], "d MMM. yyyy");
-    const firstDayLastMonth = formatMonthDate(values.when[1], "d MMM. yyyy");
+    const firstDayNextMonth = formatMonthDate(
+      values.when[0],
+      $localeEs,
+      "d MMM. yyyy"
+    );
+    const firstDayLastMonth = formatMonthDate(
+      values.when[1],
+      $localeEs,
+      "d MMM. yyyy"
+    );
     return {
       startDate: `${firstDayNextMonth}`,
       endDate: `${firstDayLastMonth}`,

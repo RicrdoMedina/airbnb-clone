@@ -91,7 +91,7 @@ const breackPoints = {
 
 const littleSearchClasses = computed(() => {
   if (littleSearchIsActive.value) {
-    return "w-full h-full flex items-center lg:w-33 mx-auto cursor-pointer little-search-transition z-50 cursor-pointer show-transition ";
+    return "w-full h-full hidden md:flex items-center lg:w-33 mx-auto cursor-pointer little-search-transition z-50 cursor-pointer show-transition ";
   }
 
   return "w-full h-full hidden md:flex items-center lg:w-33 mx-auto cursor-pointer little-search-transition z-10 cursor-pointer";

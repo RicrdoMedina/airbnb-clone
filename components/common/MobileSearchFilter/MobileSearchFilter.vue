@@ -54,7 +54,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import { es } from "date-fns/locale/index.js";
+const { $localeEs } = useNuxtApp();
 import { format } from "date-fns";
 import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { useAppModalStore } from "~/store/app/AppModalStore";
@@ -93,6 +93,7 @@ const { filterValueWhenFormatted } = useFormattedWhenValue(
   () => values.when,
   tripStartDate,
   tripEndDate,
+  $localeEs,
   "d MMM."
 );
 
@@ -107,11 +108,11 @@ const selectedFilterValue = computed(() => {
   if (activeSubFilter.value === "Dates" && !isEmpty(values.travelDate)) {
     if (values.travelDate.length > 1) {
       const starDate = format(values.travelDate[0], "dd MMM", {
-        locale: es,
+        locale: $localeEs,
       });
 
       const endDate = format(values.travelDate[1], "dd MMM", {
-        locale: es,
+        locale: $localeEs,
       });
 
       return values.approximateDays
@@ -120,7 +121,7 @@ const selectedFilterValue = computed(() => {
     }
 
     const formattedDate = format(values.travelDate[0], "dd MMM", {
-      locale: es,
+      locale: $localeEs,
     });
 
     return formattedDate;

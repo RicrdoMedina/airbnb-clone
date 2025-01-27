@@ -31,7 +31,7 @@
     </Carousel>
 
     <div
-      class="absolute -left-4 top-0 bottom-0 w-10 h-full bg-custom-left-gradient-white hidden md:flex items-center justify-center"
+      class="absolute -left-4 top-0 bottom-0 w-10 h-full bg-custom-left-gradient-white hidden md:flex items-center justify-center z-10"
       v-show="!isPrevDisabled"
     >
       <DefaultButton
@@ -48,7 +48,7 @@
     </div>
 
     <div
-      class="absolute -right-4 top-0 bottom-0 w-10 h-full bg-custom-right-gradient-white hidden md:flex items-center justify-center"
+      class="absolute -right-4 top-0 bottom-0 w-10 h-full bg-custom-right-gradient-white hidden md:flex items-center justify-center z-10"
       v-show="!isNextDisabled"
     >
       <DefaultButton

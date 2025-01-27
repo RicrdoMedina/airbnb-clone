@@ -18,6 +18,7 @@ import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
 import { useFilterWhenDoYouWantToGo } from "~/components/composables/useFilterWhenDoYouWantToGo";
 import { truncateString } from "~/utils/stringUtils";
+const { $localeEs } = useNuxtApp();
 
 const useSearchBar = useSearchBarStore();
 
@@ -72,6 +73,7 @@ const { filterValueWhenFormatted } = useFormattedWhenValue(
   () => values.when,
   tripStartDate,
   tripEndDate,
+  $localeEs,
   "d MMM."
 );
 

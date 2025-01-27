@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { compareDates, getNext12Months } from "~/utils/dateUtils";
+import { compareDates } from "~/utils/dateUtils";
 import { isArray } from "~/utils/helpers";
 
 export const useSearchBarStore = defineStore("searchBarStore", () => {
@@ -73,7 +73,7 @@ export const useSearchBarStore = defineStore("searchBarStore", () => {
     { id: 8, name: "7 días", value: 7 },
   ]);
 
-  const availableMonths = ref(getNext12Months());
+  const availableMonths = ref([]);
 
   // Computed
   const tripStartDate = computed(() => {
@@ -294,6 +294,10 @@ export const useSearchBarStore = defineStore("searchBarStore", () => {
     categoryActive.value = val;
   }
 
+  function setAvailableMonths(val) {
+    availableMonths.value = val;
+  }
+
   return {
     // State
     isStickyFilterActive,
@@ -337,5 +341,6 @@ export const useSearchBarStore = defineStore("searchBarStore", () => {
     updateCircularMonthSelector,
     handleSelectedDateId,
     setCategoryActive,
+    setAvailableMonths,
   };
 });

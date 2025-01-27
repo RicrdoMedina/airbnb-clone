@@ -20,7 +20,7 @@
     </Carousel>
 
     <DefaultButton
-      class="absolute left-0 top-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300"
+      class="absolute left-0 top-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300 z-10"
       @onClick="handlePrev"
       v-show="!isPrevDisabled"
     >
@@ -33,7 +33,7 @@
     </DefaultButton>
 
     <DefaultButton
-      class="absolute right-0 top-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300"
+      class="absolute right-0 top-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center border border-custom-gray-300 z-10"
       @onClick="handleNext"
       v-show="!isNextDisabled"
     >

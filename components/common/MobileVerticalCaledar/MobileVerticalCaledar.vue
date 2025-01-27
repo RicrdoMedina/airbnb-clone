@@ -59,7 +59,7 @@
 <script setup>
 import { onMounted, watch } from "vue";
 import { getMonth, getYear, format } from "date-fns";
-import { es } from "date-fns/locale/index.js";
+const { $localeEs } = useNuxtApp();
 import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import {
   generateMonthDays,
@@ -174,7 +174,7 @@ function* monthGenerator() {
   while (true) {
     const date = calculateFutureDate(count);
     const monthIndex = getMonth(date);
-    const monthText = format(date, "LLLL", { locale: es });
+    const monthText = format(date, "LLLL", { locale: $localeEs });
     const year = getYear(date);
     const result = generateMonthDays(monthIndex, year);
     const daysOfMonth = monthRows(result);

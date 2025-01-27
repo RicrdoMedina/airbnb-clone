@@ -10,7 +10,6 @@ import {
   isEqual,
   startOfDay,
 } from "date-fns";
-import { es } from "date-fns/locale/index.js";
 
 export function getMonthWithOffset(offset) {
   const currentDate = new Date();
@@ -23,6 +22,7 @@ export function getMonthWithOffset(offset) {
 export function getFormattedFirstDayOfMonth(
   date,
   add,
+  locale,
   dateFormat = "d MMM. yyyy"
 ) {
   const nextMonth = addMonths(date, add);
@@ -30,7 +30,7 @@ export function getFormattedFirstDayOfMonth(
   const firstDayNextMonth = startOfMonth(nextMonth);
 
   const formattedDateFirstMonth = format(firstDayNextMonth, dateFormat, {
-    locale: es,
+    locale,
   });
 
   return formattedDateFirstMonth;
@@ -70,20 +70,20 @@ export function calculateFutureDate(offset) {
   return currentDate;
 }
 
-export function getNext12Months() {
+export function getNext12Months(locale) {
   const currentDate = new Date();
   const next12Months = [];
 
   for (let i = 0; i < 12; i++) {
     const newDate = addMonths(currentDate, i);
     const nameMonth = format(newDate, "MMMM", {
-      locale: es,
+      locale,
     });
     const year = format(newDate, "yyyy", {
-      locale: es,
+      locale,
     });
     const shortName = format(newDate, "MMM", {
-      locale: es,
+      locale,
     });
 
     next12Months.push({
@@ -106,8 +106,8 @@ export function getDateFromMonth(month, year = "2024") {
   return date;
 }
 
-export function formatMonthDate(date, formatDate = "d MMM. yyyy") {
-  return format(date, formatDate, { locale: es });
+export function formatMonthDate(date, locale, formatDate = "d MMM. yyyy") {
+  return format(date, formatDate, { locale });
 }
 
 export function getNextYear() {

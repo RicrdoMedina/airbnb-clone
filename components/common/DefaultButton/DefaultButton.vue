@@ -1,6 +1,5 @@
 <template>
   <button
-    :class="$attrs.class"
     :disabled="isDisabled"
     :type="type"
     @click.stop.prevent="handleClick"

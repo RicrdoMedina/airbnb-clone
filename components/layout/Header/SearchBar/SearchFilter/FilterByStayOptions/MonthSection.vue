@@ -23,6 +23,7 @@
 </template>
 
 <script setup>
+const { $localeEs } = useNuxtApp();
 import CircularMonthRangeSelectorCopy3 from "~/components/common/CircularMonthRangeSelector/CircularMonthRangeSelectorCopy3.vue";
 import { useFormattedWhenValue } from "~/components/composables/useFormattedWhenValue";
 
@@ -52,6 +53,7 @@ const { filterValueWhenFormatted } = useFormattedWhenValue(
   () => props.selectedMonth,
   props.tripStartDate,
   props.tripEndDate,
+  $localeEs,
   "d MMM. yyyy"
 );
 

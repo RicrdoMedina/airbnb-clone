@@ -55,7 +55,7 @@ import { useDynamicClasses } from "~/components/composables/useDynamicClasses";
 import { useAppDataStore } from "~/store/app/AppDataStore";
 import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { storeToRefs } from "pinia";
-import { es } from "date-fns/locale/index.js";
+const { $localeEs } = useNuxtApp();
 import { format } from "date-fns";
 import { isEmpty } from "~/utils/helpers";
 const useSearchBar = useSearchBarStore();
@@ -152,7 +152,7 @@ const formattedArrivalDate = computed(() => {
   if (isEmpty(values.travelDate)) return "Agregar fecha";
 
   const formattedDate = format(values.travelDate[0], "dd MMM", {
-    locale: es,
+    locale: $localeEs,
   });
 
   return formattedDate;

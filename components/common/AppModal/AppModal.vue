@@ -51,6 +51,7 @@
 
           <DefaultButton
             class="h-10 px-6 rounded-lg flex items-center justify-center bg-tomato font-medium text-white"
+            @onClick="submit()"
           >
             <OutlineSearch size="16px" strokeWidth="3px" />
             <span class="ml-1"> Buscar </span>
@@ -63,6 +64,7 @@
 
 <script setup>
 import { computed, watch } from "vue";
+import { useAppDataStore } from "~/store/app/AppDataStore";
 import { useSearchBarStore } from "~/store/layout/Header/SearchBarStore";
 import { useAppModalStore } from "~/store/app/AppModalStore";
 import { storeToRefs } from "pinia";
@@ -71,8 +73,11 @@ import MobileSearchFilter from "~/components/common/MobileSearchFilter/MobileSea
 import OutlineSearch from "~/components/common/Svg/OutlineSearch.vue";
 import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 const selectedTab = ref(0);
+const useDataStore = useAppDataStore();
 const useSearchBar = useSearchBarStore();
 const useModalStore = useAppModalStore();
+
+const { getListings } = useDataStore;
 
 const { updateValue, handleSelectedDateId, updateCircularMonthSelector } =
   useSearchBar;
@@ -120,6 +125,11 @@ function clearAll() {
   updateValue("adults", 0);
   updateValue("children", 0);
   updateValue("babies", 0);
+}
+
+function submit () {
+  closeModal()
+  getListings()
 }
 
 watch(isOpen, async (newValue, oldValue) => {

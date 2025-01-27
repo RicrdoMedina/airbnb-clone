@@ -1,5 +1,11 @@
 <template>
   <section class="w-full">
+    <SwitchCard
+      class="flex md:hidden"
+      title="Mostrar el Precio Total"
+      subtitle="Incluidas todas las tarifas, pero sin contar los impuestos."
+      :isLoading="isLoading"
+    />
     <div
       class="w-full h-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-6 px-6 md:px-8 lg:px-12 xl:px-14 2xl:px-14 3xl:px-16"
     >
@@ -42,11 +48,17 @@
 <script setup>
 import { useAppDataStore } from "~/store/app/AppDataStore";
 import { storeToRefs } from "pinia";
+import SwitchCard from "~/components/common/SwitchCard/SwitchCard.vue";
 import ListingCard from "~/components/common/ListingCard/ListingCard.vue";
 import LoaderListingCard from "~/components/common/Loader/LoaderListingCard/LoaderListingCard.vue";
 import DefaultButton from "~/components/common/DefaultButton/DefaultButton.vue";
 const useDataStore = useAppDataStore();
 const { getListings } = useDataStore;
-const {  listingData, listingCurrentNum, hasMoreResults,isLoadingListingData } =
-  storeToRefs(useDataStore);
+const {
+  listingData,
+  listingCurrentNum,
+  hasMoreResults,
+  isLoadingListingData,
+  isLoading,
+} = storeToRefs(useDataStore);
 </script>

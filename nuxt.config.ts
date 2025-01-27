@@ -6,6 +6,7 @@ export default defineNuxtConfig({
         process.env.NUXT_PUBLIC_SERVER_URL || "https://default-server.com",
     },
   },
+
   app: {
     head: {
       htmlAttrs: {
@@ -16,8 +17,10 @@ export default defineNuxtConfig({
       },
     },
   },
+
   devtools: { enabled: true },
   modules: ["@pinia/nuxt", "vue3-carousel-nuxt", "@nuxt/image"],
+
   image: {
     formats: ["webp", "avif"],
     screens: {
@@ -30,11 +33,14 @@ export default defineNuxtConfig({
       '2xl': 1536
     },
   },
+
   css: ["~/assets/css/main.css"],
+
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
-  }
+  },
+  compatibilityDate: "2025-01-27"
 });

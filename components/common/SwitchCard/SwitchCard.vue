@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full px-6 my-6" :class="$attrs.class">
+  <div class="w-full px-6 my-6">
     <div class="w-full flex px-4 py-3 border border-custom-gray-300 rounded-lg">
       <div class="flex flex-col">
         <h3 :class="titleDynamicClasses">

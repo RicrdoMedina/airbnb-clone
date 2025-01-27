@@ -54,6 +54,8 @@ import LanguageSelector from "~/components/layout/Header/LanguageSelector.vue";
 import MobileSearchBar from "~/components/layout/Header/MobileSearchBar/MobileSearchBar.vue";
 import SearchBar from "~/components/layout/Header/SearchBar/SearchBar.vue";
 import LittleSearch from "~/components/layout/Header/LittleSearch/LittleSearch.vue";
+import { getNext12Months } from "~/utils/dateUtils";
+const { $localeEs } = useNuxtApp();
 
 const useDataStore = useAppDataStore();
 const useSearchBar = useSearchBarStore();
@@ -63,6 +65,7 @@ const {
   toggleFilterActive,
   toggleStickyFilterInitiated,
   disableSearch,
+  setAvailableMonths
 } = useSearchBar;
 
 const { isStickyFilterActive, littleSearchIsActive, stickyFilterInitiated } =
@@ -132,6 +135,7 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
+  setAvailableMonths(getNext12Months($localeEs));
   window.addEventListener("scroll", handleScroll);
 });
 
