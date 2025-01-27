@@ -17,7 +17,7 @@ Este proyecto es solo para fines de aprendizaje. Todos los derechos y activos re
 
 ![Captura Version Desktop](./readme-static/desktop.jpg)
 
-[Ver la aplicación](https://)
+[Ver la aplicación](https://airbnb-clone-khaki-eta.vercel.app/)
 
 ## Cómo funciona?
 
