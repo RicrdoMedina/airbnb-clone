@@ -92,21 +92,21 @@
   height: 100%;
 }
 
-.carousel__pagination-button::after {
+.carousel__pagination-button {
   width: 6px;
   height: 6px;
   border-radius: 999px;
 }
 
-.carousel__pagination-button::after {
+.carousel__pagination-button {
   background-color: #ffffff99;
 }
 
-.carousel__pagination-button--active::after {
+.carousel__pagination-button--active {
   background-color: #fff;
 }
 
-.carousel__pagination-button:hover::after {
+.carousel__pagination-button:hover {
   background: #fff;
 }
 
