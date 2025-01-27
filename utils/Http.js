@@ -1,7 +1,8 @@
 import axios from "axios";
+const config = useRuntimeConfig();
 
 const API_URL =
-  process.env.NUXT_PUBLIC_SERVER_URL || "http://localhost:3000/api";
+  config.public.NUXT_PUBLIC_SERVER_URL || "http://localhost:3000/api";
 
 class Http {
   static http = axios.create({
