@@ -6,7 +6,7 @@
     <div class="w-full h-full box-border">
       <NuxtImg
         :class="pictureDynamicClasses"
-        loading="lazy"
+        preload
         :src="imgUrl"
         :alt="label"
         v-if="imgUrl"

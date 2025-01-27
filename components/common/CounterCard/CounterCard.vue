@@ -11,7 +11,7 @@
       >
         <NuxtImg
           class="w-3"
-          loading="lazy"
+          preload
           src="/images/MinusIcon.svg"
           alt="Minus"
         />
@@ -23,7 +23,7 @@
       >
         <NuxtImg
           class="w-3"
-          loading="lazy"
+          preload
           src="/images/PlusIcon.svg"
           alt="Plus"
         />

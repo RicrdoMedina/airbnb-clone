@@ -27,6 +27,4 @@ onMounted(() => {
   fetchAllDataHomePage();
 });
 
-console.log("URL desde el cliente:", config.public.NUXT_PUBLIC_SERVER_URL);
-
 </script>

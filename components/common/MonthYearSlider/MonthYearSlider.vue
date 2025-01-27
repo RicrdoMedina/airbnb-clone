@@ -26,7 +26,7 @@
     >
       <NuxtImg
         class="w-4"
-        loading="lazy"
+        preload
         src="/images/PrevIcon.svg"
         alt="Prev"
       />
@@ -39,7 +39,7 @@
     >
       <NuxtImg
         class="w-4"
-        loading="lazy"
+        preload
         src="/images/NextIcon.svg"
         alt="Next"
       />
