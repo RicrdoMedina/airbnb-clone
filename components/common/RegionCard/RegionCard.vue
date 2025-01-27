@@ -1,9 +1,9 @@
 <template>
   <div
-    class="flex w-full h-full items-center justify-center flex-col box-border"
+    class="region-card flex w-full h-full items-center justify-center flex-col box-border"
     @click.stop.prevent="handleSelectCategory()"
   >
-    <div class="w-full h-full box-border">
+    <div class="region-card__content w-full h-full box-border">
       <NuxtImg
         :class="pictureDynamicClasses"
         preload

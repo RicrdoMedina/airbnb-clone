@@ -191,6 +191,11 @@
   width: auto;
 }
 
+/* RegionCard */
+.region-card__content {
+  min-height: 117.33px;
+}
+
 /* Global */
 .max-h-universal {
   max-height: max(100vh, calc(6px + 1vh));
