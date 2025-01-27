@@ -25,4 +25,14 @@ const { fetchAllDataHomePage } = appDataStore;
 onMounted(() => {
   fetchAllDataHomePage();
 });
+
+console.log("process.env",process.env)
+
+if (process.env.VERCEL_ENV === 'production') {
+  console.log("Estamos en el entorno de producción");
+} else if (process.env.VERCEL_ENV === 'preview') {
+  console.log("Estamos en el entorno de previsualización");
+} else if (process.env.VERCEL_ENV === 'development') {
+  console.log("Estamos en el entorno de desarrollo");
+}
 </script>
