@@ -30,7 +30,7 @@
         :touchDrag="true"
         :mouseDrag="true"
         :isLoading="isLoading"
-        @handleCategorySelected="setCategoryActive"
+        @handleCategorySelected="handleCategorySelected"
       />
     </div>
   </section>
@@ -47,6 +47,8 @@ import CategorySwiper from "~/components/common/CategorySwiper/CategorySwiper.vu
 const useDataStore = useAppDataStore();
 const useSearchBar = useSearchBarStore();
 const useModalStore = useAppModalStore();
+
+const { setIsLoadingListingData } = useDataStore;
 
 const { setCategoryActive } = useSearchBar;
 
@@ -72,5 +74,13 @@ const { dynamicClasses: labelDynamicClasses } = useDynamicClasses(
 function openModal() {
   setOpen(true);
   setSelectedComponent("MobileSearchFilter");
+}
+
+function handleCategorySelected (val) {
+  setIsLoadingListingData(true)
+  setTimeout(() => {
+    setIsLoadingListingData(false)
+  }, 400);
+  setCategoryActive(val)
 }
 </script>

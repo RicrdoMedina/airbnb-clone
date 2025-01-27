@@ -74,6 +74,10 @@ export const useAppDataStore = defineStore("appDataStore", () => {
     }
   }
 
+  function setIsLoadingListingData(val) {
+    isLoadingListingData.value = val;
+  }
+
   return {
     listingData,
     travelCategoriesData,
@@ -86,5 +90,6 @@ export const useAppDataStore = defineStore("appDataStore", () => {
     setIsLoading,
     fetchAllDataHomePage,
     getListings,
+    setIsLoadingListingData,
   };
 });

@@ -77,7 +77,7 @@ const useDataStore = useAppDataStore();
 const useSearchBar = useSearchBarStore();
 const useModalStore = useAppModalStore();
 
-const { getListings } = useDataStore;
+const { setIsLoadingListingData } = useDataStore;
 
 const { updateValue, handleSelectedDateId, updateCircularMonthSelector } =
   useSearchBar;
@@ -129,7 +129,10 @@ function clearAll() {
 
 function submit () {
   closeModal()
-  getListings()
+  setIsLoadingListingData(true)
+  setTimeout(() => {
+    setIsLoadingListingData(false)
+  }, 400);
 }
 
 watch(isOpen, async (newValue, oldValue) => {

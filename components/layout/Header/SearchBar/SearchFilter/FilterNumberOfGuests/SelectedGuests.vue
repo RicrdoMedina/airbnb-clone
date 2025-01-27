@@ -1,12 +1,7 @@
 <template>
   <div :class="dynamicClasses" @click.stop.prevent="toggleSubFilter('who')">
-    <span
-      :class="labelDynamicClasses"
-      >Quién</span
-    >
-    <div
-      :class="fieldDynamicClasses"
-    >
+    <span :class="labelDynamicClasses">Quién</span>
+    <div :class="fieldDynamicClasses">
       {{ formattedNumberGuests }}
     </div>
     <span
@@ -26,7 +21,7 @@
     <DefaultButton
       :class="buttonDynamicClasses"
       :isDisabled="!isFilterActive"
-      @onClick="getListings"
+      @onClick="submit"
     >
       <span :class="[isFilterActive ? 'w-5 mr-1' : 'w-5']">
         <OutlineSearch size="20px" :strokeWidth="'4px'" />
@@ -59,8 +54,15 @@ import OutlineSearch from "~/components/common/Svg/OutlineSearch.vue";
 const useDataStore = useAppDataStore();
 const useSearchBar = useSearchBarStore();
 
-const { toggleSubFilter, filterStates, values, updateValue } = useSearchBar;
-const { getListings } = useDataStore;
+const {
+  toggleSubFilter,
+  filterStates,
+  values,
+  updateValue,
+  disableSearch,
+  resetFilterStates,
+} = useSearchBar;
+const { setIsLoadingListingData } = useDataStore;
 
 const { isFilterActive } = storeToRefs(useSearchBar);
 const { isLoading } = storeToRefs(useDataStore);
@@ -89,8 +91,7 @@ const hoverBackgroundInactiveClasses = computed(() => ({
 
 const buttonInactiveClasses = "w-12";
 
-const labelDefaultClasses =
-  "text-xs font-medium text-bold rounded-md";
+const labelDefaultClasses = "text-xs font-medium text-bold rounded-md";
 
 const labelActiveClasses = "background-animation";
 
@@ -138,7 +139,6 @@ const { dynamicClasses: fieldDynamicClasses } = useDynamicClasses(
   fieldInactiveClasses
 );
 
-
 const { formattedNumberGuests } = useFormattedGuests(values);
 
 const shouldShowCloseIcon = computed(() => {
@@ -155,5 +155,14 @@ function reset() {
   updateValue("adults", 0);
   updateValue("children", 0);
   updateValue("babies", 0);
+}
+
+function submit() {
+  disableSearch();
+  resetFilterStates();
+  setIsLoadingListingData(true);
+  setTimeout(() => {
+    setIsLoadingListingData(false);
+  }, 400);
 }
 </script>
